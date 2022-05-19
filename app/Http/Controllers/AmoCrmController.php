@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\CustomApiException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class AmoCrmController extends Controller {
 
@@ -23,6 +24,16 @@ class AmoCrmController extends Controller {
                 'custom_fields_values' => $custom,
             ]
         ]);
+    }
+
+    public function changeDialog(Request $request) {
+
+        Telegram::sendMessage([
+            'chat_id' => '228519769',
+            'text' => json_encode($request->all())
+        ]);
+
+        return "Ok";
     }
 
     public static function getIsSetList($data, string $type): array {
