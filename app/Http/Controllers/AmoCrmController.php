@@ -33,17 +33,25 @@ class AmoCrmController extends Controller {
     }
 
     public function getOutgoingMessages() {
-        $time = [
-            'from' => time() - 3600,
-            'to' => time()
-        ];
-        return $this->getAllListByFilter('events', "&filter[created_at][from]={$time['from']}&filter[created_at][to]={$time['to']}&filter[type]=outgoing_chat_message");
+        $chats = Message::where('timeUpdate', '>', 0)->get();
+
+        $array = [];
+        foreach($chats as $chat) {
+            if($chat['timeUpdate'] - 5 > $chat['time']) {
+                $array[] = $chat;
+            } else {
+                $chat->delete();
+            }
+        }
+
+        return $array;
     }
 
     public function updateChat(Request $request) {
 
         if($request->has('talk') && isset($request->input('talk')['update'])) {
             $chatId = $request->input('talk')['update'][0]['chat_id'];
+            $talkId = $request->input('talk')['update'][0]['talk_id'];
 
             if($message = Message::where('chatId', $chatId)->first()) {
                 $message->__set('timeUpdate', time());
@@ -61,6 +69,7 @@ class AmoCrmController extends Controller {
             $talkId = $request->input('message')['add'][0]['talk_id'];
 
             if($message = Message::where('chatId', $chatId)->first()) {
+                $message->__set('talkId', $talkId);
                 $message->__set('time', time());
             } else {
                 $message = new Message();
