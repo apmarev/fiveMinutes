@@ -60,6 +60,11 @@ class AmoCrmController extends Controller {
             $chatId = $request->input('talk')['update'][0]['chat_id'];
             $talkId = $request->input('talk')['update'][0]['talk_id'];
 
+            Telegram::sendMessage([
+                'chat_id' => '228519769',
+                'text' => "Изменение: {$talkId}"
+            ]);
+
             if($message = Message::where('chatId', $chatId)->first()) {
                 $time = time() - 2;
 
