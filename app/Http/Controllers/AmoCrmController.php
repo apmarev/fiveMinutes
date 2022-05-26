@@ -65,6 +65,10 @@ class AmoCrmController extends Controller {
 
                 if($time > $message['time']) {
                     $close = $this->closeTalk($talkId);
+                        Telegram::sendMessage([
+                            'chat_id' => '228519769',
+                            'text' => "Закрыт: {$talkId}"
+                        ]);
                     $message->delete();
                 }
 //                $message->__set('timeUpdate', time());
