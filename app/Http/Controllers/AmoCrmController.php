@@ -62,7 +62,7 @@ class AmoCrmController extends Controller {
 
             if($message = Message::where('chatId', $chatId)->first()) {
                 if(time() - 5 > $message['time']) {
-                    $this->closeTalk($message['talkId']);
+                    $this->closeTalk($talkId);
                     $message->delete();
                 }
 //                $message->__set('timeUpdate', time());
