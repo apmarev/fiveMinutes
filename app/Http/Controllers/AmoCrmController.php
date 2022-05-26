@@ -47,6 +47,7 @@ class AmoCrmController extends Controller {
 
             if($message = Message::where('chatId', $chatId)->first()) {
                 $message->__set('timeUpdate', time());
+                $message->save();
             }
         }
 
