@@ -17,5 +17,5 @@ Route::get('/amo/leads', [AmoCrmController::class, 'getAndSetLeads']);
 
 Route::get('/amo/start', [AmoCrmController::class, 'start']);
 
-Route::get('/amo/test', [AmoCrmController::class, 'getOutgoingMessages']);
+Route::get('/amo/test', [AmoCrmController::class, 'test']);
 

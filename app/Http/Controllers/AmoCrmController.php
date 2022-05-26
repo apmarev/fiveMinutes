@@ -65,10 +65,6 @@ class AmoCrmController extends Controller {
 
                 if(time() - 5 > $message['time']) {
                     $close = $this->closeTalk($talkId);
-                    Telegram::sendMessage([
-                        'chat_id' => '228519769',
-                        'text' => json_encode($close)
-                    ]);
                     $message->delete();
                 }
 //                $message->__set('timeUpdate', time());
@@ -807,6 +803,6 @@ class AmoCrmController extends Controller {
     }
 
     public function test() {
-        return $this->amoGet('/leads?limit=1');
+        return $this->closeTalk(93570);
     }
 }
