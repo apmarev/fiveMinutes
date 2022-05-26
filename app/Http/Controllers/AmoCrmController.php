@@ -36,21 +36,23 @@ class AmoCrmController extends Controller {
 
         if($request->has('message') && isset($request->input('message')['add'])) {
             $chatId = $request->input('message')['add'][0]['chat_id'];
+            $talkId = $request->input('message')['add'][0]['talk_id'];
 
-            if($message = Message::where('talkId', $chatId)->first()) {
+            if($message = Message::where('chatId', $chatId)->first()) {
                 $message->__set('time', time());
             } else {
                 $message = new Message();
-                $message->__set('talkId', $chatId);
+                $message->__set('talkId', $talkId);
+                $message->__set('chatId', $chatId);
                 $message->__set('time', time());
             }
 
             $message->save();
 
-            Telegram::sendMessage([
-                'chat_id' => '228519769',
-                'text' => json_encode($message)
-            ]);
+//            Telegram::sendMessage([
+//                'chat_id' => '228519769',
+//                'text' => json_encode($message)
+//            ]);
 
         }
 

@@ -12,6 +12,7 @@ class Message extends Model {
 
     protected $id;
     protected $talkId;
+    protected $chatId;
     protected $time;
 
 }
