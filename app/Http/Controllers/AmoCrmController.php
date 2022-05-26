@@ -62,13 +62,13 @@ class AmoCrmController extends Controller {
 
             if($message = Message::where('chatId', $chatId)->first()) {
                 $time = time() - 5;
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => "{$time} > {$message['time']}"
-                ]);
 
                 if(time() - 5 > $message['time']) {
-                    $this->closeTalk($talkId);
+                    $close = $this->closeTalk($talkId);
+                    Telegram::sendMessage([
+                        'chat_id' => '228519769',
+                        'text' => json_encode($close)
+                    ]);
                     $message->delete();
                 }
 //                $message->__set('timeUpdate', time());
