@@ -41,10 +41,14 @@ class AmoCrmController extends Controller {
     }
 
     public function updateChat(Request $request) {
-            Telegram::sendMessage([
-                'chat_id' => '228519769',
-                'text' => json_encode($request->all())
-            ]);
+
+        if($request->has('talk') && isset($request->input('talk')['update'])) {
+            $chatId = $request->input('talk')['update'][0]['chat_id'];
+
+            if($message = Message::where('chatId', $chatId)->first()) {
+                $message->__set('timeUpdate', time());
+            }
+        }
 
         return "Ok";
     }
