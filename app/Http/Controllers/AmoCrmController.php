@@ -35,7 +35,7 @@ class AmoCrmController extends Controller {
     public function incoming(Request $request) {
 
         if($request->has('message') && isset($request->input('message')['add'])) {
-            $chatId = $request->input('message')['add']['chat_id'];
+            $chatId = $request->input('message')['add'][0]['chat_id'];
 
             if($message = Message::where('talkId', $chatId)->first()) {
                 $message->__set('time', time());
