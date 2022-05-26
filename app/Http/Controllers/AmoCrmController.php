@@ -33,18 +33,25 @@ class AmoCrmController extends Controller {
     }
 
     public function getOutgoingMessages() {
-        $chats = Message::where('timeUpdate', '>', 0)->get();
+        $chats = Message::all();
 
-        $array = [];
         foreach($chats as $chat) {
             if($chat['timeUpdate'] - 5 > $chat['time']) {
-                $array[] = $chat;
+                // Значит было именно исходящее
+                $this->closeTalk($chat['talkId']);
             } else {
-                $chat->delete();
+                // Значит исходящего не было
             }
+            $chat->delete();
         }
 
-        return $array;
+        return "Ok";
+    }
+
+    public function closeTalk($talkId) {
+        return $this->amoPost("/talks/{$talkId}/close", [
+            "force_close" => true
+        ]);
     }
 
     public function updateChat(Request $request) {
@@ -54,8 +61,12 @@ class AmoCrmController extends Controller {
             $talkId = $request->input('talk')['update'][0]['talk_id'];
 
             if($message = Message::where('chatId', $chatId)->first()) {
-                $message->__set('timeUpdate', time());
-                $message->save();
+                if(time() - 5 > $message['time']) {
+                    $this->closeTalk($message['talkId']);
+                    $message->delete();
+                }
+//                $message->__set('timeUpdate', time());
+//                $message->save();
             }
         }
 
