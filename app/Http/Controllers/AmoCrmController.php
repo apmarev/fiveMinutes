@@ -61,9 +61,9 @@ class AmoCrmController extends Controller {
             $talkId = $request->input('talk')['update'][0]['talk_id'];
 
             if($message = Message::where('chatId', $chatId)->first()) {
-                $time = time() - 5;
+                $time = time() - 2;
 
-                if(time() - 5 > $message['time']) {
+                if($time > $message['time']) {
                     $close = $this->closeTalk($talkId);
                     $message->delete();
                 }
@@ -803,6 +803,6 @@ class AmoCrmController extends Controller {
     }
 
     public function test() {
-        return $this->closeTalk(93570);
+        return $this->closeTalk(93718);
     }
 }
