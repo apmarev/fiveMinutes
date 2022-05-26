@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('talkId');
             $table->string('chatId');
             $table->integer('time');
+            $table->integer('timeUpdate')->default(0);
             $table->timestamps();
         });
     }

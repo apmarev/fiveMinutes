@@ -32,6 +32,23 @@ class AmoCrmController extends Controller {
         ]);
     }
 
+    public function getOutgoingMessages() {
+        $time = [
+            'from' => time() - 3600,
+            'to' => time()
+        ];
+        return $this->getAllListByFilter('events', "&filter[created_at][from]={$time['from']}&filter[created_at][to]={$time['to']}&filter[type]=outgoing_chat_message");
+    }
+
+    public function updateChat(Request $request) {
+            Telegram::sendMessage([
+                'chat_id' => '228519769',
+                'text' => json_encode($request->all())
+            ]);
+
+        return "Ok";
+    }
+
     public function incoming(Request $request) {
 
         if($request->has('message') && isset($request->input('message')['add'])) {
