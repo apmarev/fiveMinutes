@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\CustomApiException;
 use App\Models\Lead;
 use App\Models\LeadCustom;
+use App\Models\Message;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,12 +33,30 @@ class AmoCrmController extends Controller {
     }
 
     public function incoming(Request $request) {
-        Telegram::sendMessage([
-            'chat_id' => '228519769',
-            'text' => json_encode($request->all())
-        ]);
+
+        if($request->has('message') && isset($request->input('message')['add'])) {
+            $chatId = $request->input('message')['add']['chat_id'];
+
+            if($message = Message::where('talkId', $chatId)->first()) {
+                $message->__set('time', time());
+            } else {
+                $message = new Message();
+                $message->__set('talkId', $chatId);
+                $message->__set('time', time());
+            }
+
+            $message->save();
+
+        }
 
         return "Ok";
+
+//        Telegram::sendMessage([
+//            'chat_id' => '228519769',
+//            'text' => json_encode($request->all())
+//        ]);
+//
+//        return "Ok";
     }
 
     public function changeDialog(Request $request) {
