@@ -17,5 +17,7 @@ Route::get('/amo/leads', [AmoCrmController::class, 'getAndSetLeads']);
 
 Route::get('/amo/start', [AmoCrmController::class, 'start']);
 
-Route::get('/amo/test', [AmoCrmController::class, 'test']);
+Route::get('/report/get', [AmoCrmController::class, 'getToDesktop']);
+Route::post('/report/weekend', [AmoCrmController::class, 'setOrRemoveWeekend']);
+Route::post('/report/plan', [AmoCrmController::class, 'setPlan']);
 

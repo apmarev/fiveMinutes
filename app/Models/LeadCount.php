@@ -5,14 +5,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class User extends Model {
+class LeadCount extends Model {
     use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'leads_count';
 
     protected $id;
     protected $userId;
-    protected $name;
+    protected $pipelineId;
 
-    protected $fillable = ['userId', 'name'];
 }

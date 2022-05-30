@@ -1,5 +1,62 @@
 <x-layout :footer="$footer" :pipeline="$pipeline">
 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+{{--                <div class="container-fluid">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-6 green">--}}
+{{--                            Общее--}}
+{{--                        </div>--}}
+{{--                        <div class="col-6 green">--}}
+{{--                            Итог за месяц--}}
+{{--                        </div>--}}
+{{--                        @foreach($top['one'] as $el)--}}
+{{--                            <div class="col-6">--}}
+{{--                                {{ $el['title'] }}--}}
+{{--                            </div>--}}
+{{--                            <div class="col-6">--}}
+{{--                                {{ $el['value'] }}--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
+{{--                <div class="container-fluid">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-6 green">--}}
+{{--                            Общая выручка--}}
+{{--                        </div>--}}
+{{--                        <div class="col-6 green">--}}
+{{--                            Итог за месяц--}}
+{{--                        </div>--}}
+{{--                        @foreach($top['two']['count'] as $el)--}}
+{{--                            <div class="col-6">--}}
+{{--                                {{ $el['title'] }}--}}
+{{--                            </div>--}}
+{{--                            <div class="col-6">--}}
+{{--                                {{ $el['value'] }}--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
+                @foreach($managers as $manager)
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 green">
+                                {{ $manager['name'] }}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="col-6 scrolling">
+
+            </div>
+        </div>
+    </div>
+
 
     @foreach($managers as $manager)
         <div class="container-fluid manager">

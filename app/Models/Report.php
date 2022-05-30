@@ -32,6 +32,7 @@ class Report extends Model {
     protected $countPricePackage;
     protected $countMonth;
     protected $countPackage;
+    protected $countTen;
     protected $averageCheck;
     protected $conversion;
 

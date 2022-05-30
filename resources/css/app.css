@@ -27,3 +27,11 @@ div.titles span {
     min-width: 80px;
     min-height: 25px;
 }
+
+.scrolling {
+    overflow-x: auto;
+}
+
+.green {
+    background: #C8E6C9;
+}
