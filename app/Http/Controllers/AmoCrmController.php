@@ -1333,4 +1333,12 @@ class AmoCrmController extends Controller {
     public function test() {
         return $this->getAllListByFilter('events', "&filter[type]=");
     }
+
+    public function pactNewMessage(Request$request) {
+        Telegram::sendMessage([
+            'chat_id' => '228519769',
+            'text' => json_encode($request->all())
+        ]);
+        return "Ok";
+    }
 }

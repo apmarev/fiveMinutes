@@ -21,3 +21,5 @@ Route::get('/report/get', [AmoCrmController::class, 'getToDesktop']);
 Route::post('/report/weekend', [AmoCrmController::class, 'setOrRemoveWeekend']);
 Route::post('/report/plan', [AmoCrmController::class, 'setPlan']);
 
+
+Route::post('/hooks/pact/new', [AmoCrmController::class, 'pactNewMessage']);
