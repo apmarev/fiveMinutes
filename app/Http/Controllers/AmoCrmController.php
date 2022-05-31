@@ -1362,32 +1362,27 @@ class AmoCrmController extends Controller {
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
             $message = $request->input('data');
 
-            if(isset($message['income']) && $message['income'] > 0) {
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => "Входящее"
-                ]);
-            } else {
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => "Исходящее {$message['channel_type']} {$message['contact_id']}"
-                ]);
-            }
-
             if(
                 isset($message['income']) &&
-                !$message['income'] &&
                 isset($message['channel_type']) &&
                 $message['channel_type'] == 'vkontakte'
             ) {
-                $contact_id = $message['contact_id'];
-
-                if($el = Talks::where('companyId', $contact_id)->first()) {
+                if($message['income'] > 0) {
+                    // Входящее
+                } else {
                     Telegram::sendMessage([
                         'chat_id' => '228519769',
-                        'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
+                        'text' => json_encode($message)
                     ]);
-                    $el->delete();
+//                    $contact_id = $message['contact_id'];
+//
+//                    if($el = Talks::where('companyId', $contact_id)->first()) {
+//                        Telegram::sendMessage([
+//                            'chat_id' => '228519769',
+//                            'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
+//                        ]);
+//                        $el->delete();
+//                    }
                 }
             }
 
