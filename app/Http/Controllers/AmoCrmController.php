@@ -1353,7 +1353,7 @@ class AmoCrmController extends Controller {
                 if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
                     foreach($contact['custom_fields_values'] as $custom) {
                         if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
-                            $vk = intval($custom['values'][0]['value']);
+                            $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
                         }
                     }
                 }
