@@ -1362,15 +1362,9 @@ class AmoCrmController extends Controller {
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
             $message = $request->input('data');
 
-
-            Telegram::sendMessage([
-                'chat_id' => '228519769',
-                'text' => $message['income']
-            ]);
-
             if(
                 isset($message['income']) &&
-                $message['income'] == true &&
+                $message['income'] == 0 &&
                 isset($message['channel_type']) &&
                 $message['channel_type'] == 'vkontakte'
             ) {
