@@ -1377,6 +1377,11 @@ class AmoCrmController extends Controller {
                     $el->__set('vk', $vk);
                     $el->__set('talkId', $talk['add'][0]['talk_id']);
                     $el->save();
+                } else {
+                    Telegram::sendMessage([
+                        'chat_id' => '228519769',
+                        'text' => "У контакта {$companyId} нет vkid"
+                    ]);
                 }
 
             }
