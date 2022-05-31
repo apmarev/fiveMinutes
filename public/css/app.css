@@ -1,0 +1,38 @@
+.header-control {
+    background: #f5f5f9;
+    padding: 15px 30px;
+}
+
+.manager {
+    margin-bottom: 20px;
+}
+
+.manager .manager-title {
+    background: #C8E6C9;
+}
+div.titles {
+    font-size: 12px;
+}
+
+div.titles span {
+    display: block;
+}
+
+.listing {
+    display: flex;
+    overflow-x: auto;
+}
+
+.number-report {
+    min-width: 80px;
+    min-height: 25px;
+}
+
+.scrolling {
+    overflow-x: auto;
+}
+
+.green {
+    background: #C8E6C9;
+}
+
