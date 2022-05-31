@@ -1426,12 +1426,8 @@ class AmoCrmController extends Controller {
 
     public function vk(Request $request) {
         $object = $request->input('object');
-        Telegram::sendMessage([
-            'chat_id' => '228519769',
-            'text' => json_encode($object)
-        ]);
-        if($request->has('object')) {
-            if($el = Talks::where('vk', $request->input('peer_id'))->first()) {
+        if(isset($object['peer_id'])) {
+            if($el = Talks::where('vk', $object['peer_id'])->first()) {
                 $this->closeTalk($el['talkId']);
                 Telegram::sendMessage([
                     'chat_id' => '228519769',
