@@ -1346,26 +1346,28 @@ class AmoCrmController extends Controller {
 
                 $companyId = $talk['add'][0]['contact_id'];
 
-                $vk = 0;
 
-                $contact = $this->getContactVkId($companyId);
-
-                if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
-                    foreach($contact['custom_fields_values'] as $custom) {
-                        if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
-                            $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
-                        }
-                    }
-                }
 
                 if($el = Talks::where('companyId', $companyId)->first()) {
 
                 } else {
+                    $vk = 0;
+
+                    $contact = $this->getContactVkId($companyId);
+
+                    if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
+                        foreach($contact['custom_fields_values'] as $custom) {
+                            if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
+                                $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
+                            }
+                        }
+                    }
+
                     $el = new Talks();
                     $el->__set('companyId', $talk['add'][0]['contact_id']);
+                    $el->__set('vk', $vk);
                 }
 
-                $el->__set('vk', $vk);
                 $el->__set('talkId', $talk['add'][0]['talk_id']);
                 $el->save();
 
