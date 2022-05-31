@@ -1358,30 +1358,40 @@ class AmoCrmController extends Controller {
                     }
                 }
 
-                if($vk > 0) {
-                    if($el = Talks::where('companyId', $companyId)->first()) {
+                if($el = Talks::where('companyId', $companyId)->first()) {
 
-                    } else {
-                        $el = new Talks();
-                        $el->__set('companyId', $talk['add'][0]['contact_id']);
-                    }
-
-                    $el->__set('vk', $vk);
-                    $el->__set('talkId', $talk['add'][0]['talk_id']);
-                    $el->save();
                 } else {
-                    Telegram::sendMessage([
-                        'chat_id' => '228519769',
-                        'text' => "У контакта {$companyId} нет vkid"
-                    ]);
+                    $el = new Talks();
+                    $el->__set('companyId', $talk['add'][0]['contact_id']);
                 }
 
+                $el->__set('vk', $vk);
+                $el->__set('talkId', $talk['add'][0]['talk_id']);
+                $el->save();
+
             }
-        } else {
-            Telegram::sendMessage([
-                'chat_id' => '228519769',
-                'text' => json_encode($request->all())
-            ]);
+        } else if($request->has('contacts')) {
+            $contact = $request->input('contacts');
+            if(isset($contact['update']) && isset($contact['update'][0]) && isset($contact['update'][0]['custom_fields'])) {
+
+                if(Talks::where('companyId', $contact['update'][0]['id'])->first()) {
+                    foreach($contact['update'][0]['custom_fields'] as $c) {
+                        if($c['id'] == 708615) {
+                            $vk = intval(preg_replace("/[^,.0-9]/", '', $c['values'][0]['value']));
+                            $el = Talks::where('companyId', $contact['update'][0]['id'])->first();
+                            $el->__set('vk', $vk);
+                            $el->save();
+
+                            Telegram::sendMessage([
+                                'chat_id' => '228519769',
+                                'text' => "Обновили в строке {$el['id']}"
+                            ]);
+                            break;
+                        }
+                    }
+                }
+            }
+
         }
 
         return "Ok";
