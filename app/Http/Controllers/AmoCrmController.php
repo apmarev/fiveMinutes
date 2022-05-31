@@ -1349,6 +1349,7 @@ class AmoCrmController extends Controller {
                 $vk = 0;
 
                 $contact = $this->getContactVkId($companyId);
+                $contact = $this->getIsSetList($contact, 'contacts');
                 foreach($this->getIsSetListCustomFields($contact) as $customs) {
                     if($customs['field_id'] == 708615 && $customs['values'][0]['value'] !== '') {
                         $vk = intval($customs['values'][0]['value']);
