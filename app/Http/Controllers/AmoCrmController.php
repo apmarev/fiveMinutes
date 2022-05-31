@@ -1357,6 +1357,12 @@ class AmoCrmController extends Controller {
         return "Ok";
     }
 
+    protected function getPactConversationsById($id) {
+        return Http::withHeaders([
+            'X-Private-Api-Token' => '6508a1ce76aa7593ba53b55cdba7647e9f58748439c29eb11669eaa525f9e680f1f7b1e93f09e6b79cad9238c2055c25f4d912f3209de95bab1b2df5dfbe026c',
+        ])->get("https://api.pact.im/p1/companies/60531/conversations/{$id}");
+    }
+
     public function pactNewMessage(Request $request) {
 
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
@@ -1370,9 +1376,11 @@ class AmoCrmController extends Controller {
                 if($message['income'] > 0) {
                     // Входящее
                 } else {
+                    $con = $this->getPactConversationsById($message['conversation_id']);
+
                     Telegram::sendMessage([
                         'chat_id' => '228519769',
-                        'text' => $message['conversation_id']
+                        'text' => json_encode($con)
                     ]);
 //                    $contact_id = $message['contact_id'];
 //
