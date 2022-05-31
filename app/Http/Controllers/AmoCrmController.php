@@ -1379,22 +1379,20 @@ class AmoCrmController extends Controller {
                     $con = $this->getPactConversationsById($message['conversation_id']);
 
                     if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
+                        $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
 
-                        Telegram::sendMessage([
-                            'chat_id' => '228519769',
-                            'text' => "AMO = {$con['data']['conversation']['contacts'][0]['amocrm_contact_id']}"
-                        ]);
+                        if($el = Talks::where('companyId', $contact_id)->first()) {
+                            Telegram::sendMessage([
+                                'chat_id' => '228519769',
+                                'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
+                            ]);
+                            $el->delete();
+                        }
                     }
 
 //                    $contact_id = $message['contact_id'];
 //
-//                    if($el = Talks::where('companyId', $contact_id)->first()) {
-//                        Telegram::sendMessage([
-//                            'chat_id' => '228519769',
-//                            'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
-//                        ]);
-//                        $el->delete();
-//                    }
+
                 }
             }
 
