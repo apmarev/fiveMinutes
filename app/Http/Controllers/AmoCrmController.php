@@ -1358,21 +1358,27 @@ class AmoCrmController extends Controller {
     }
 
     public function pactNewMessage(Request $request) {
-        if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'conversation') {
-
-//            if(isset($request->input('data')['event']) && $request->input('data')['event'] == 'new') {
-//                Telegram::sendMessage([
-//                    'chat_id' => '228519769',
-//                    'text' => json_encode($request->input('data'))
-//                ]);
-//            }
-        }
 
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
-//            Telegram::sendMessage([
-//                'chat_id' => '228519769',
-//                'text' => json_encode($request->input('data'))
-//            ]);
+            $message = $request->input('data');
+
+            if(
+                isset($message['income']) &&
+                $message['income'] == true &&
+                isset($message['channel_type']) &&
+                $message['channel_type'] == 'vkontakte'
+            ) {
+                $contact_id = $message['contact_id'];
+
+                if($el = Talks::where('companyId', $contact_id)->first()) {
+                    Telegram::sendMessage([
+                        'chat_id' => '228519769',
+                        'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
+                    ]);
+                    $el->delete();
+                }
+            }
+
         }
 
         return "Ok";
