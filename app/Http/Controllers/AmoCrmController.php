@@ -1455,6 +1455,6 @@ class AmoCrmController extends Controller {
         }
 
 
-        return "2c3eb6a6";
+        return "ok";
     }
 }
