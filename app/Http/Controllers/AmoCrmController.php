@@ -1411,8 +1411,8 @@ class AmoCrmController extends Controller {
 
                         if($el = Talks::where('companyId', $contact_id)->first()) {
 
-                            $this->closeTalk($el['talkId']);
-                            $el->delete();
+//                            $this->closeTalk($el['talkId']);
+//                            $el->delete();
                         }
                     }
 
