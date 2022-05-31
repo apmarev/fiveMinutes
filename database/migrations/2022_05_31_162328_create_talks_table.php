@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('companyId');
             $table->integer('talkId');
+            $table->integer('vk');
             $table->timestamps();
         });
     }

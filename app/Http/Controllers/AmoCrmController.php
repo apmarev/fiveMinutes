@@ -1358,6 +1358,7 @@ class AmoCrmController extends Controller {
                     $el->__set('companyId', $talk['add'][0]['contact_id']);
                 }
 
+                $el->__set('vk', 0);
                 $el->__set('talkId', $talk['add'][0]['talk_id']);
                 $el->save();
             }

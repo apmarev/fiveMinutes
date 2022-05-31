@@ -13,4 +13,5 @@ class Talks extends Model {
     protected $id;
     protected $contactId;
     protected $talkId;
+    protected $vk;
 }
