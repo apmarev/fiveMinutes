@@ -1403,10 +1403,10 @@ class AmoCrmController extends Controller {
     }
 
     public function vk(Request $request) {
-        Telegram::sendMessage([
-            'chat_id' => '228519769',
-            'text' => json_encode($request->all())
-        ]);
+//        Telegram::sendMessage([
+//            'chat_id' => '228519769',
+//            'text' => json_encode($request->all())
+//        ]);
 
         return "2c3eb6a6";
     }
