@@ -9,6 +9,7 @@ use App\Models\LeadCustom;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\ReportCustom;
+use App\Models\Talks;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1335,10 +1336,17 @@ class AmoCrmController extends Controller {
     }
 
     public function newTalk(Request $request) {
-        Telegram::sendMessage([
-            'chat_id' => '228519769',
-            'text' => json_encode($request->all())
-        ]);
+        if($request->has('talk')) {
+            $talk = $request->input('talk');
+            if(isset($talk['add']) && is_array($talk['add']) && sizeof($talk['add']) > 0 && isset($talk['add'][0]['origin']) && $talk['add'][0]['origin'] == "pact.vkgroup") {
+                $el = new Talks();
+                $el->__set('companyId', $talk['add'][0]['contact_id']);
+                $el->__set('talkId', $talk['add'][0]['talk_id']);
+                $el->save();
+            }
+        }
+
+        return "Ok";
     }
 
     public function pactNewMessage(Request $request) {
