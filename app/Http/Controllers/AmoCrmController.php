@@ -1346,21 +1346,33 @@ class AmoCrmController extends Controller {
 
                 $companyId = $talk['add'][0]['contact_id'];
 
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => json_encode($this->getContactVkId($companyId)),
-                ]);
+                $vk = 0;
 
-                if($el = Talks::where('companyId', $companyId)->first()) {
-
-                } else {
-                    $el = new Talks();
-                    $el->__set('companyId', $talk['add'][0]['contact_id']);
+                $contact = $this->getContactVkId($companyId);
+                foreach($this->getIsSetListCustomFields($contact) as $customs) {
+                    if($customs['field_id'] == 708615 && $customs['values'][0]['value'] !== '') {
+                        $vk = intval($customs['values'][0]['value']);
+                    }
                 }
 
-                $el->__set('vk', 0);
-                $el->__set('talkId', $talk['add'][0]['talk_id']);
-                $el->save();
+                Telegram::sendMessage([
+                    'chat_id' => '228519769',
+                    'text' => $vk,
+                ]);
+
+                if($vk > 0) {
+                    if($el = Talks::where('companyId', $companyId)->first()) {
+
+                    } else {
+                        $el = new Talks();
+                        $el->__set('companyId', $talk['add'][0]['contact_id']);
+                    }
+
+                    $el->__set('vk', $vk);
+                    $el->__set('talkId', $talk['add'][0]['talk_id']);
+                    $el->save();
+                }
+
             }
         }
 
