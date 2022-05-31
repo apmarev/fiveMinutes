@@ -24,3 +24,5 @@ Route::post('/report/plan', [AmoCrmController::class, 'setPlan']);
 Route::post('/hooks/amo/dialog/new', [AmoCrmController::class, 'newTalk']);
 Route::post('/hooks/pact/new', [AmoCrmController::class, 'pactNewMessage']);
 Route::post('/hooks/vk', [AmoCrmController::class, 'vk']);
+
+Route::post('/test', [AmoCrmController::class, 'vk']);

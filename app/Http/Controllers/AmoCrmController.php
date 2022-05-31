@@ -1348,7 +1348,7 @@ class AmoCrmController extends Controller {
 
                 Telegram::sendMessage([
                     'chat_id' => '228519769',
-                    'text' => $this->getContactVkId($companyId),
+                    'text' => json_encode($this->getContactVkId($companyId)),
                 ]);
 
                 if($el = Talks::where('companyId', $companyId)->first()) {
@@ -1410,6 +1410,12 @@ class AmoCrmController extends Controller {
     }
 
     public function vk(Request $request) {
+        if($request->has('peer_id')) {
+            if($el = Talks::where('vk', $request->input('peer_id'))->first()) {
+                $this->closeTalk($el['talkId']);
+                $el->delete();
+            }
+        }
 //        Telegram::sendMessage([
 //            'chat_id' => '228519769',
 //            'text' => json_encode($request->all())
