@@ -1358,14 +1358,6 @@ class AmoCrmController extends Controller {
                     }
                 }
 
-//                $contact = $this->getIsSetList($contact, 'contacts');
-//                foreach($this->getIsSetListCustomFields($contact) as $customs) {
-//                    if($customs['field_id'] == 708615 && $customs['values'][0]['value'] !== '') {
-//                        $vk = intval($customs['values'][0]['value']);
-//                    }
-//                }
-
-
                 if($vk > 0) {
                     if($el = Talks::where('companyId', $companyId)->first()) {
 
@@ -1433,6 +1425,10 @@ class AmoCrmController extends Controller {
     }
 
     public function vk(Request $request) {
+        Telegram::sendMessage([
+            'chat_id' => '228519769',
+            'text' => $request->input('peer_id')
+        ]);
         if($request->has('peer_id')) {
             if($el = Talks::where('vk', $request->input('peer_id'))->first()) {
                 $this->closeTalk($el['talkId']);
