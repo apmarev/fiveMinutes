@@ -1386,6 +1386,7 @@ class AmoCrmController extends Controller {
                                 'chat_id' => '228519769',
                                 'text' => "Закрываем у конакта {$contact_id} беседу {$el['talkId']}"
                             ]);
+                            $this->closeTalk($el['talkId']);
                             $el->delete();
                         }
                     }
