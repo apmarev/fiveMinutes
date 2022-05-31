@@ -1349,6 +1349,15 @@ class AmoCrmController extends Controller {
                 $vk = 0;
 
                 $contact = $this->getContactVkId($companyId);
+
+                if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
+                    foreach($contact['custom_fields_values'] as $custom) {
+                        if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
+                            $vk = intval($custom['values'][0]['value']);
+                        }
+                    }
+                }
+
 //                $contact = $this->getIsSetList($contact, 'contacts');
 //                foreach($this->getIsSetListCustomFields($contact) as $customs) {
 //                    if($customs['field_id'] == 708615 && $customs['values'][0]['value'] !== '') {
@@ -1358,7 +1367,12 @@ class AmoCrmController extends Controller {
 
                 Telegram::sendMessage([
                     'chat_id' => '228519769',
-                    'text' => json_encode($contact),
+                    'text' => json_encode($contact['custom_fields_values']),
+                ]);
+
+                Telegram::sendMessage([
+                    'chat_id' => '228519769',
+                    'text' => $vk,
                 ]);
 
                 if($vk > 0) {
