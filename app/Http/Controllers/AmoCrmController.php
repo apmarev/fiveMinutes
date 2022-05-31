@@ -1378,10 +1378,14 @@ class AmoCrmController extends Controller {
                 } else {
                     $con = $this->getPactConversationsById($message['conversation_id']);
 
-                    Telegram::sendMessage([
-                        'chat_id' => '228519769',
-                        'text' => json_encode($con)
-                    ]);
+                    if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
+
+                        Telegram::sendMessage([
+                            'chat_id' => '228519769',
+                            'text' => "AMO = {$con['data']['conversation']['contacts'][0]['amocrm_contact_id']}"
+                        ]);
+                    }
+
 //                    $contact_id = $message['contact_id'];
 //
 //                    if($el = Talks::where('companyId', $contact_id)->first()) {
