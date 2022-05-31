@@ -1372,7 +1372,7 @@ class AmoCrmController extends Controller {
 
                 Telegram::sendMessage([
                     'chat_id' => '228519769',
-                    'text' => $vk,
+                    'text' => $vk . ' ' . $contact['id'],
                 ]);
 
                 if($vk > 0) {
