@@ -1364,7 +1364,7 @@ class AmoCrmController extends Controller {
 
             if(
                 isset($message['income']) &&
-                !$message['income'] > 0 &&
+                !$message['income'] &&
                 isset($message['channel_type']) &&
                 $message['channel_type'] == 'vkontakte'
             ) {
