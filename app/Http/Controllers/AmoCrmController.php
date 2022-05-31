@@ -1335,6 +1335,10 @@ class AmoCrmController extends Controller {
         return $this->getAllListByFilter('events', "&filter[type]=");
     }
 
+    public function getContactVkId($contactId) {
+        return $this->amoGet("/contacts/{$contactId}");
+    }
+
     public function newTalk(Request $request) {
         if($request->has('talk')) {
             $talk = $request->input('talk');
@@ -1344,7 +1348,7 @@ class AmoCrmController extends Controller {
 
                 Telegram::sendMessage([
                     'chat_id' => '228519769',
-                    'text' => json_encode($talk['add'][0])
+                    'text' => $this->getContactVkId($companyId),
                 ]);
 
                 if($el = Talks::where('companyId', $companyId)->first()) {
