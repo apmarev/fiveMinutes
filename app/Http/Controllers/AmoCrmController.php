@@ -1339,8 +1339,16 @@ class AmoCrmController extends Controller {
         if($request->has('talk')) {
             $talk = $request->input('talk');
             if(isset($talk['add']) && is_array($talk['add']) && sizeof($talk['add']) > 0 && isset($talk['add'][0]['origin']) && $talk['add'][0]['origin'] == "pact.vkgroup") {
-                $el = new Talks();
-                $el->__set('companyId', $talk['add'][0]['contact_id']);
+
+                $companyId = $talk['add'][0]['contact_id'];
+
+                if($el = Talks::where('companyId', $companyId)->first()) {
+
+                } else {
+                    $el = new Talks();
+                    $el->__set('companyId', $talk['add'][0]['contact_id']);
+                }
+
                 $el->__set('talkId', $talk['add'][0]['talk_id']);
                 $el->save();
             }
