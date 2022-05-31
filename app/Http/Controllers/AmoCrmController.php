@@ -1365,15 +1365,6 @@ class AmoCrmController extends Controller {
 //                    }
 //                }
 
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => json_encode($contact['custom_fields_values']),
-                ]);
-
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => $vk . ' ' . $contact['id'],
-                ]);
 
                 if($vk > 0) {
                     if($el = Talks::where('companyId', $companyId)->first()) {
@@ -1440,13 +1431,14 @@ class AmoCrmController extends Controller {
         if($request->has('peer_id')) {
             if($el = Talks::where('vk', $request->input('peer_id'))->first()) {
                 $this->closeTalk($el['talkId']);
+                Telegram::sendMessage([
+                    'chat_id' => '228519769',
+                    'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+                ]);
                 $el->delete();
             }
         }
-//        Telegram::sendMessage([
-//            'chat_id' => '228519769',
-//            'text' => json_encode($request->all())
-//        ]);
+
 
         return "2c3eb6a6";
     }
