@@ -1401,4 +1401,8 @@ class AmoCrmController extends Controller {
 
         return "Ok";
     }
+
+    public function vk() {
+        return "2c3eb6a6";
+    }
 }
