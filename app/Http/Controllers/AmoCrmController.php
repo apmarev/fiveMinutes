@@ -538,37 +538,37 @@ class AmoCrmController extends Controller {
         }
 
         $arrayDates = [
-            '01.05.2022',
-            '02.05.2022',
-            '03.05.2022',
-            '04.05.2022',
-            '05.05.2022',
-            '06.05.2022',
-            '07.05.2022',
-            '08.05.2022',
-            '09.05.2022',
-            '10.05.2022',
-            '11.05.2022',
-            '12.05.2022',
-            '13.05.2022',
-            '14.05.2022',
-            '15.05.2022',
-            '16.05.2022',
-            '17.05.2022',
-            '18.05.2022',
-            '19.05.2022',
-            '20.05.2022',
-            '21.05.2022',
-            '22.05.2022',
-            '23.05.2022',
-            '24.05.2022',
-            '25.05.2022',
-            '26.05.2022',
-            '27.05.2022',
-            '28.05.2022',
-            '29.05.2022',
-            '30.05.2022',
-            '31.05.2022',
+            '01.06.2022',
+//            '02.05.2022',
+//            '03.05.2022',
+//            '04.05.2022',
+//            '05.05.2022',
+//            '06.05.2022',
+//            '07.05.2022',
+//            '08.05.2022',
+//            '09.05.2022',
+//            '10.05.2022',
+//            '11.05.2022',
+//            '12.05.2022',
+//            '13.05.2022',
+//            '14.05.2022',
+//            '15.05.2022',
+//            '16.05.2022',
+//            '17.05.2022',
+//            '18.05.2022',
+//            '19.05.2022',
+//            '20.05.2022',
+//            '21.05.2022',
+//            '22.05.2022',
+//            '23.05.2022',
+//            '24.05.2022',
+//            '25.05.2022',
+//            '26.05.2022',
+//            '27.05.2022',
+//            '28.05.2022',
+//            '29.05.2022',
+//            '30.05.2022',
+//            '31.05.2022',
         ];
 
         $this->getAndSetUsers();
@@ -903,7 +903,7 @@ class AmoCrmController extends Controller {
                 $sum['sumPrice'] = $sum['countPriceMonth'] + $sum['countPricePackage'];
                 $sum['countBuy'] = $sum['countMonth'] + $sum['countPackage'];
                 $sum['averageCheck'] = $sum['countBuy'] > 0 ? round($sum['sumPrice'] / $sum['countBuy'], 1) : 0;
-                $sum['conversion'] = $sum['countBuy'] > 0 ? (round($sum['countBuy'] / $sum['all'], 1) * 100) : 0;
+                $sum['conversion'] = $sum['all'] > 0 ? (round($sum['countBuy'] / $sum['all'], 1) * 100) : 0;
             }
         }
 
@@ -1057,22 +1057,7 @@ class AmoCrmController extends Controller {
         return 0;
     }
 
-    public function getToDesktop(Request $request) {
-
-        if($request->has('pipeline'))
-            $pipelineId = $request->input('pipeline');
-        else
-            $pipelineId = 3493222;
-
-        if($request->has('month'))
-            $month = $request->input('month');
-        else
-            $month = date('m');
-
-        if($request->has('year'))
-            $year = $request->input('year');
-        else
-            $year = date('Y');
+    public function getToDesktop($pipeline, $month, $year) {
 
         $date = [$month, $year];
         unset($month);
@@ -1087,7 +1072,7 @@ class AmoCrmController extends Controller {
         self::getPlansByMonthAndYear($fromDate['month'], $fromDate['year']);
 
         $countDays = date('t', mktime(0, 0, 0, $date[0], 1, $date[1])); // Кол-во дней в месяце
-        $users = self::groupDaysToManagers(Report::where('month', $date[0])->where('year', $date[1]) ->where('pipelineId', $pipelineId)->get());
+        $users = self::groupDaysToManagers(Report::where('month', $date[0])->where('year', $date[1]) ->where('pipelineId', $pipeline)->get());
 
         $format = [];
         foreach($users as $user) {
@@ -1155,7 +1140,7 @@ class AmoCrmController extends Controller {
             'price' => $price,
             'list' => $arr,
             'vars' => self::getMonthAndYears(),
-            'pipeline' => $pipelineId
+            'pipeline' => $pipeline
         ];
 
         return $items;
