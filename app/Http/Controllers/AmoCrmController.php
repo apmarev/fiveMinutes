@@ -1370,10 +1370,10 @@ class AmoCrmController extends Controller {
                             $el->__set('vk', $vk);
                             $el->save();
 
-                            Telegram::sendMessage([
-                                'chat_id' => '228519769',
-                                'text' => "Обновили в строке {$el['id']}"
-                            ]);
+//                            Telegram::sendMessage([
+//                                'chat_id' => '228519769',
+//                                'text' => "Обновили в строке {$el['id']}"
+//                            ]);
                             break;
                         }
                     }
@@ -1437,10 +1437,10 @@ class AmoCrmController extends Controller {
         if(isset($object['peer_id'])) {
             if($el = Talks::where('vk', $object['peer_id'])->first()) {
                 $this->closeTalk($el['talkId']);
-                Telegram::sendMessage([
-                    'chat_id' => '228519769',
-                    'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
-                ]);
+//                Telegram::sendMessage([
+//                    'chat_id' => '228519769',
+//                    'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+//                ]);
                 $el->delete();
             }
         }
