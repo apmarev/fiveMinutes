@@ -23,6 +23,11 @@
         </form>
     </div>
 
+    <div class="router">
+        <button onclick="right()">Налево</button>
+        <button onclick="left()">Право</button>
+    </div>
+
     <div class="all-sum">
         <div class="container-fluid">
             <div class="row">
@@ -106,7 +111,7 @@
                 </div>
 
             </div>
-            <div class="col-9 listing">
+            <div class="col-9 listing" id="listing">
                 <div class="days">
                     @foreach($data['price'] as $el)
                         <div>
@@ -225,6 +230,26 @@
 
         function reloadPage() {
             window.location.href = '/?pipeline={{ $data['pipeline'] }}&year={{ $data['date']['year'] }}&month={{ $data['date']['month'] }}'
+        }
+
+        function right() {
+            const el = document.getElementById('listing')
+            const y = el.scrollLeft
+            console.log(y)
+            el.scrollTo({
+                behavior: "smooth",
+                left: y - 200
+            });
+        }
+
+        function left() {
+            const el = document.getElementById('listing')
+            const y = el.scrollLeft
+            console.log(y)
+            el.scrollTo({
+                behavior: "smooth",
+                left: y + 200
+            });
         }
     </script>
 

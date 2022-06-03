@@ -1396,31 +1396,36 @@ class AmoCrmController extends Controller {
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
             $message = $request->input('data');
 
-            if(
-                isset($message['income']) &&
-                isset($message['channel_type']) &&
-                $message['channel_type'] == 'vkontakte'
-            ) {
-                if($message['income'] > 0) {
-                    // Входящее
-                } else {
-                    $con = $this->getPactConversationsById($message['conversation_id']);
+            Telegram::sendMessage([
+                'chat_id' => '228519769',
+                'text' => json_encode($request->all())
+            ]);
 
-                    if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
-                        $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
-
-                        if($el = Talks::where('companyId', $contact_id)->first()) {
-
-//                            $this->closeTalk($el['talkId']);
-//                            $el->delete();
-                        }
-                    }
-
-//                    $contact_id = $message['contact_id'];
+//            if(
+//                isset($message['income']) &&
+//                isset($message['channel_type']) &&
+//                $message['channel_type'] == 'vkontakte'
+//            ) {
+//                if($message['income'] > 0) {
+//                    // Входящее
+//                } else {
+//                    $con = $this->getPactConversationsById($message['conversation_id']);
 //
-
-                }
-            }
+//                    if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
+//                        $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
+//
+//                        if($el = Talks::where('companyId', $contact_id)->first()) {
+//
+////                            $this->closeTalk($el['talkId']);
+////                            $el->delete();
+//                        }
+//                    }
+//
+////                    $contact_id = $message['contact_id'];
+////
+//
+//                }
+//            }
 
         }
 
