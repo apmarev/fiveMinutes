@@ -538,37 +538,39 @@ class AmoCrmController extends Controller {
         }
 
         $arrayDates = [
+            '01.05.2022',
+            '02.05.2022',
+            '03.05.2022',
+            '04.05.2022',
+            '05.05.2022',
+            '06.05.2022',
+            '07.05.2022',
+            '08.05.2022',
+            '09.05.2022',
+            '10.05.2022',
+            '11.05.2022',
+            '12.05.2022',
+            '13.05.2022',
+            '14.05.2022',
+            '15.05.2022',
+            '16.05.2022',
+            '17.05.2022',
+            '18.05.2022',
+            '19.05.2022',
+            '20.05.2022',
+            '21.05.2022',
+            '22.05.2022',
+            '23.05.2022',
+            '24.05.2022',
+            '25.05.2022',
+            '26.05.2022',
+            '27.05.2022',
+            '28.05.2022',
+            '29.05.2022',
+            '30.05.2022',
+            '31.05.2022',
             '01.06.2022',
-//            '02.05.2022',
-//            '03.05.2022',
-//            '04.05.2022',
-//            '05.05.2022',
-//            '06.05.2022',
-//            '07.05.2022',
-//            '08.05.2022',
-//            '09.05.2022',
-//            '10.05.2022',
-//            '11.05.2022',
-//            '12.05.2022',
-//            '13.05.2022',
-//            '14.05.2022',
-//            '15.05.2022',
-//            '16.05.2022',
-//            '17.05.2022',
-//            '18.05.2022',
-//            '19.05.2022',
-//            '20.05.2022',
-//            '21.05.2022',
-//            '22.05.2022',
-//            '23.05.2022',
-//            '24.05.2022',
-//            '25.05.2022',
-//            '26.05.2022',
-//            '27.05.2022',
-//            '28.05.2022',
-//            '29.05.2022',
-//            '30.05.2022',
-//            '31.05.2022',
+            '02.06.2022',
         ];
 
         $this->getAndSetUsers();
@@ -1334,26 +1336,27 @@ class AmoCrmController extends Controller {
 
 
 
-                if($el = Talks::where('companyId', $companyId)->first()) {
+//                if($el = Talks::where('companyId', $companyId)->first()) {
+//
+//                } else {
+////                    $vk = 0;
+////
+////                    $contact = $this->getContactVkId($companyId);
+////
+////                    if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
+////                        foreach($contact['custom_fields_values'] as $custom) {
+////                            if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
+////                                $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
+////                            }
+////                        }
+////                    }
+//
+//
+//                }
 
-                } else {
-                    $vk = 0;
-
-                    $contact = $this->getContactVkId($companyId);
-
-                    if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
-                        foreach($contact['custom_fields_values'] as $custom) {
-                            if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
-                                $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
-                            }
-                        }
-                    }
-
-                    $el = new Talks();
-                    $el->__set('companyId', $talk['add'][0]['contact_id']);
-                    $el->__set('vk', $vk);
-                }
-
+                $el = new Talks();
+                $el->__set('companyId', $talk['add'][0]['contact_id']);
+                $el->__set('vk', 0);
                 $el->__set('talkId', $talk['add'][0]['talk_id']);
                 $el->save();
 
@@ -1396,11 +1399,6 @@ class AmoCrmController extends Controller {
         if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
             $message = $request->input('data');
 
-//            Telegram::sendMessage([
-//                'chat_id' => '228519769',
-//                'text' => json_encode($request->all())
-//            ]);
-
             if(
                 isset($message['income']) &&
                 isset($message['channel_type']) &&
@@ -1415,10 +1413,16 @@ class AmoCrmController extends Controller {
                         $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
 
                         if($el = Talks::where('companyId', $contact_id)->first()) {
+
                             Telegram::sendMessage([
                                 'chat_id' => '228519769',
-                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']} " . json_encode($request->all())
                             ]);
+
+//                            Telegram::sendMessage([
+//                                'chat_id' => '228519769',
+//                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+//                            ]);
                             $this->closeTalk($el['talkId']);
                             $el->delete();
                         }
