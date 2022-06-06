@@ -1328,62 +1328,62 @@ class AmoCrmController extends Controller {
     }
 
     public function newTalk(Request $request) {
-        if($request->has('talk')) {
-            $talk = $request->input('talk');
-            if(isset($talk['add']) && is_array($talk['add']) && sizeof($talk['add']) > 0 && isset($talk['add'][0]['origin']) && $talk['add'][0]['origin'] == "pact.vkgroup") {
-
-                $companyId = $talk['add'][0]['contact_id'];
-
-
-
-//                if($el = Talks::where('companyId', $companyId)->first()) {
+//        if($request->has('talk')) {
+//            $talk = $request->input('talk');
+//            if(isset($talk['add']) && is_array($talk['add']) && sizeof($talk['add']) > 0 && isset($talk['add'][0]['origin']) && $talk['add'][0]['origin'] == "pact.vkgroup") {
 //
-//                } else {
-////                    $vk = 0;
+//                $companyId = $talk['add'][0]['contact_id'];
+//
+//
+//
+////                if($el = Talks::where('companyId', $companyId)->first()) {
 ////
-////                    $contact = $this->getContactVkId($companyId);
+////                } else {
+//////                    $vk = 0;
+//////
+//////                    $contact = $this->getContactVkId($companyId);
+//////
+//////                    if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
+//////                        foreach($contact['custom_fields_values'] as $custom) {
+//////                            if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
+//////                                $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
+//////                            }
+//////                        }
+//////                    }
 ////
-////                    if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values']) && sizeof($contact['custom_fields_values']) > 0) {
-////                        foreach($contact['custom_fields_values'] as $custom) {
-////                            if($custom['field_id'] == 708615 && $custom['values'][0]['value'] !== '') {
-////                                $vk = intval(preg_replace("/[^,.0-9]/", '', $custom['values'][0]['value']));
-////                            }
-////                        }
-////                    }
+////
+////                }
 //
+//                $el = new Talks();
+//                $el->__set('companyId', $talk['add'][0]['contact_id']);
+//                $el->__set('vk', 0);
+//                $el->__set('talkId', $talk['add'][0]['talk_id']);
+//                $el->save();
 //
+//            }
+//        } else if($request->has('contacts')) {
+//            $contact = $request->input('contacts');
+//            if(isset($contact['update']) && isset($contact['update'][0]) && isset($contact['update'][0]['custom_fields'])) {
+//
+//                if(Talks::where('companyId', $contact['update'][0]['id'])->first()) {
+//                    foreach($contact['update'][0]['custom_fields'] as $c) {
+//                        if($c['id'] == 708615) {
+//                            $vk = intval(preg_replace("/[^,.0-9]/", '', $c['values'][0]['value']));
+//                            $el = Talks::where('companyId', $contact['update'][0]['id'])->first();
+//                            $el->__set('vk', $vk);
+//                            $el->save();
+//
+////                            Telegram::sendMessage([
+////                                'chat_id' => '228519769',
+////                                'text' => "Обновили в строке {$el['id']}"
+////                            ]);
+//                            break;
+//                        }
+//                    }
 //                }
-
-                $el = new Talks();
-                $el->__set('companyId', $talk['add'][0]['contact_id']);
-                $el->__set('vk', 0);
-                $el->__set('talkId', $talk['add'][0]['talk_id']);
-                $el->save();
-
-            }
-        } else if($request->has('contacts')) {
-            $contact = $request->input('contacts');
-            if(isset($contact['update']) && isset($contact['update'][0]) && isset($contact['update'][0]['custom_fields'])) {
-
-                if(Talks::where('companyId', $contact['update'][0]['id'])->first()) {
-                    foreach($contact['update'][0]['custom_fields'] as $c) {
-                        if($c['id'] == 708615) {
-                            $vk = intval(preg_replace("/[^,.0-9]/", '', $c['values'][0]['value']));
-                            $el = Talks::where('companyId', $contact['update'][0]['id'])->first();
-                            $el->__set('vk', $vk);
-                            $el->save();
-
-//                            Telegram::sendMessage([
-//                                'chat_id' => '228519769',
-//                                'text' => "Обновили в строке {$el['id']}"
-//                            ]);
-                            break;
-                        }
-                    }
-                }
-            }
-
-        }
+//            }
+//
+//        }
 
         return "Ok";
     }
@@ -1396,45 +1396,45 @@ class AmoCrmController extends Controller {
 
     public function pactNewMessage(Request $request) {
 
-        if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
-            $message = $request->input('data');
-
-            if(
-                isset($message['income']) &&
-                isset($message['channel_type']) &&
-                $message['channel_type'] == 'vkontakte'
-            ) {
-                if($message['income'] > 0) {
-                    // Входящее
-                } else {
-                    $con = $this->getPactConversationsById($message['conversation_id']);
-
-                    if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
-                        $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
-
-                        if($el = Talks::where('companyId', $contact_id)->first()) {
-
-                            Telegram::sendMessage([
-                                'chat_id' => '228519769',
-                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']} " . json_encode($request->all())
-                            ]);
-
+//        if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
+//            $message = $request->input('data');
+//
+//            if(
+//                isset($message['income']) &&
+//                isset($message['channel_type']) &&
+//                $message['channel_type'] == 'vkontakte'
+//            ) {
+//                if($message['income'] > 0) {
+//                    // Входящее
+//                } else {
+//                    $con = $this->getPactConversationsById($message['conversation_id']);
+//
+//                    if(isset($con['data']) && isset($con['data']['conversation']) && isset($con['data']['conversation']['contacts']) && isset($con['data']['conversation']['contacts'][0]) && isset($con['data']['conversation']['contacts'][0]['amocrm_contact_id']) && $con['data']['conversation']['contacts'][0]['amocrm_contact_id'] > 0) {
+//                        $contact_id = $con['data']['conversation']['contacts'][0]['amocrm_contact_id'];
+//
+//                        if($el = Talks::where('companyId', $contact_id)->first()) {
+//
 //                            Telegram::sendMessage([
 //                                'chat_id' => '228519769',
-//                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+//                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']} " . json_encode($request->all())
 //                            ]);
-                            $this->closeTalk($el['talkId']);
-                            $el->delete();
-                        }
-                    }
-
-//                    $contact_id = $message['contact_id'];
 //
-
-                }
-            }
-
-        }
+////                            Telegram::sendMessage([
+////                                'chat_id' => '228519769',
+////                                'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
+////                            ]);
+//                            $this->closeTalk($el['talkId']);
+//                            $el->delete();
+//                        }
+//                    }
+//
+////                    $contact_id = $message['contact_id'];
+////
+//
+//                }
+//            }
+//
+//        }
 
         return "Ok";
     }
