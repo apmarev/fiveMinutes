@@ -537,81 +537,76 @@ class AmoCrmController extends Controller {
             $yesterdayEnd = strtotime("{$request->input('date')} 23:59:59");
         }
 
-        $arrayDates = [
-            '01.05.2022',
-            '02.05.2022',
-            '03.05.2022',
-            '04.05.2022',
-            '05.05.2022',
-            '06.05.2022',
-            '07.05.2022',
-            '08.05.2022',
-            '09.05.2022',
-            '10.05.2022',
-            '11.05.2022',
-            '12.05.2022',
-            '13.05.2022',
-            '14.05.2022',
-            '15.05.2022',
-            '16.05.2022',
-            '17.05.2022',
-            '18.05.2022',
-            '19.05.2022',
-            '20.05.2022',
-            '21.05.2022',
-            '22.05.2022',
-            '23.05.2022',
-            '24.05.2022',
-            '25.05.2022',
-            '26.05.2022',
-            '27.05.2022',
-            '28.05.2022',
-            '29.05.2022',
-            '30.05.2022',
-            '31.05.2022',
-            '01.06.2022',
-            '02.06.2022',
-        ];
+//        $arrayDates = [
+////            '01.05.2022',
+////            '02.05.2022',
+//            '03.06.2022',
+//            '04.06.2022',
+//            '05.06.2022',
+//            '06.06.2022',
+//            '07.06.2022',
+//            '08.06.2022',
+//            '09.06.2022',
+//            '10.06.2022',
+//            '11.06.2022',
+//            '12.06.2022',
+//            '13.06.2022',
+//            '14.06.2022',
+//            '15.06.2022',
+//            '16.06.2022',
+////            '17.05.2022',
+////            '18.05.2022',
+////            '19.05.2022',
+////            '20.05.2022',
+////            '21.05.2022',
+////            '22.05.2022',
+////            '23.05.2022',
+////            '24.05.2022',
+////            '25.05.2022',
+////            '26.05.2022',
+////            '27.05.2022',
+////            '28.05.2022',
+////            '29.05.2022',
+////            '30.05.2022',
+////            '31.05.2022',
+////            '01.06.2022',
+////            '02.06.2022',
+//        ];
 
         $this->getAndSetUsers();
 
-        foreach($arrayDates as $d) {
-            $yesterdayStart = strtotime("{$d} 00:00:01");
-            $yesterdayEnd = strtotime("{$d} 23:59:59");
+        $day = date('j', $yesterdayStart);
+        $month = date('m', $yesterdayStart);
+        $year = date('Y', $yesterdayStart);
 
-            $day = date('j', $yesterdayStart);
-            $month = date('m', $yesterdayStart);
-            $year = date('Y', $yesterdayStart);
+        $monthName = "";
 
-            $monthName = "";
+        if($month == '01') $monthName = 'Январь';
+        else if($month == '02') $monthName = 'Февраль';
+        else if($month == '03') $monthName = 'Март';
+        else if($month == '04') $monthName = 'Апрель';
+        else if($month == '05') $monthName = 'Май';
+        else if($month == '06') $monthName = 'Июнь';
+        else if($month == '07') $monthName = 'Июль';
+        else if($month == '08') $monthName = 'Август';
+        else if($month == '09') $monthName = 'Сентябрь';
+        else if($month == '10') $monthName = 'Октябрь';
+        else if($month == '11') $monthName = 'Ноябрь';
+        else if($month == '12') $monthName = 'Декабрь';
 
-            if($month == '01') $monthName = 'Январь';
-            else if($month == '02') $monthName = 'Февраль';
-            else if($month == '03') $monthName = 'Март';
-            else if($month == '04') $monthName = 'Апрель';
-            else if($month == '05') $monthName = 'Май';
-            else if($month == '06') $monthName = 'Июнь';
-            else if($month == '07') $monthName = 'Июль';
-            else if($month == '08') $monthName = 'Август';
-            else if($month == '09') $monthName = 'Сентябрь';
-            else if($month == '10') $monthName = 'Октябрь';
-            else if($month == '11') $monthName = 'Ноябрь';
-            else if($month == '12') $monthName = 'Декабрь';
+        $dateArray = [
+            'day' => $day,
+            'month' => $month,
+            'monthName' => $monthName,
+            'year' => $year,
+        ];
 
-            $dateArray = [
-                'day' => $day,
-                'month' => $month,
-                'monthName' => $monthName,
-                'year' => $year,
-            ];
+        $this->getAndSetLeadsCount([$yesterdayStart, $yesterdayEnd]);
+        $this->getAndSetLeads([$yesterdayStart, $yesterdayEnd]);
+        $this->getInfoByManager($dateArray);
 
-            $this->getAndSetLeadsCount([$yesterdayStart, $yesterdayEnd]);
-            $this->getAndSetLeads([$yesterdayStart, $yesterdayEnd]);
-            $this->getInfoByManager($dateArray);
-
-            $this->clearLeadsTables();
-            $this->clearLeadsCountTables();
-        }
+        $this->clearLeadsTables();
+        $this->clearLeadsCountTables();
 
         $this->clearUserTable();
 

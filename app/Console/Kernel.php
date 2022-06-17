@@ -17,11 +17,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//        $schedule->call(function() {
-//            $amo = new AmoCrmController(new AccessController());
-//            $amo->getOutgoingMessages();
-//        })
-//            ->everyMinute();
+        $schedule->call(function() {
+            $amo = new AmoCrmController(new AccessController());
+            $amo->start();
+        })
+            ->dailyAt('03:00');
     }
 
     /**
