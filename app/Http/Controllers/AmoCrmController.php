@@ -527,15 +527,15 @@ class AmoCrmController extends Controller {
         return $array;
     }
 
-    public function start(Request $request) {
+    public function start() {
         $yesterday = strtotime("-1 day");
         $yesterdayStart = strtotime(date('d.m.Y', $yesterday) . " 00:00:01");
         $yesterdayEnd = strtotime(date('d.m.Y', $yesterday) . " 23:59:59");
 
-        if($request->has('date')) {
-            $yesterdayStart = strtotime("{$request->input('date')} 00:00:01");
-            $yesterdayEnd = strtotime("{$request->input('date')} 23:59:59");
-        }
+//        if($request->has('date')) {
+//            $yesterdayStart = strtotime("{$request->input('date')} 00:00:01");
+//            $yesterdayEnd = strtotime("{$request->input('date')} 23:59:59");
+//        }
 
 //        $arrayDates = [
 ////            '01.05.2022',
