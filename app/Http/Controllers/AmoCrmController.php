@@ -1390,7 +1390,10 @@ class AmoCrmController extends Controller {
     }
 
     public function pactNewMessage(Request $request) {
-
+        Telegram::sendMessage([
+            'chat_id' => '228519769',
+            'text' => json_encode($request->all())
+        ]);
 //        if($request->has('event') && $request->input('event') == 'new' && $request->has('type') && $request->input('type') == 'message') {
 //            $message = $request->input('data');
 //
