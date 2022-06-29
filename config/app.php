@@ -3,31 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Name
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    |
-    */
-
-    'name' => env('APP_NAME', 'Laravel'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Environment
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the "environment" your application is currently
-    | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
-    |
-    */
-
+    'name' => env('APP_NAME', 'Umschool'),
     'env' => env('APP_ENV', 'production'),
     'services' => [
         'amo' => [
@@ -35,134 +11,57 @@ return [
             'domain' => env('AMO_INTEGRATION_DOMAIN', ''),
         ],
         'senler' => [
-
+            'groups' => [
+                137331585 => [ 'name' => 'Русский язык ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_1', '') ],
+                143084342 => [ 'name' => 'Базовая математика ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_2', '') ],
+                135803480 => [ 'name' => 'Математика ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_3', '') ],
+                151441700 => [ 'name' => 'Литература ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_4', '') ],
+                137331378 => [ 'name' => 'История ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_5', '') ],
+                137331702 => [ 'name' => 'Обществознание ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_6', '') ],
+                137331446 => [ 'name' => 'Биология ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_7', '') ],
+                168452327 => [ 'name' => 'География ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_8', '') ],
+                137331920 => [ 'name' => 'Информатика ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_9', '') ],
+                99797563 => [ 'name' => 'Физика ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_10', '') ],
+                137332003 => [ 'name' => 'Химия ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_11', '') ],
+                137331795 => [ 'name' => 'Английский язык ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_12', '') ],
+                168456080 => [ 'name' => 'Немецкий язык ЕГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_13', '') ],
+                197343744 => [ 'name' => 'Химия 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_14', '') ],
+                197343798 => [ 'name' => 'Английский язык 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_15', '') ],
+                197366397 => [ 'name' => 'Математика 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_16', '') ],
+                197343788 => [ 'name' => 'Биология 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_17', '') ],
+                198276645 => [ 'name' => 'История 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_18', '') ],
+                198276627 => [ 'name' => 'Русский язык 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_19', '') ],
+                197343806 => [ 'name' => 'Обществознание 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_20', '') ],
+                197343818 => [ 'name' => 'Физика 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_21', '') ],
+                197343827 => [ 'name' => 'Литература 10 класс ВК vkontakte', 'key' => env('SENLER_GROUPS_22', '') ],
+                168455375 => [ 'name' => 'Русский язык ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_23', '') ],
+                168456727 => [ 'name' => 'Математика ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_24', '') ],
+                168455533 => [ 'name' => 'Литература ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_25', '') ],
+                168455361 => [ 'name' => 'Физика ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_26', '') ],
+                168455430 => [ 'name' => 'Биология ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_27', '') ],
+                168455444 => [ 'name' => 'Химия ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_28', '') ],
+                168455409 => [ 'name' => 'Обществознание ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_29', '') ],
+                168455550 => [ 'name' => 'География ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_30', '') ],
+                168455415 => [ 'name' => 'История ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_31', '') ],
+                168455540 => [ 'name' => 'Информатика ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_32', '') ],
+                168455391 => [ 'name' => 'Английский язык ОГЭ ВК vkontakte', 'key' => env('SENLER_GROUPS_33', '') ],
+                124303372 => [ 'name' => 'Умскул ВК vkontakte', 'key' => env('SENLER_GROUPS_34', '') ],
+            ],
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Debug Mode
-    |--------------------------------------------------------------------------
-    |
-    | When your application is in debug mode, detailed error messages with
-    | stack traces will be shown on every error that occurs within your
-    | application. If disabled, a simple generic error page is shown.
-    |
-    */
-
     'debug' => (bool) env('APP_DEBUG', false),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application URL
-    |--------------------------------------------------------------------------
-    |
-    | This URL is used by the console to properly generate URLs when using
-    | the Artisan command line tool. You should set this to the root of
-    | your application so that it is used when running Artisan tasks.
-    |
-    */
-
     'url' => env('APP_URL', 'http://localhost'),
-
     'asset_url' => env('ASSET_URL'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Timezone
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. We have gone
-    | ahead and set this to a sensible default for you out of the box.
-    |
-    */
-
     'timezone' => 'Europe/Moscow',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Locale Configuration
-    |--------------------------------------------------------------------------
-    |
-    | The application locale determines the default locale that will be used
-    | by the translation service provider. You are free to set this value
-    | to any of the locales which will be supported by the application.
-    |
-    */
-
-    'locale' => 'en',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Fallback Locale
-    |--------------------------------------------------------------------------
-    |
-    | The fallback locale determines the locale to use when the current one
-    | is not available. You may change the value to correspond to any of
-    | the language folders that are provided through your application.
-    |
-    */
-
-    'fallback_locale' => 'en',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Faker Locale
-    |--------------------------------------------------------------------------
-    |
-    | This locale will be used by the Faker PHP library when generating fake
-    | data for your database seeds. For example, this will be used to get
-    | localized telephone numbers, street address information and more.
-    |
-    */
-
-    'faker_locale' => 'en_US',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Encryption Key
-    |--------------------------------------------------------------------------
-    |
-    | This key is used by the Illuminate encrypter service and should be set
-    | to a random, 32 character string, otherwise these encrypted strings
-    | will not be safe. Please do this before deploying an application!
-    |
-    */
-
+    'locale' => 'ru',
+    'fallback_locale' => 'ru',
+    'faker_locale' => 'ru_RU',
     'key' => env('APP_KEY'),
-
     'cipher' => 'AES-256-CBC',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Maintenance Mode Driver
-    |--------------------------------------------------------------------------
-    |
-    | These configuration options determine the driver used to determine and
-    | manage Laravel's "maintenance mode" status. The "cache" driver will
-    | allow maintenance mode to be controlled across multiple machines.
-    |
-    | Supported drivers: "file", "cache"
-    |
-    */
-
     'maintenance' => [
         'driver' => 'file',
         // 'store'  => 'redis',
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
-    |--------------------------------------------------------------------------
-    |
-    | The service providers listed here will be automatically loaded on the
-    | request to your application. Feel free to add your own services to
-    | this array to grant expanded functionality to your applications.
-    |
-    */
-
     'providers' => [
 
         /*
@@ -205,18 +104,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Class Aliases
-    |--------------------------------------------------------------------------
-    |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
-    |
-    */
-
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
