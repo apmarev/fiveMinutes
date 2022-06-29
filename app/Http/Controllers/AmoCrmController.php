@@ -9,6 +9,7 @@ use App\Models\LeadCustom;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\ReportCustom;
+use App\Models\Senler;
 use App\Models\Talks;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -1455,11 +1456,57 @@ class AmoCrmController extends Controller {
     }
 
     public function senler(Request $request) {
-        Telegram::sendMessage([
-            'chat_id' => '-698970732',
-            'text' => json_encode($request->all())
-        ]);
+
+        if($request->has('vk_user_id') && $request->has('object')) {
+            $el = new Senler();
+            $el->__set('vkId', $request->input('vk_user_id'));
+            $el->__set('vkGroupId', $request->input('vk_group_id'));
+            $el->__set('subscriptions', $request->input('subscriptions'));
+            $el->__set('utm', json_encode($request->input('object')));
+            $el->__set('update', time());
+            $item = $el->save();
+
+            Telegram::sendMessage([
+                'chat_id' => '-698970732',
+                'text' => 'Добавлен объект ' . json_encode($item)
+            ]);
+        }
 
         return "Ok";
+    }
+
+    public function getSenlerQueues() {
+        $elements = Senler::where('update', '>=', time() - 1800)->get();
+
+        if(sizeof($elements) > 0) {
+            foreach($elements as $el) {
+                if($contact = $this->getUserByVkId($el['vkId']) && isset($contact['id']) && $contact['id'] > 0) {
+
+                }
+            }
+        }
+
+        return "Ok";
+    }
+
+    public function getUserByVkId($id = 415377908) {
+        $res = $this->amoGet("/contacts?query={$id}");
+
+        if(isset($res['_embedded']) && isset($res['_embedded']['contacts']) && is_array($res['_embedded']['contacts'])) {
+            foreach($res['_embedded']['contacts'] as $contact) {
+                if(isset($contact['custom_fields_values']) && is_array($contact['custom_fields_values'])) {
+                    foreach($contact['custom_fields_values'] as $custom) {
+                        if($custom['field_id'] == 708615) {
+                            $vk = preg_replace("/[^0-9]/", '', $custom['values'][0]['value']);
+                            if((int) $vk == (int) $id) {
+                                return $contact;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
