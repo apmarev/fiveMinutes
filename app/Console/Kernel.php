@@ -22,6 +22,12 @@ class Kernel extends ConsoleKernel
             $amo->start();
         })
             ->dailyAt('03:00');
+
+        $schedule->call(function() {
+            $amo = new AmoCrmController(new AccessController());
+            $amo->getSenlerQueues();
+        })
+            ->everyFourHours();
     }
 
     /**

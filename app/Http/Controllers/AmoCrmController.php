@@ -1458,12 +1458,10 @@ class AmoCrmController extends Controller {
     }
 
     public function getSenlerQueues() {
+        $elements = Senler::where('update', '<=', time() - 14400)->get();
 
-        // return $this->amoGet('/leads?query=Русский язык ЕГЭ ВК vkontakte');
-
-
-        // $elements = Senler::where('update', '>=', time() - 1800)->get();
-        $elements = Senler::all();
+        return sizeof($elements);
+        // $elements = Senler::all();
 
         // $elements  = Senler::where('id', 113)->get();
 
@@ -1545,6 +1543,9 @@ class AmoCrmController extends Controller {
                                 ]
                             ]);
                             $el->delete();
+                        } else {
+                            $el->__set('update', time());
+                            $el->save();
                         }
 
 //
