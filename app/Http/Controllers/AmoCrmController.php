@@ -1456,7 +1456,7 @@ class AmoCrmController extends Controller {
 
     public function senler(Request $request) {
         Telegram::sendMessage([
-            'chat_id' => '228519769',
+            'chat_id' => '-698970732',
             'text' => json_encode($request->all())
         ]);
 
