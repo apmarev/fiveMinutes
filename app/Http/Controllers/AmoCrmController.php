@@ -1438,24 +1438,12 @@ class AmoCrmController extends Controller {
         return "Ok";
     }
 
-    public function vk(Request $request) {
-//        $object = $request->input('object');
-//        if(isset($object['peer_id'])) {
-//            if($el = Talks::where('vk', $object['peer_id'])->first()) {
-//                $this->closeTalk($el['talkId']);
-////                Telegram::sendMessage([
-////                    'chat_id' => '228519769',
-////                    'text' => "Закрыта {$el['companyId']} - {$el['talkId']}"
-////                ]);
-//                $el->delete();
-//            }
-//        }
+    public function senler(Request $request): string {
 
-
-        return "ok";
-    }
-
-    public function senler(Request $request) {
+        Telegram::sendMessage([
+            'chat_id' => '-698970732',
+            'text' => json_encode($request->all())
+        ]);
 
         if($request->has('vk_user_id') && $request->has('object')) {
             $el = new Senler();

@@ -34,6 +34,9 @@ return [
             'subdomain' => env('AMO_SUBDOMAIN', ''),
             'domain' => env('AMO_INTEGRATION_DOMAIN', ''),
         ],
+        'senler' => [
+
+        ],
     ],
 
     /*
