@@ -1459,16 +1459,19 @@ class AmoCrmController extends Controller {
 
     public function getSenlerQueues() {
 
-        return $this->amoGet('/leads?query=Русский язык ЕГЭ ВК vkontakte');
+        // return $this->amoGet('/leads?query=Русский язык ЕГЭ ВК vkontakte');
 
 
         // $elements = Senler::where('update', '>=', time() - 1800)->get();
         $elements = Senler::all();
 
+        // $elements  = Senler::where('id', 113)->get();
+
+        $leadsSuccess = [];
+
         if(sizeof($elements) > 0) {
             foreach($elements as $el) {
-                if($contact = $this->getUserByVkId($el['vkId']) && isset($contact['id']) && $contact['id'] > 0) {
-
+                if($contact = $this->getUserByVkId($el['vkId'])) {
                     $el['utm'] = json_decode($el['utm']);
                     $senlerData = SenlerController::post('subscriptions/get', $el['vkGroupId'], [
                         'subscription_id' => [ $el['subscriptions'] ]
@@ -1479,43 +1482,100 @@ class AmoCrmController extends Controller {
                         $customFields = [];
 
                         foreach($el['utm'] as $k => $v) {
-                            if($k == 'openstat_source') $customFields[] = [ 'field_id' => 278347, 'values' => [ $v ] ];
-                            else if($k == 'yclid') $customFields[] = [ 'field_id' => 278355, 'values' => [ $v ] ];
-                            else if($k == 'utm_campaign') $customFields[] = [ 'field_id' => 278325, 'values' => [ $v ] ];
-                            else if($k == 'utm_content') $customFields[] = [ 'field_id' => 278329, 'values' => [ $v ] ];
-                            else if($k == 'utm_source') $customFields[] = [ 'field_id' => 278321, 'values' => [ $v ] ];
-                            else if($k == 'utm_medium') $customFields[] = [ 'field_id' => 278323, 'values' => [ $v ] ];
-                            else if($k == 'utm_term') $customFields[] = [ 'field_id' => 278327, 'values' => [ $v ] ];
-                            else if($k == 'utm_referrer') $customFields[] = [ 'field_id' => 278331, 'values' => [ $v ] ];
-                            else if($k == 'roistat') $customFields[] = [ 'field_id' => 278337, 'values' => [ $v ] ];
-                            else if($k == '_ym_counter') $customFields[] = [ 'field_id' => 278335, 'values' => [ $v ] ];
-                            else if($k == '_ym_uid') $customFields[] = [ 'field_id' => 278333, 'values' => [ $v ] ];
-                            else if($k == 'openstat_service') $customFields[] = [ 'field_id' => 278341, 'values' => [ $v ] ];
-                            else if($k == 'referrer') $customFields[] = [ 'field_id' => 278339, 'values' => [ $v ] ];
-                            else if($k == 'fbclid') $customFields[] = [ 'field_id' => 278357, 'values' => [ $v ] ];
-                            else if($k == 'gclid') $customFields[] = [ 'field_id' => 278353, 'values' => [ $v ] ];
-                            else if($k == 'gclientid') $customFields[] = [ 'field_id' => 278351, 'values' => [ $v ] ];
-                            else if($k == 'from') $customFields[] = [ 'field_id' => 278349, 'values' => [ $v ] ];
-                            else if($k == 'openstat_ad') $customFields[] = [ 'field_id' => 278345, 'values' => [ $v ] ];
-                            else if($k == 'openstat_campaign') $customFields[] = [ 'field_id' => 278343, 'values' => [ $v ] ];
-                            else if($k == 'ga_utm') $customFields[] = [ 'field_id' => 710919, 'values' => [ $v ] ];
+                            if($k == 'openstat_source') $customFields[] = [ 'field_id' => 278347, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'yclid') $customFields[] = [ 'field_id' => 278355, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_campaign') $customFields[] = [ 'field_id' => 278325, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_content') $customFields[] = [ 'field_id' => 278329, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_source') $customFields[] = [ 'field_id' => 278321, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_medium') $customFields[] = [ 'field_id' => 278323, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_term') $customFields[] = [ 'field_id' => 278327, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'utm_referrer') $customFields[] = [ 'field_id' => 278331, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'roistat') $customFields[] = [ 'field_id' => 278337, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == '_ym_counter') $customFields[] = [ 'field_id' => 278335, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == '_ym_uid') $customFields[] = [ 'field_id' => 278333, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'openstat_service') $customFields[] = [ 'field_id' => 278341, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'referrer') $customFields[] = [ 'field_id' => 278339, 'values' => [ [ 'value' => $v ] ]];
+                            else if($k == 'fbclid') $customFields[] = [ 'field_id' => 278357, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'gclid') $customFields[] = [ 'field_id' => 278353, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'gclientid') $customFields[] = [ 'field_id' => 278351, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'from') $customFields[] = [ 'field_id' => 278349, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'openstat_ad') $customFields[] = [ 'field_id' => 278345, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'openstat_campaign') $customFields[] = [ 'field_id' => 278343, 'values' => [ [ 'value' => $v ] ] ];
+                            else if($k == 'ga_utm') $customFields[] = [ 'field_id' => 710919, 'values' => [ [ 'value' => $v ] ] ];
                         }
 
-                        return [
-                            'tag' => config("app.senler.groups.{$el['vkGroupId']}.name"),
-                            'contact' => $contact,
-                            'customs' => $customFields,
-                        ];
+                        $leads = [];
+                        $countLeads = 0;
+                        if(isset($contact['_embedded']) && isset($contact['_embedded']['leads']) && is_array($contact['_embedded']['leads'])) {
+                            $countLeads = sizeof($contact['_embedded']['leads']);
+
+                            foreach($contact['_embedded']['leads'] as $lead) {
+                                $entity = $this->getLeadByID($lead['id']);
+                                $leads[] = $entity;
+                            }
+                        }
+
+                        $leadID = 0;
+                        $tags = [];
+
+                        foreach($leads as $e) {
+                            if(isset($e['_embedded']) && isset($e['_embedded']['tags'])) {
+                                foreach($e['_embedded']['tags'] as $t) {
+                                    if($t['name'] == config("app.services.senler.groups.{$el['vkGroupId']}.name")) {
+                                        $leadID = $e['id'];
+                                        $tags = $e['_embedded']['tags'];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if($leadID > 0) {
+                            $leadsSuccess[] = $leadID;
+                            $tags[] = [
+                                'name' => $subscriptionName
+                            ];
+                             $this->amoPut("/leads", [
+                                [
+                                    'id' => $leadID,
+                                    'custom_fields_values' => $customFields,
+                                    '_embedded' => [
+                                        'tags' => $tags,
+                                    ],
+                                ]
+                            ]);
+                            $el->delete();
+                        }
+
+//
+//                        return [
+//                            'tag' => config("app.services.senler.groups.{$el['vkGroupId']}.name"),
+//                            'subscriptionName' => $subscriptionName,
+//                            'contact' => $contact,
+//                            'customs' => $customFields,
+//                            'leadID' => $leadID
+//                        ];
                     }
                 }
             }
         }
 
+        if(sizeof($leadsSuccess) > 0)
+            Telegram::sendMessage(['chat_id' => '-698970732', 'text' => 'Обработаны сделки: ' . json_encode($leadsSuccess)]);
+
         return "Ok";
     }
 
-    public function getUserByVkId($id = 415377908) {
-        $res = $this->amoGet("/contacts?query={$id}");
+    protected function getLeadsByTag($userID, string $tag) {
+        $result = $this->amoGet("/leads?query={$tag}&filter[]");
+        if(isset($result['_embedded']) && isset($result['_embedded']['leads']) && is_array($result['_embedded']['leads'])) {
+            return $result['_embedded']['leads'];
+        }
+        return $result;
+    }
+
+    public function getUserByVkId($id) {
+        $res = $this->amoGet("/contacts?query={$id}&with=leads");
 
         if(isset($res['_embedded']) && isset($res['_embedded']['contacts']) && is_array($res['_embedded']['contacts'])) {
             foreach($res['_embedded']['contacts'] as $contact) {
