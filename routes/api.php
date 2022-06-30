@@ -25,4 +25,6 @@ Route::post('/hooks/amo/dialog/new', [AmoCrmController::class, 'newTalk']);
 Route::post('/hooks/pact/new', [AmoCrmController::class, 'pactNewMessage']);
 Route::post('/hooks/senler', [AmoCrmController::class, 'senler']);
 
+Route::post('/unisender', [\App\Http\Controllers\UnisenderController::class, 'getSheet']);
+
 Route::post('/test', [AmoCrmController::class, 'getSenlerQueues']);

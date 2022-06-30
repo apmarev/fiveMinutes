@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "umschool-354919",
+    "private_key_id": "8aa7c30aaabec5b2e54b95d90d3067ebc512a417",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDSAQCzSoc6sNTX\np1/6GF3FWg05W9zQIfXyLpu+mGHNb6s0YLMuMW5PwvyUpAntQ+LRQRqcnH3u54cw\nKiUp3gqYED+D6zeintng6AXbRa9P8irgq3LSwifnVtkvJ/TGbTqWpGxvA5gR8ifN\nGCOxRSBIhWUVtSn3Uv5N4imf+i9gX6OHY2FG+jmA+wPD8BuCqzMPdl+oFc2VgqED\nBothGBxjO1P2XtBc3bGQLR/YuXBdFwXlouXRxMRiYx6fjIi5Bk7oOiUPqfYjrGTT\nHqm0Wizv/ImYopa89GEhMK3XeWAtSVmfhf8Cbw/X7ccqkAF7vOtFrmtQteg+MLrs\nN3jrtfbxAgMBAAECggEABJ4TBt4vpQG4XFmIybX5cdpuCgHUFBt7De0qbYFqPRsk\nd41cwzpBA6304cvNkBL7DMDStfjW6AbdORjkIkyIjRlmXB8y5Pd7MO/JGS4qEabw\nfGoopyuvtu147wmA31ANhrxsyfAZSuO5LlBGkKJFeHK+a0DFgHOptcqwQZ09p2/I\ntNVCoiTlneuROy1Ocns3maiiJb1FtQ7lVQs7ZSIqmYKozli9MA9sfomAHhcFN2ks\nTGrgDHKkr1cyBHjVk2U4aIQT8Ek1J5npIaoq2LFb5zWDqpPr+ukrQuk7aSIaammU\nZ/j1ZLRzzHHIJqc4/IWovfuPEvmUpxQkSkyuHzEv9QKBgQDs1o1FZI6E2lzjUN2C\njO/WQSTatsGx7uZf+Uu/JxzUI/5Ns6aFWBVNPeZM0FFwBk1TAx/Yaa4J+cE91tVV\nTjvshm43aiVi5z3cbouROidAx8aEMiCjb2kic9x2f3O+S1SH2RdNZ0aru1VWtAvc\najTGho8br9ujDpjy6X2kzkHPKwKBgQDi/qeog9B6aaZFn+x39DFPgP9MvNiPEUYF\ntk89Jlb/0kpK1YsS6mGb7yV8loFZ+lahXqlXyVIKiKGjBPeA1Wtfw5kJ1DcKHu31\nXtYofbcrTRbGrAstmnEZWvzAyJBIbk3bRTZ9b3txobuvzuv1gKD33RepbTdtZXVt\nrw5RNNlkUwKBgQClhBf8vBbh/91Uu8nil+5xVNuVwo1Bdc0om4f1UjdShskNspSY\nsgNJFQ5i9l9DpBPcBN33l3ua2yHSvtYepOs6FIToU1VHdoYEDHmbiAGwwy0YbBPl\nRFI8Uq5rXg0cm3a67dvcK2X3VJeCXZfAdbTmXVmcJt2fae84LDezurXBOwKBgGyQ\nPr9py5vAS7Wg9wen0q2jlHavGyPRrxusRdmJLLLNcJq55vn0/xoFFnivws213Rjw\nnS1PK9292xCMn5MOf3wdoGQDCw/cGxLveJ2FAsXC6NG8FtyIsO7fhWLuiZMarkHg\nqF71oqSGJa2/2TphepsRMu/lPE0l6TO8NazBCffhAoGALqLydNtlFK1ReKcwEaZm\nRBdj/nzdT3cleP9OavIPTCMS5R2leBvtdGwgjwM0zkE1/xvGLojPjLsAar9Pdxdy\n9Z5jFLfyuVCXfyarH/cVXuyDq1xEc7OW6qKVcOA43A3cfZ/KiREuo8lYvSy5jibN\nQifp3rfTL6D6XOLxAQ6+hG4=\n-----END PRIVATE KEY-----\n",
+    "client_email": "umschool@umschool-354919.iam.gserviceaccount.com",
+    "client_id": "115607321415313693321",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/umschool%40umschool-354919.iam.gserviceaccount.com"
+}

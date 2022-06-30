@@ -24,10 +24,6 @@ class SenlerController extends Controller {
         $params['vk_group_id'] = $groupId;
         $params['access_token'] = self::getApiKeyByGroupId($groupId);
         $params['v'] = 2;
-        // $params['force'] = 1;
-
-        // $params = http_build_query($params);
-
         return Http::asForm()->post("https://senler.ru/api/{$uri}", $params);
     }
 

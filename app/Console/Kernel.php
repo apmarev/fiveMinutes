@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\AmoCrmController;
+use App\Http\Controllers\UnisenderController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -17,6 +18,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->call(function() {
+            $amo = new UnisenderController();
+            $amo->getSheet();
+        })
+            ->dailyAt('23:00');
+
         $schedule->call(function() {
             $amo = new AmoCrmController(new AccessController());
             $amo->start();
