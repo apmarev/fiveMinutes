@@ -1458,7 +1458,7 @@ class AmoCrmController extends Controller {
     }
 
     public function getSenlerQueues() {
-        $elements = Senler::where('update', '<=', time() - 14400)->limit(400)->offset(0)->get();
+        $elements = Senler::where('update', '<=', time() - 14400)->get();
 
         try {
             $leadsSuccess = [];
