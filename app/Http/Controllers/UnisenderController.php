@@ -80,16 +80,16 @@ class UnisenderController extends Controller {
         $spreadsheetId = '12kWr4cA3U_1jbSim8iP6wkgQIPLxTeCz6dho7OAimGU';
 //        $response = $service->spreadsheets->get($spreadsheetId);
 //        $spreadsheetProperties = $response->getProperties();
-        $range = 'Лист1!A1:J1000';
-        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-
-        $line = sizeof($response) + 1;
+//        $range = 'Лист1!A1:J1000';
+//        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+//
+//        $line = sizeof($response) + 1;
 
         $body = new Google_Service_Sheets_ValueRange( [ 'values' => $this->get() ] );
         $options = array( 'valueInputOption' => 'RAW' );
-        $service->spreadsheets_values->update( $spreadsheetId, 'Лист1!A' . $line, $body, $options );
+        $service->spreadsheets_values->update( $spreadsheetId, 'Лист1!A2', $body, $options );
 
-        return sizeof($response);
+        return "Ok";
     }
 
 }
