@@ -1460,7 +1460,6 @@ class AmoCrmController extends Controller {
     public function getSenlerQueues() {
         $elements = Senler::where('update', '<=', time() - 14400)->get();
 
-        return sizeof($elements);
         // $elements = Senler::all();
 
         // $elements  = Senler::where('id', 113)->get();
@@ -1563,6 +1562,8 @@ class AmoCrmController extends Controller {
 
         if(sizeof($leadsSuccess) > 0)
             Telegram::sendMessage(['chat_id' => '-698970732', 'text' => 'Обработаны сделки: ' . json_encode($leadsSuccess)]);
+        else
+            Telegram::sendMessage(['chat_id' => '-698970732', 'text' => 'Подходящих сделок не найдено']);
 
         return "Ok";
     }
