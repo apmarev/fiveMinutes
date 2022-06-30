@@ -27,7 +27,7 @@ class UnisenderController extends Controller {
         $res = Http::get("https://api.unisender.com/ru/api/getLists?format=json&api_key={$this->key}");
         $list = $res['result'];
 
-        $dateFrom = date('Y-m-d') . " 23:00:00";
+        $dateFrom = "2000-01-01 00:00:01";
         $dateNow = date('Y-m-d h:i:s');
         $res = Http::get("https://api.unisender.com/ru/api/getCampaigns?format=json&api_key={$this->key}&from={$dateFrom}&to={$dateNow}");
         $items = $res['result'];
