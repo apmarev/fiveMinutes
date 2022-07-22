@@ -533,46 +533,13 @@ class AmoCrmController extends Controller {
         $yesterdayStart = strtotime(date('d.m.Y', $yesterday) . " 00:00:01");
         $yesterdayEnd = strtotime(date('d.m.Y', $yesterday) . " 23:59:59");
 
+//        $yesterdayStart = strtotime("28.06.2022 00:00:01");
+//        $yesterdayEnd = strtotime("28.06.2022 23:59:59");
+
 //        if($request->has('date')) {
 //            $yesterdayStart = strtotime("{$request->input('date')} 00:00:01");
 //            $yesterdayEnd = strtotime("{$request->input('date')} 23:59:59");
 //        }
-
-//        $arrayDates = [
-////            '01.05.2022',
-////            '02.05.2022',
-//            '03.06.2022',
-//            '04.06.2022',
-//            '05.06.2022',
-//            '06.06.2022',
-//            '07.06.2022',
-//            '08.06.2022',
-//            '09.06.2022',
-//            '10.06.2022',
-//            '11.06.2022',
-//            '12.06.2022',
-//            '13.06.2022',
-//            '14.06.2022',
-//            '15.06.2022',
-//            '16.06.2022',
-////            '17.05.2022',
-////            '18.05.2022',
-////            '19.05.2022',
-////            '20.05.2022',
-////            '21.05.2022',
-////            '22.05.2022',
-////            '23.05.2022',
-////            '24.05.2022',
-////            '25.05.2022',
-////            '26.05.2022',
-////            '27.05.2022',
-////            '28.05.2022',
-////            '29.05.2022',
-////            '30.05.2022',
-////            '31.05.2022',
-////            '01.06.2022',
-////            '02.06.2022',
-//        ];
 
         $this->getAndSetUsers();
 
@@ -1597,5 +1564,84 @@ class AmoCrmController extends Controller {
         }
 
         return false;
+    }
+
+    public function getCsv() {
+        $csv = [];
+        $date = 1561939202;
+        $date_to = time();
+        $contacts = [];
+
+        for($i=1201;$i<1600;$i++) {
+            $query = "/contacts?page={$i}&limit=250";
+            $res = $this->amoGet($query);
+            $list = self::getIsSetList($res, 'contacts');
+            if(sizeof($list) > 0) {
+                $arr = [];
+                foreach($list as $lead) {
+                    $phone = '';
+                    $email = '';
+                    $leadType = '';
+                    $city = '';
+                    $class = '';
+                    $vk = '';
+
+                    if(isset($lead['custom_fields_values']) && is_array($lead['custom_fields_values']))
+                        foreach($lead['custom_fields_values'] as $custom) {
+                            if($custom['field_id'] == 176801) {
+                                $phone = '';
+                                foreach($custom['values'] as $value) {
+                                    $phone .= $value['value'] . ',';
+                                }
+                            }
+                            if($custom['field_id'] == 176803) {
+                                $email = $custom['values'][0]['value'];
+                            }
+                            if($custom['field_id'] == 707467) {
+                                $leadType = $custom['values'][0]['value'];
+                            }
+                            if($custom['field_id'] == 708585) {
+                                $city = $custom['values'][0]['value'];
+                            }
+                            if($custom['field_id'] == 709749) {
+                                $class = $custom['values'][0]['value'];
+                            }
+                            if($custom['field_id'] == 708615) {
+                                $vk = $custom['values'][0]['value'];
+                            }
+                        }
+
+                    $arr[] = [
+                        $lead['id'],
+                        "{$lead['first_name']} {$lead['last_name']}",
+                        $email,
+                        $phone,
+                        $leadType,
+                        $city,
+                        $class,
+                        $vk
+                    ];
+                }
+
+                if(sizeof($arr) > 0) {
+                    try {
+                        $fp = fopen(__DIR__ . '/contact.csv', 'a+');
+                        foreach ($arr as $fields) {
+                            fputcsv($fp, $fields, ';');
+                        }
+                        fclose($fp);
+                    } catch (\Exception $e) {
+                        return 'Сука';
+                    }
+
+                }
+                unset($arr);
+                unset($list);
+            } else
+                break;
+        }
+
+
+        return "Ok";
     }
 }

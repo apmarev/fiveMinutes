@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmoCrmController;
 
@@ -28,3 +27,6 @@ Route::post('/hooks/senler', [AmoCrmController::class, 'senler']);
 Route::post('/unisender', [\App\Http\Controllers\UnisenderController::class, 'getSheet']);
 
 Route::post('/test', [AmoCrmController::class, 'getSenlerQueues']);
+
+
+Route::post('/csv', [AmoCrmController::class, 'getCsv']);

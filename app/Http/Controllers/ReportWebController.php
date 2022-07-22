@@ -10,6 +10,10 @@ use App\Http\Controllers\AmoCrmController;
 
 class ReportWebController extends Controller {
 
+    public function getViewReport(Request $request) {
+        return view('reports');
+    }
+
     public function report(Request $request) {
 
         $listOne = [
