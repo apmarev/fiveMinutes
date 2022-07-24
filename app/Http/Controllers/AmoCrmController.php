@@ -69,7 +69,7 @@ class AmoCrmController extends Controller {
             'year' => $year,
         ];
 
-        $this->getCountLeadsByManagers($date_from, $date_to);
+        return $this->getCountLeadsByManagers($date_from, $date_to);
 
     }
 
