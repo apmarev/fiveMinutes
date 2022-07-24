@@ -1,16 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { observer } from "mobx-react-lite"
+import ReactDOM from "react-dom"
+import React, {useEffect} from "react"
+import Header from "./layout/Header";
 
-function Reports() {
+export const Reports = observer(() => {
+
     return (
         <>
-            Test Component
+            <Header />
         </>
     )
-}
+})
 
-export default Reports;
+export default Reports
 
-if (document.getElementById('app')) {
+if(document.getElementById('app')) {
     ReactDOM.render(<Reports />, document.getElementById('app'));
 }
