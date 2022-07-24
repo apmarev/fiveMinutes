@@ -5,6 +5,8 @@ use App\Http\Controllers\AmoCrmController;
 
 Route::post('/access/amo/new', [AmoCrmController::class, 'amoNewAccess']);
 
+Route::post('/generate', [AmoCrmController::class, 'generate']);
+
 Route::post('/hooks/amo/dialog/incoming', [AmoCrmController::class, 'incoming']);
 Route::post('/hooks/amo/dialog/update', [AmoCrmController::class, 'updateChat']);
 

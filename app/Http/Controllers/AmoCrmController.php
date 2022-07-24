@@ -6,6 +6,8 @@ use App\Exceptions\CustomApiException;
 use App\Models\Lead;
 use App\Models\LeadCount;
 use App\Models\LeadCustom;
+use App\Models\Manager;
+use App\Models\ManagersLeads;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\ReportCustom;
@@ -23,8 +25,90 @@ class AmoCrmController extends Controller {
     protected static $weekends = [];
     protected static $plans = [];
 
+    public static $pipelines = [
+        3493222, // Первичные КЦ
+        5084302, // Продление КЦ
+        5322871 // Чатики
+    ];
+
     public function __construct(AccessController $__access) {
         $this->__access = $__access;
+    }
+
+    public function generate() {
+
+        $timestamp = strtotime("-1 day");
+        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
+        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
+
+        $this->managers();
+
+        $day = date('j', $timestamp);
+        $month = date('n', $timestamp);
+        $year = date('Y', $timestamp);
+
+        $monthName = "";
+
+        if($month == '01') $monthName = 'Январь';
+        else if($month == '02') $monthName = 'Февраль';
+        else if($month == '03') $monthName = 'Март';
+        else if($month == '04') $monthName = 'Апрель';
+        else if($month == '05') $monthName = 'Май';
+        else if($month == '06') $monthName = 'Июнь';
+        else if($month == '07') $monthName = 'Июль';
+        else if($month == '08') $monthName = 'Август';
+        else if($month == '09') $monthName = 'Сентябрь';
+        else if($month == '10') $monthName = 'Октябрь';
+        else if($month == '11') $monthName = 'Ноябрь';
+        else if($month == '12') $monthName = 'Декабрь';
+
+        $dateArray = [
+            'day' => $day,
+            'month' => $month,
+            'monthName' => $monthName,
+            'year' => $year,
+        ];
+
+        $this->getCountLeadsByManagers($date_from, $date_to);
+
+    }
+
+    public function getCountLeadsByManagers($from, $to) {
+        $array = [];
+
+        foreach(self::$pipelines as $pipeline) {
+            $list = $this->getAllListByFilter('leads', "&filter[pipeline_id]={$pipeline}&filter[created_at][from]={$from}&filter[created_at][to]={$to}&with=contacts");
+
+            foreach($list as $el) {
+                $array[] = [
+                    'manager' => $el['responsible_user_id'],
+                    'pipeline_id' => $el['pipeline_id']
+                ];
+            }
+        }
+
+        ManagersLeads::insert($array);
+    }
+
+    public function getLeadsSuccessByManagers($from, $to) {
+
+    }
+
+    public function managers() {
+        $userGroupId = 385195; // Группа пользователей "Колл-центр"
+        $list = $this->getAllListByFilter('users', "&with=group");
+        $data = [];
+        foreach($list as $user) {
+            if($user['rights']['is_active'] && isset($user['rights']) && isset($user['rights']['group_id']) && $user['rights']['group_id'] == $userGroupId) {
+
+                $data[] = [
+                    'id' => $user['id'],
+                    'name' => $user['name']
+                ];
+            }
+        }
+
+        return Manager::upsert($data, ['id'], ['name']);
     }
 
     public function createLead($title, $pipelineID, $statusID, $custom) {
@@ -458,7 +542,8 @@ class AmoCrmController extends Controller {
     public function getAndSetLeadsCount(array $date) {
         $pipelines = [
             3493222, // Первичные КЦ
-            5084302 // Продление КЦ
+            5084302, // Продление КЦ
+            5322871 // Чатики
         ];
 
         $array = [];
@@ -484,7 +569,8 @@ class AmoCrmController extends Controller {
     public function getAndSetLeads(array $date) {
         $pipelines = [
             3493222, // Первичные КЦ
-            5084302 // Продление КЦ
+            5084302, // Продление КЦ
+            5322871 // Чатики
         ];
 
         $array = [];
@@ -509,7 +595,8 @@ class AmoCrmController extends Controller {
             foreach($this->getIsSetListCustomFields($lead) as $custom) {
                 if(
                     $custom['field_id'] == 709405 || // Продукт
-                    $custom['field_id'] == 708651 // Пакет
+                    $custom['field_id'] == 708651 || // Пакет
+                    $custom['field_id'] == 702873 // Тариф
                 ) {
                     $facts[] = [
                         'leadId' => $lead['id'],
@@ -585,7 +672,8 @@ class AmoCrmController extends Controller {
     public function getInfoByManager($dateArray) {
         $pipelines = [
             3493222, // Первичные КЦ
-            5084302 // Продление КЦ
+            5084302, // Продление КЦ
+            5322871 // Чатики
         ];
         $users = User::all();
 

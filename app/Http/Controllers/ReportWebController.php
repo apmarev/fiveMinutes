@@ -14,6 +14,12 @@ class ReportWebController extends Controller {
         return view('reports');
     }
 
+    public function getReportByManagers(Request $request) {
+
+    }
+
+
+
     public function report(Request $request) {
 
         $listOne = [
