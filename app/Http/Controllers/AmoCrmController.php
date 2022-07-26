@@ -47,7 +47,7 @@ class AmoCrmController extends Controller {
     }
 
     public function getWebMonthByYear($year) {
-        return ManagersInfo::where('year', $year)->distinct()->get(['month_name']);
+        return ManagersInfo::where('year', $year)->distinct()->get(['month_name', 'month']);
     }
 
     protected static function calculateManagers($data) {
