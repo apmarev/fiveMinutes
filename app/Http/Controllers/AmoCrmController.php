@@ -43,7 +43,7 @@ class AmoCrmController extends Controller {
     }
 
     public function getWebYears() {
-
+        return ManagersInfo::distinct()->get(['year']);
     }
 
     protected static function calculateManagers($data) {
