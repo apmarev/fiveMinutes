@@ -33,5 +33,6 @@ Route::post('/test', [AmoCrmController::class, 'getManagersInfo']);
 Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
 Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
 Route::get('/years', [AmoCrmController::class, 'getWebYears']);
+Route::get('/month/{year}', [AmoCrmController::class, 'getWebMonthByYear']);
 
 Route::post('/csv', [AmoCrmController::class, 'getTestCSV']);
