@@ -11,6 +11,7 @@ use App\Models\ManagersInfo;
 use App\Models\ManagersLeads;
 use App\Models\ManagersLeadsSuccess;
 use App\Models\ManagersLeadsSuccessCustom;
+use App\Models\ManagersPlan;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\ReportCustom;
@@ -36,6 +37,59 @@ class AmoCrmController extends Controller {
 
     public function __construct(AccessController $__access) {
         $this->__access = $__access;
+    }
+
+    public function getPipelines() {
+        return [
+            [ 'name' => 'Продление КЦ', 'id' => 5084302 ],
+            [ 'name' => 'Первичные КЦ', 'id' => 3493222 ],
+            [ 'name' => 'Чатики', 'id' => 5322871 ],
+        ];
+    }
+
+    public function getFilterPlan() {
+        return [
+            'month' => [
+                'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            ],
+            'years' => [
+                2019, 2020, 2021, 2022, 2023, 2024
+            ],
+            'pipelines' => $this->getPipelines()
+        ];
+    }
+
+    public function setManagersPlan(Request $request) {
+
+        foreach($request->input('managers') as $manager) {
+            if(
+                $entity = ManagersPlan::where('manager_id', $manager['id'])
+                ->where('pipeline_id', $request->input('pipeline_id'))
+                    ->where('year', $request->input('year'))
+                    ->where('month', $request->input('month'))
+                ->first()
+            ) {
+
+            } else {
+                $entity = new ManagersPlan();
+            }
+
+            $entity->__set('manager_id', $manager['id']);
+            $entity->__set('year', $request->input('year'));
+            $entity->__set('month', $request->input('month'));
+            $entity->__set('week', $manager['week']);
+            $entity->__set('pipeline_id', $request->input('pipeline_id'));
+            $entity->__set('month_sum', $manager['month_sum'] ?? 0);
+            $entity->__set('package_sum', $manager['package_sum'] ?? 0);
+            $entity->__set('month_count', $manager['month_count'] ?? 0);
+            $entity->__set('package_count', $manager['package_count'] ?? 0);
+            $entity->__set('pro_count', $manager['pro_count'] ?? 0);
+            $entity->__set('count', $manager['count'] ?? 0);
+
+            $entity->save();
+        }
+
+        return "Ok";
     }
 
     public function getWebManagers() {
@@ -2379,7 +2433,7 @@ class AmoCrmController extends Controller {
                     }
 
                     $str[] = [
-                        $contact, $prichina, $oi, $napr, $predmet
+                        $lead['id'], date('d.m.Y', $lead['closed_at']), $contact, $prichina, $oi, $napr, $predmet
                     ];
                 }
 
