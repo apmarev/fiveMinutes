@@ -12,22 +12,25 @@
     }
 }
 
+
 .column {
+    $p: 10px;
     flex: 0 0 100px;
 
     .column-row {
         width: 100%;
-        min-height: 50px;
-        padding: 10px;
+        padding: $p;
         display: flex;
         flex-flow: column;
         align-items: center;
         justify-content: center;
+        background: $lightGreen;
         text-align: center;
         border-top: 1px solid $black;
         border-right: 1px solid $black;
         &:first-child {
             height: 50px;
+            background: $white;
             font-weight: 700;
         }
         &:last-child {
@@ -35,10 +38,18 @@
         }
 
         &.has-subrows {
-            color: blue;
-            cursor: pointer;
             .sub-row {
+                width: calc(100% + ($p * 2));
+                padding: $p;
                 display: none;
+                background: $lightYellow;
+                border-top: 1px solid $black;
+                &:first-child {
+                    margin-top: $p;
+                }
+                &:last-child {
+                    margin-bottom: ($p * -1);
+                }
             }
 
             &.active {
@@ -48,22 +59,52 @@
             }
         }
     }
-}
 
-.main-column {
-    position: sticky;
-    left: 0;
-    flex: 0 0 300px;
-    z-index: 2;
-    background: $white;
+    &.main-column {
+        position: sticky;
+        left: 0;
+        flex: 0 0 250px;
+        z-index: 2;
+        background: $white;
 
-    .column-row {
-        text-align: left;
-        align-items: flex-start;
-        border-left: 1px solid $black;
-        &:first-child {
-            border-left: none;
-            border-top: none;
+        .column-row {
+            text-align: left;
+            align-items: flex-start;
+            border-left: 1px solid $black;
+            &:first-child {
+                background: none;
+                border-left: none;
+                border-top: none;
+            }
+
+            &.has-subrows {
+                position: relative;
+                cursor: pointer;
+                &::after {
+                    $size: 18px;
+                    content: "\002B";
+                    position: absolute;
+                    top: 14px;
+                    right: $p;
+                    width: $size;
+                    height: $size;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: $white;
+                    font-size: 16px;
+                    line-height: 1;
+                    border-radius: 5px;
+                }
+                &.active::after {
+                    content: "\002D";
+                }
+
+                .sub-row {
+                    margin-left: ($p * -1);
+                    cursor: default;
+                }
+            }
         }
     }
 }

@@ -11095,6 +11095,7 @@ __webpack_require__.r(__webpack_exports__);
 var Option = antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option;
 var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].setDefaultFilterData();
     _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getYears();
     _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getManagers();
     _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getMonthsByYear(2022);
@@ -11109,7 +11110,6 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
         gutter: [20, 20],
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
-          lg: 4,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             mode: "multiple",
             allowClear: true,
@@ -11127,6 +11127,7 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
+          xl: 3,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u0413\u043E\u0434",
@@ -11143,6 +11144,7 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
+          xl: 3,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u041C\u0435\u0441\u044F\u0446",
@@ -11159,6 +11161,7 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
+          xl: 3,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
             htmlType: "submit",
             children: "\u041F\u0435\u0440\u0435\u0439\u0442\u0438"
@@ -11193,6 +11196,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
+  var _filter$data$all$lead, _filter$data$all, _filter$data$all$sum_, _filter$data$all2, _filter$data$all$sum_2, _filter$data$all3, _filter$data$all$sum_3, _filter$data$all4, _filter$data$all$coun, _filter$data$all5, _filter$data$all$coun2, _filter$data$all6, _filter$data$all$coun3, _filter$data$all7, _filter$data$all$coun4, _filter$data$all8, _filter$data$all$coun5, _filter$data$all9, _filter$data$all$coun6, _filter$data$all10, _filter$data$all$coun7, _filter$data$all11, _filter$data$all$aver, _filter$data$all12;
+
   var mainRows = [{
     name: "Количество лидов",
     subrows: []
@@ -11227,14 +11232,6 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
     name: "Средний чек",
     subrows: []
   }];
-
-  var toggleRow = function toggleRow(index) {
-    index = index + 2;
-    document.querySelectorAll(".column > *:nth-child(".concat(index, ")")).forEach(function (item) {
-      item.classList.toggle("active");
-    });
-  };
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "report",
@@ -11249,7 +11246,7 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                 className: item.subrows.length > 0 ? "column-row has-subrows" : "column-row",
                 onClick: function onClick(_) {
-                  return toggleRow(k);
+                  return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].toggleRow(k, _);
                 },
                 children: [item.name, item.subrows.length > 0 && item.subrows.map(function (subitem, sk) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -11260,8 +11257,56 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
               }, k)
             });
           })]
-        }), Object.keys(_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data).length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.map(function (item, k) {
-          var _item$leads_count, _item$sum_month, _item$sum_month2, _item$sum_month3, _item$sum_month4, _item$sum_month5, _item$sum_month6, _item$sum_month7, _item$sum_month8, _item$sum_month9, _item$sum_month10, _item$sum_month11, _item$sum_month12, _item$sum_month13;
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "column",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "column-row",
+            children: "\u041C\u0435\u0441\u044F\u0446"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "column-row",
+            children: (_filter$data$all$lead = (_filter$data$all = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all === void 0 ? void 0 : _filter$data$all.leads_count) !== null && _filter$data$all$lead !== void 0 ? _filter$data$all$lead : 0
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "column-row has-subrows",
+            children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$sum_ = (_filter$data$all2 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all2 === void 0 ? void 0 : _filter$data$all2.sum_month) !== null && _filter$data$all$sum_ !== void 0 ? _filter$data$all$sum_ : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$sum_2 = (_filter$data$all3 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all3 === void 0 ? void 0 : _filter$data$all3.sum_package) !== null && _filter$data$all$sum_2 !== void 0 ? _filter$data$all$sum_2 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$sum_3 = (_filter$data$all4 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all4 === void 0 ? void 0 : _filter$data$all4.sum_pro) !== null && _filter$data$all$sum_3 !== void 0 ? _filter$data$all$sum_3 : 0
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "column-row has-subrows",
+            children: [(_filter$data$all$coun = (_filter$data$all5 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all5 === void 0 ? void 0 : _filter$data$all5.count) !== null && _filter$data$all$coun !== void 0 ? _filter$data$all$coun : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun2 = (_filter$data$all6 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all6 === void 0 ? void 0 : _filter$data$all6.count_month) !== null && _filter$data$all$coun2 !== void 0 ? _filter$data$all$coun2 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun3 = (_filter$data$all7 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all7 === void 0 ? void 0 : _filter$data$all7.count_package) !== null && _filter$data$all$coun3 !== void 0 ? _filter$data$all$coun3 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun4 = (_filter$data$all8 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all8 === void 0 ? void 0 : _filter$data$all8.count_pro) !== null && _filter$data$all$coun4 !== void 0 ? _filter$data$all$coun4 : 0
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "column-row has-subrows",
+            children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun5 = (_filter$data$all9 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all9 === void 0 ? void 0 : _filter$data$all9.count_clients_month) !== null && _filter$data$all$coun5 !== void 0 ? _filter$data$all$coun5 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun6 = (_filter$data$all10 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all10 === void 0 ? void 0 : _filter$data$all10.count_clients_package) !== null && _filter$data$all$coun6 !== void 0 ? _filter$data$all$coun6 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "sub-row",
+              children: (_filter$data$all$coun7 = (_filter$data$all11 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all11 === void 0 ? void 0 : _filter$data$all11.count_clients_pro) !== null && _filter$data$all$coun7 !== void 0 ? _filter$data$all$coun7 : 0
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "column-row",
+            children: (_filter$data$all$aver = (_filter$data$all12 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all12 === void 0 ? void 0 : _filter$data$all12.average_check) !== null && _filter$data$all$aver !== void 0 ? _filter$data$all$aver : 0
+          })]
+        }), Object.keys(_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data).length > 1 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.map(function (item, k) {
+          var _item$leads_count, _item$sum_month, _item$sum_package, _item$sum_pro, _item$count, _item$count_month, _item$count_package, _item$count_pro, _item$count_clients_m, _item$count_clients_p, _item$count_clients_p2, _item$average_check;
 
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
             className: "column",
@@ -11273,43 +11318,43 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
               children: (_item$leads_count = item === null || item === void 0 ? void 0 : item.leads_count) !== null && _item$leads_count !== void 0 ? _item$leads_count : 0
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: [(_item$sum_month = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month !== void 0 ? _item$sum_month : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month2 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month2 !== void 0 ? _item$sum_month2 : 0
+                children: (_item$sum_month = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month !== void 0 ? _item$sum_month : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month3 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month3 !== void 0 ? _item$sum_month3 : 0
+                children: (_item$sum_package = item === null || item === void 0 ? void 0 : item.sum_package) !== null && _item$sum_package !== void 0 ? _item$sum_package : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month4 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month4 !== void 0 ? _item$sum_month4 : 0
+                children: (_item$sum_pro = item === null || item === void 0 ? void 0 : item.sum_pro) !== null && _item$sum_pro !== void 0 ? _item$sum_pro : 0
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: [(_item$sum_month5 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month5 !== void 0 ? _item$sum_month5 : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: [(_item$count = item === null || item === void 0 ? void 0 : item.count) !== null && _item$count !== void 0 ? _item$count : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month6 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month6 !== void 0 ? _item$sum_month6 : 0
+                children: (_item$count_month = item === null || item === void 0 ? void 0 : item.count_month) !== null && _item$count_month !== void 0 ? _item$count_month : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month7 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month7 !== void 0 ? _item$sum_month7 : 0
+                children: (_item$count_package = item === null || item === void 0 ? void 0 : item.count_package) !== null && _item$count_package !== void 0 ? _item$count_package : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month8 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month8 !== void 0 ? _item$sum_month8 : 0
+                children: (_item$count_pro = item === null || item === void 0 ? void 0 : item.count_pro) !== null && _item$count_pro !== void 0 ? _item$count_pro : 0
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: [(_item$sum_month9 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month9 !== void 0 ? _item$sum_month9 : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month10 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month10 !== void 0 ? _item$sum_month10 : 0
+                children: (_item$count_clients_m = item === null || item === void 0 ? void 0 : item.count_clients_month) !== null && _item$count_clients_m !== void 0 ? _item$count_clients_m : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month11 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month11 !== void 0 ? _item$sum_month11 : 0
+                children: (_item$count_clients_p = item === null || item === void 0 ? void 0 : item.count_clients_package) !== null && _item$count_clients_p !== void 0 ? _item$count_clients_p : 0
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "sub-row",
-                children: (_item$sum_month12 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month12 !== void 0 ? _item$sum_month12 : 0
+                children: (_item$count_clients_p2 = item === null || item === void 0 ? void 0 : item.count_clients_pro) !== null && _item$count_clients_p2 !== void 0 ? _item$count_clients_p2 : 0
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
               className: "column-row",
-              children: (_item$sum_month13 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month13 !== void 0 ? _item$sum_month13 : 0
+              children: (_item$average_check = item === null || item === void 0 ? void 0 : item.average_check) !== null && _item$average_check !== void 0 ? _item$average_check : 0
             })]
           }, k);
         })]
@@ -11350,11 +11395,7 @@ var filterController = /*#__PURE__*/function () {
   function filterController() {
     _classCallCheck(this, filterController);
 
-    _defineProperty(this, "filter", {
-      managers: [],
-      year: 0,
-      month: 0
-    });
+    _defineProperty(this, "filter", {});
 
     _defineProperty(this, "years", []);
 
@@ -11368,6 +11409,21 @@ var filterController = /*#__PURE__*/function () {
   }
 
   _createClass(filterController, [{
+    key: "setDefaultFilterData",
+    value: function setDefaultFilterData() {
+      this.filter = {
+        managers: [],
+        year: 0,
+        month: 0
+      };
+      this.years = [];
+      this.months = [];
+      this.managers = [];
+      this.data = {
+        all: {}
+      };
+    }
+  }, {
     key: "getYears",
     value: function getYears() {
       var _this = this;
@@ -11422,11 +11478,28 @@ var filterController = /*#__PURE__*/function () {
         });
       }
 
+      this.closeAllRows();
       axios.get("/api/info/".concat(filter)).then(function (result) {
         console.log(result.data);
         _this4.data = result.data;
       })["catch"](function (error) {
         return console.log(error);
+      });
+    }
+  }, {
+    key: "toggleRow",
+    value: function toggleRow(index, e) {
+      if (!e.target.classList.contains("column-row")) return;
+      index = index + 2;
+      document.querySelectorAll(".column > *:nth-child(".concat(index, ")")).forEach(function (item) {
+        item.classList.toggle("active");
+      });
+    }
+  }, {
+    key: "closeAllRows",
+    value: function closeAllRows() {
+      document.querySelectorAll(".column > *").forEach(function (item) {
+        item.classList.remove("active");
       });
     }
   }]);

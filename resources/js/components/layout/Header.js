@@ -9,6 +9,7 @@ const { Option } = Select
 export const Header = observer(() => {
 
     useEffect(() => {
+        filter.setDefaultFilterData()
         filter.getYears()
         filter.getManagers()
         filter.getMonthsByYear(2022)
@@ -18,7 +19,7 @@ export const Header = observer(() => {
         <>
             <form onSubmit={e => filter.getData(e)} className="header">
                 <Row gutter={[20,20]}>
-                    <Col xs={24} lg={4}>
+                    <Col xs={24}>
                         <Select
                             mode="multiple"
                             allowClear
@@ -30,7 +31,7 @@ export const Header = observer(() => {
                             ))}
                         </Select>
                     </Col>
-                    <Col xs={24} lg={4}>
+                    <Col xs={24} lg={4} xl={3}>
                         <Select
                             allowClear
                             placeholder="Год"
@@ -41,7 +42,7 @@ export const Header = observer(() => {
                             ))}
                         </Select>
                     </Col>
-                    <Col xs={24} lg={4}>
+                    <Col xs={24} lg={4} xl={3}>
                         <Select
                             allowClear
                             placeholder="Месяц"
@@ -61,7 +62,7 @@ export const Header = observer(() => {
                     {/*        <Option key="2" value="2">2</Option>*/}
                     {/*    </Select>*/}
                     {/*</Col>*/}
-                    <Col xs={24} lg={4}>
+                    <Col xs={24} lg={4} xl={3}>
                         <Button htmlType="submit">Перейти</Button>
                     </Col>
                 </Row>
