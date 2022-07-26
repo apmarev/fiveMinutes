@@ -11037,8 +11037,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _layout_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout/Header */ "./resources/js/components/layout/Header.js");
-/* harmony import */ var _reports_Manager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reports/Manager */ "./resources/js/components/reports/Manager.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
+/* harmony import */ var _reports_Plan__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./reports/Plan */ "./resources/js/components/reports/Plan.js");
+/* harmony import */ var _reports_Common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./reports/Common */ "./resources/js/components/reports/Common.js");
+/* harmony import */ var _reports_Manager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./reports/Manager */ "./resources/js/components/reports/Manager.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
 
 
 
@@ -11048,14 +11054,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Reports = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_layout_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_reports_Manager__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_layout_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {}), _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_4__["default"].filterType === "1" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_reports_Plan__WEBPACK_IMPORTED_MODULE_5__["default"], {}), _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_4__["default"].filterType === "2" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_reports_Common__WEBPACK_IMPORTED_MODULE_6__["default"], {}), _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_4__["default"].filterType === "3" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_reports_Manager__WEBPACK_IMPORTED_MODULE_7__["default"], {})]
   });
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Reports);
 
 if (document.getElementById('app')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Reports, {}), document.getElementById('app'));
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(Reports, {}), document.getElementById('app'));
 }
 
 /***/ }),
@@ -11094,30 +11100,68 @@ __webpack_require__.r(__webpack_exports__);
 
 var Option = antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option;
 var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].setDefaultFilterData();
-    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getYears();
-    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getManagers();
-    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getMonthsByYear(2022);
-  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
       onSubmit: function onSubmit(e) {
         return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getData(e);
       },
       className: "header",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
         gutter: [20, 20],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        className: "filter-type",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          xs: 24,
+          lg: 4,
+          xl: 3,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            value: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filterType,
+            onChange: function onChange(e) {
+              _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].setDefaultFilterData();
+              _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filterType = e;
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+              value: "1",
+              children: "\u041F\u043B\u0430\u043D"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+              value: "2",
+              children: "\u041E\u0431\u0449\u0438\u0439 \u043E\u0442\u0447\u0435\u0442"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+              value: "3",
+              children: "\u041C\u0435\u043D\u0435\u0434\u0436\u0435\u0440"
+            })]
+          })
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        gutter: [20, 20],
+        children: [_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filterType === "3" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             mode: "multiple",
             allowClear: true,
             placeholder: "\u041C\u0435\u043D\u0435\u0434\u0436\u0435\u0440",
+            value: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.managers,
             onChange: function onChange(e) {
               return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.managers = e;
             },
             children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].managers.map(function (item, k) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+                value: item.id,
+                children: item.name
+              }, k);
+            })
+          })
+        }), _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filterType !== "3" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          xs: 24,
+          lg: 4,
+          xl: 3,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            allowClear: true,
+            placeholder: "\u0412\u043E\u0440\u043E\u043D\u043A\u0430",
+            value: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.pipeline,
+            onChange: function onChange(e) {
+              return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.pipeline = e;
+            },
+            children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].pipelines.map(function (item, k) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
                 value: item.id,
                 children: item.name
@@ -11131,13 +11175,16 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u0413\u043E\u0434",
+            value: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.year,
             onChange: function onChange(e) {
               return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.year = e;
             },
             children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].years.map(function (item, k) {
+              var _item$year, _item$year2;
+
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-                value: item.year,
-                children: item.year
+                value: (_item$year = item === null || item === void 0 ? void 0 : item.year) !== null && _item$year !== void 0 ? _item$year : item,
+                children: (_item$year2 = item === null || item === void 0 ? void 0 : item.year) !== null && _item$year2 !== void 0 ? _item$year2 : item
               }, k);
             })
           })
@@ -11148,13 +11195,16 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u041C\u0435\u0441\u044F\u0446",
+            value: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.month,
             onChange: function onChange(e) {
               return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.month = e;
             },
             children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].months.map(function (item, k) {
+              var _item$month, _item$month_name;
+
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-                value: item.month,
-                children: item.month_name
+                value: (_item$month = item === null || item === void 0 ? void 0 : item.month) !== null && _item$month !== void 0 ? _item$month : item.id,
+                children: (_item$month_name = item === null || item === void 0 ? void 0 : item.month_name) !== null && _item$month_name !== void 0 ? _item$month_name : item.name
               }, k);
             })
           })
@@ -11167,11 +11217,42 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
             children: "\u041F\u0435\u0440\u0435\u0439\u0442\u0438"
           })
         })]
-      })
+      })]
     })
   });
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/Common.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/reports/Common.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Common": () => (/* binding */ Common),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+var Common = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].setDefaultFilterData();
+  }, []);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {});
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Common);
 
 /***/ }),
 
@@ -11188,8 +11269,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -11198,6 +11281,12 @@ __webpack_require__.r(__webpack_exports__);
 var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
   var _filter$data$all$lead, _filter$data$all, _filter$data$all$sum_, _filter$data$all2, _filter$data$all$sum_2, _filter$data$all3, _filter$data$all$sum_3, _filter$data$all4, _filter$data$all$coun, _filter$data$all5, _filter$data$all$coun2, _filter$data$all6, _filter$data$all$coun3, _filter$data$all7, _filter$data$all$coun4, _filter$data$all8, _filter$data$all$coun5, _filter$data$all9, _filter$data$all$coun6, _filter$data$all10, _filter$data$all$coun7, _filter$data$all11, _filter$data$all$aver, _filter$data$all12;
 
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].setDefaultFilterData();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].getYears();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].getManagers();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].getMonthsByYear(2022);
+  }, []);
   var mainRows = [{
     name: "Количество лидов",
     subrows: []
@@ -11232,24 +11321,24 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
     name: "Средний чек",
     subrows: []
   }];
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "report",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "report-columns",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "main-column column",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "main-column column bold",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "column-row"
           }), mainRows.map(function (item, k) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: item.subrows.length > 0 ? "column-row has-subrows" : "column-row",
                 onClick: function onClick(_) {
-                  return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].toggleRow(k, _);
+                  return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].toggleRow(k, _);
                 },
                 children: [item.name, item.subrows.length > 0 && item.subrows.map(function (subitem, sk) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                     className: "sub-row",
                     children: subitem.name
                   }, sk);
@@ -11257,102 +11346,102 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
               }, k)
             });
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "column",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "month-column column bold",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "column-row",
             children: "\u041C\u0435\u0441\u044F\u0446"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "column-row",
-            children: (_filter$data$all$lead = (_filter$data$all = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all === void 0 ? void 0 : _filter$data$all.leads_count) !== null && _filter$data$all$lead !== void 0 ? _filter$data$all$lead : 0
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: (_filter$data$all$lead = (_filter$data$all = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all === void 0 ? void 0 : _filter$data$all.leads_count) !== null && _filter$data$all$lead !== void 0 ? _filter$data$all$lead : 0
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "column-row has-subrows",
-            children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$sum_ = (_filter$data$all2 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all2 === void 0 ? void 0 : _filter$data$all2.sum_month) !== null && _filter$data$all$sum_ !== void 0 ? _filter$data$all$sum_ : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$sum_ = (_filter$data$all2 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all2 === void 0 ? void 0 : _filter$data$all2.sum_month) !== null && _filter$data$all$sum_ !== void 0 ? _filter$data$all$sum_ : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$sum_2 = (_filter$data$all3 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all3 === void 0 ? void 0 : _filter$data$all3.sum_package) !== null && _filter$data$all$sum_2 !== void 0 ? _filter$data$all$sum_2 : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$sum_2 = (_filter$data$all3 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all3 === void 0 ? void 0 : _filter$data$all3.sum_package) !== null && _filter$data$all$sum_2 !== void 0 ? _filter$data$all$sum_2 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$sum_3 = (_filter$data$all4 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all4 === void 0 ? void 0 : _filter$data$all4.sum_pro) !== null && _filter$data$all$sum_3 !== void 0 ? _filter$data$all$sum_3 : 0
+              children: (_filter$data$all$sum_3 = (_filter$data$all4 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all4 === void 0 ? void 0 : _filter$data$all4.sum_pro) !== null && _filter$data$all$sum_3 !== void 0 ? _filter$data$all$sum_3 : 0
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "column-row has-subrows",
-            children: [(_filter$data$all$coun = (_filter$data$all5 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all5 === void 0 ? void 0 : _filter$data$all5.count) !== null && _filter$data$all$coun !== void 0 ? _filter$data$all$coun : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: [(_filter$data$all$coun = (_filter$data$all5 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all5 === void 0 ? void 0 : _filter$data$all5.count) !== null && _filter$data$all$coun !== void 0 ? _filter$data$all$coun : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun2 = (_filter$data$all6 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all6 === void 0 ? void 0 : _filter$data$all6.count_month) !== null && _filter$data$all$coun2 !== void 0 ? _filter$data$all$coun2 : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$coun2 = (_filter$data$all6 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all6 === void 0 ? void 0 : _filter$data$all6.count_month) !== null && _filter$data$all$coun2 !== void 0 ? _filter$data$all$coun2 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun3 = (_filter$data$all7 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all7 === void 0 ? void 0 : _filter$data$all7.count_package) !== null && _filter$data$all$coun3 !== void 0 ? _filter$data$all$coun3 : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$coun3 = (_filter$data$all7 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all7 === void 0 ? void 0 : _filter$data$all7.count_package) !== null && _filter$data$all$coun3 !== void 0 ? _filter$data$all$coun3 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun4 = (_filter$data$all8 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all8 === void 0 ? void 0 : _filter$data$all8.count_pro) !== null && _filter$data$all$coun4 !== void 0 ? _filter$data$all$coun4 : 0
+              children: (_filter$data$all$coun4 = (_filter$data$all8 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all8 === void 0 ? void 0 : _filter$data$all8.count_pro) !== null && _filter$data$all$coun4 !== void 0 ? _filter$data$all$coun4 : 0
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "column-row has-subrows",
-            children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun5 = (_filter$data$all9 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all9 === void 0 ? void 0 : _filter$data$all9.count_clients_month) !== null && _filter$data$all$coun5 !== void 0 ? _filter$data$all$coun5 : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$coun5 = (_filter$data$all9 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all9 === void 0 ? void 0 : _filter$data$all9.count_clients_month) !== null && _filter$data$all$coun5 !== void 0 ? _filter$data$all$coun5 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun6 = (_filter$data$all10 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all10 === void 0 ? void 0 : _filter$data$all10.count_clients_package) !== null && _filter$data$all$coun6 !== void 0 ? _filter$data$all$coun6 : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: (_filter$data$all$coun6 = (_filter$data$all10 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all10 === void 0 ? void 0 : _filter$data$all10.count_clients_package) !== null && _filter$data$all$coun6 !== void 0 ? _filter$data$all$coun6 : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "sub-row",
-              children: (_filter$data$all$coun7 = (_filter$data$all11 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all11 === void 0 ? void 0 : _filter$data$all11.count_clients_pro) !== null && _filter$data$all$coun7 !== void 0 ? _filter$data$all$coun7 : 0
+              children: (_filter$data$all$coun7 = (_filter$data$all11 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all11 === void 0 ? void 0 : _filter$data$all11.count_clients_pro) !== null && _filter$data$all$coun7 !== void 0 ? _filter$data$all$coun7 : 0
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "column-row",
-            children: (_filter$data$all$aver = (_filter$data$all12 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.all) === null || _filter$data$all12 === void 0 ? void 0 : _filter$data$all12.average_check) !== null && _filter$data$all$aver !== void 0 ? _filter$data$all$aver : 0
+            children: (_filter$data$all$aver = (_filter$data$all12 = _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.all) === null || _filter$data$all12 === void 0 ? void 0 : _filter$data$all12.average_check) !== null && _filter$data$all$aver !== void 0 ? _filter$data$all$aver : 0
           })]
-        }), Object.keys(_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data).length > 1 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.map(function (item, k) {
+        }), Object.keys(_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data).length > 1 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.days.length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.days.map(function (item, k) {
           var _item$leads_count, _item$sum_month, _item$sum_package, _item$sum_pro, _item$count, _item$count_month, _item$count_package, _item$count_pro, _item$count_clients_m, _item$count_clients_p, _item$count_clients_p2, _item$average_check;
 
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-            className: "column",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: item.date === "Недельный план" ? "column bold" : "column",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "column-row",
               children: item.date
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "column-row",
               children: (_item$leads_count = item === null || item === void 0 ? void 0 : item.leads_count) !== null && _item$leads_count !== void 0 ? _item$leads_count : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$sum_month = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month !== void 0 ? _item$sum_month : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$sum_package = item === null || item === void 0 ? void 0 : item.sum_package) !== null && _item$sum_package !== void 0 ? _item$sum_package : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$sum_pro = item === null || item === void 0 ? void 0 : item.sum_pro) !== null && _item$sum_pro !== void 0 ? _item$sum_pro : 0
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: [(_item$count = item === null || item === void 0 ? void 0 : item.count) !== null && _item$count !== void 0 ? _item$count : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: [(_item$count = item === null || item === void 0 ? void 0 : item.count) !== null && _item$count !== void 0 ? _item$count : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_month = item === null || item === void 0 ? void 0 : item.count_month) !== null && _item$count_month !== void 0 ? _item$count_month : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_package = item === null || item === void 0 ? void 0 : item.count_package) !== null && _item$count_package !== void 0 ? _item$count_package : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_pro = item === null || item === void 0 ? void 0 : item.count_pro) !== null && _item$count_pro !== void 0 ? _item$count_pro : 0
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "column-row has-subrows",
-              children: ["-", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_clients_m = item === null || item === void 0 ? void 0 : item.count_clients_month) !== null && _item$count_clients_m !== void 0 ? _item$count_clients_m : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_clients_p = item === null || item === void 0 ? void 0 : item.count_clients_package) !== null && _item$count_clients_p !== void 0 ? _item$count_clients_p : 0
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "sub-row",
                 children: (_item$count_clients_p2 = item === null || item === void 0 ? void 0 : item.count_clients_pro) !== null && _item$count_clients_p2 !== void 0 ? _item$count_clients_p2 : 0
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "column-row",
               children: (_item$average_check = item === null || item === void 0 ? void 0 : item.average_check) !== null && _item$average_check !== void 0 ? _item$average_check : 0
             })]
@@ -11363,6 +11452,57 @@ var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function
   });
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Manager);
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/Plan.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/reports/Plan.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Plan": () => (/* binding */ Plan),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+var Plan = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].setDefaultFilterData();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].getFilterPlan();
+  }, []);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "report",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "report-columns",
+        children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "main-column column bold",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "column-row"
+          }), _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_2__["default"].data.map(function (item, k) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              className: "column-row",
+              children: item.manager_name
+            }, k);
+          })]
+        })
+      })
+    })
+  });
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Plan);
 
 /***/ }),
 
@@ -11395,13 +11535,17 @@ var filterController = /*#__PURE__*/function () {
   function filterController() {
     _classCallCheck(this, filterController);
 
+    _defineProperty(this, "filterType", "1");
+
     _defineProperty(this, "filter", {});
+
+    _defineProperty(this, "managers", []);
+
+    _defineProperty(this, "pipelines", []);
 
     _defineProperty(this, "years", []);
 
     _defineProperty(this, "months", []);
-
-    _defineProperty(this, "managers", []);
 
     _defineProperty(this, "data", {});
 
@@ -11413,23 +11557,38 @@ var filterController = /*#__PURE__*/function () {
     value: function setDefaultFilterData() {
       this.filter = {
         managers: [],
-        year: 0,
-        month: 0
+        year: null,
+        month: null
       };
+      this.managers = [];
+      this.pipelines = [];
       this.years = [];
       this.months = [];
-      this.managers = [];
       this.data = {
         all: {}
       };
     }
   }, {
-    key: "getYears",
-    value: function getYears() {
+    key: "getFilterPlan",
+    value: function getFilterPlan() {
       var _this = this;
 
+      axios.get("/api/filter_plan").then(function (result) {
+        console.log(result.data);
+        _this.pipelines = result.data.pipelines;
+        _this.years = result.data.years;
+        _this.months = result.data.month;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }, {
+    key: "getYears",
+    value: function getYears() {
+      var _this2 = this;
+
       axios.get("/api/years").then(function (result) {
-        _this.years = result.data;
+        _this2.years = result.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -11437,10 +11596,10 @@ var filterController = /*#__PURE__*/function () {
   }, {
     key: "getMonthsByYear",
     value: function getMonthsByYear(year) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/month/".concat(year)).then(function (result) {
-        _this2.months = result.data;
+        _this3.months = result.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -11448,10 +11607,10 @@ var filterController = /*#__PURE__*/function () {
   }, {
     key: "getManagers",
     value: function getManagers() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/managers").then(function (result) {
-        _this3.managers = result.data;
+        _this4.managers = result.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -11459,13 +11618,23 @@ var filterController = /*#__PURE__*/function () {
   }, {
     key: "getData",
     value: function getData(e) {
-      var _this4 = this;
+      var _this5 = this;
 
       e.preventDefault();
       var filter = "";
 
+      if (this.filterType === "1") {
+        filter = "/api/plan/";
+      } else if (this.filterType === "2") {} else {
+        filter = "/api/info/";
+      }
+
       if (this.filter.year > 0) {
         filter += "?year=".concat(this.filter.year);
+      }
+
+      if (this.filter.pipeline > 0) {
+        filter += "&pipeline_id=".concat(this.filter.pipeline);
       }
 
       if (this.filter.month > 0) {
@@ -11479,9 +11648,9 @@ var filterController = /*#__PURE__*/function () {
       }
 
       this.closeAllRows();
-      axios.get("/api/info".concat(filter)).then(function (result) {
+      axios.get(filter).then(function (result) {
         console.log(result.data);
-        _this4.data = result.data;
+        _this5.data = result.data;
       })["catch"](function (error) {
         return console.log(error);
       });

@@ -1,7 +1,15 @@
 import { observer } from "mobx-react-lite"
+import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
 
 export const Manager = observer(() => {
+
+    useEffect(() => {
+        filter.setDefaultFilterData()
+        filter.getYears()
+        filter.getManagers()
+        filter.getMonthsByYear(2022)
+    }, [])
 
     const mainRows = [
         {
@@ -42,7 +50,7 @@ export const Manager = observer(() => {
         <>
             <div className="report">
                 <div className="report-columns">
-                    <div className="main-column column">
+                    <div className="main-column column bold">
                         <div className="column-row"></div>
                         {mainRows.map((item, k) => (
                             <>
@@ -61,11 +69,11 @@ export const Manager = observer(() => {
                             </>
                         ))}
                     </div>
-                    <div className="column">
+                    <div className="month-column column bold">
                         <div className="column-row">Месяц</div>
                         <div className="column-row">{filter.data.all?.leads_count ?? 0}</div>
                         <div className="column-row has-subrows">
-                            -
+                            &nbsp;
                             <div className="sub-row">{filter.data.all?.sum_month ?? 0}</div>
                             <div className="sub-row">{filter.data.all?.sum_package ?? 0}</div>
                             <div className="sub-row">{filter.data.all?.sum_pro ?? 0}</div>
@@ -77,7 +85,7 @@ export const Manager = observer(() => {
                             <div className="sub-row">{filter.data.all?.count_pro ?? 0}</div>
                         </div>
                         <div className="column-row has-subrows">
-                            -
+                            &nbsp;
                             <div className="sub-row">{filter.data.all?.count_clients_month ?? 0}</div>
                             <div className="sub-row">{filter.data.all?.count_clients_package ?? 0}</div>
                             <div className="sub-row">{filter.data.all?.count_clients_pro ?? 0}</div>
@@ -88,11 +96,14 @@ export const Manager = observer(() => {
                     </div>
                     {Object.keys(filter.data).length > 1 && filter.data.days.length > 0 &&
                         filter.data.days.map((item, k) => (
-                            <div className="column" key={k}>
+                            <div
+                                className={(item.date === "Недельный план") ? "column bold" : "column"}
+                                key={k}
+                            >
                                 <div className="column-row">{item.date}</div>
                                 <div className="column-row">{item?.leads_count ?? 0}</div>
                                 <div className="column-row has-subrows">
-                                    -
+                                    &nbsp;
                                     <div className="sub-row">{item?.sum_month ?? 0}</div>
                                     <div className="sub-row">{item?.sum_package ?? 0}</div>
                                     <div className="sub-row">{item?.sum_pro ?? 0}</div>
@@ -104,7 +115,7 @@ export const Manager = observer(() => {
                                     <div className="sub-row">{item?.count_pro ?? 0}</div>
                                 </div>
                                 <div className="column-row has-subrows">
-                                    -
+                                    &nbsp;
                                     <div className="sub-row">{item?.count_clients_month ?? 0}</div>
                                     <div className="sub-row">{item?.count_clients_package ?? 0}</div>
                                     <div className="sub-row">{item?.count_clients_pro ?? 0}</div>

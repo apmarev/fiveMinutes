@@ -38298,9 +38298,13 @@ body {
 .header .ant-select {
   width: 100%;
 }
+.header .filter-type {
+  margin-bottom: 20px;
+}
 
 .report {
   position: relative;
+  margin: 0 0 50px;
   padding: 0 15px;
   overflow: hidden;
 }
@@ -38311,22 +38315,30 @@ body {
 }
 
 .column {
-  flex: 0 0 100px;
+  flex: 0 0 55px;
+}
+.column.bold {
+  font-weight: 700;
+}
+.column.bold .column-row:first-child {
+  font-size: 9px;
+  line-height: 1;
 }
 .column .column-row {
   width: 100%;
-  padding: 10px;
+  padding: 2px;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
   background: #b6d7a8;
+  font-size: 11px;
   text-align: center;
   border-top: 1px solid #000;
   border-right: 1px solid #000;
 }
 .column .column-row:first-child {
-  height: 50px;
+  height: 23px;
   background: #fff;
   font-weight: 700;
 }
@@ -38334,17 +38346,17 @@ body {
   border-bottom: 1px solid #000;
 }
 .column .column-row.has-subrows .sub-row {
-  width: calc(100% + 20px);
-  padding: 10px;
+  width: calc(100% + 4px);
+  padding: 2px;
   display: none;
   background: #fff2cc;
   border-top: 1px solid #000;
 }
 .column .column-row.has-subrows .sub-row:first-child {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 .column .column-row.has-subrows .sub-row:last-child {
-  margin-bottom: -10px;
+  margin-bottom: -2px;
 }
 .column .column-row.has-subrows.active .sub-row {
   display: block;
@@ -38353,7 +38365,7 @@ body {
   position: -webkit-sticky;
   position: sticky;
   left: 0;
-  flex: 0 0 250px;
+  flex: 0 0 160px;
   z-index: 2;
   background: #fff;
 }
@@ -38374,15 +38386,15 @@ body {
 .column.main-column .column-row.has-subrows::after {
   content: "+";
   position: absolute;
-  top: 14px;
-  right: 10px;
-  width: 18px;
-  height: 18px;
+  top: 4px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
-  font-size: 16px;
+  font-size: 8px;
   line-height: 1;
   border-radius: 5px;
 }
@@ -38390,6 +38402,11 @@ body {
   content: "-";
 }
 .column.main-column .column-row.has-subrows .sub-row {
-  margin-left: -10px;
+  margin-left: -2px;
   cursor: default;
+}
+.column.month-column {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 160px;
 }

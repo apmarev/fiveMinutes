@@ -8,37 +8,63 @@ const { Option } = Select
 
 export const Header = observer(() => {
 
-    useEffect(() => {
-        filter.setDefaultFilterData()
-        filter.getYears()
-        filter.getManagers()
-        filter.getMonthsByYear(2022)
-    }, [])
-
     return (
         <>
             <form onSubmit={e => filter.getData(e)} className="header">
-                <Row gutter={[20,20]}>
-                    <Col xs={24}>
+                <Row gutter={[20,20]} className="filter-type">
+                    <Col xs={24} lg={4} xl={3}>
                         <Select
-                            mode="multiple"
-                            allowClear
-                            placeholder="Менеджер"
-                            onChange={e => filter.filter.managers = e}
+                            value={filter.filterType}
+                            onChange={e => {
+                                filter.setDefaultFilterData()
+                                filter.filterType = e
+                            }}
                         >
-                            {filter.managers.map((item, k) => (
-                                <Option key={k} value={item.id}>{item.name}</Option>
-                            ))}
+                            <Option value="1">План</Option>
+                            <Option value="2">Общий отчет</Option>
+                            <Option value="3">Менеджер</Option>
                         </Select>
                     </Col>
+                </Row>
+                <Row gutter={[20,20]}>
+                    {filter.filterType === "3" &&
+                        <Col xs={24}>
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                placeholder="Менеджер"
+                                value={filter.filter.managers}
+                                onChange={e => filter.filter.managers = e}
+                            >
+                                {filter.managers.map((item, k) => (
+                                    <Option key={k} value={item.id}>{item.name}</Option>
+                                ))}
+                            </Select>
+                        </Col>
+                    }
+                    {filter.filterType !== "3" &&
+                        <Col xs={24} lg={4} xl={3}>
+                            <Select
+                                allowClear
+                                placeholder="Воронка"
+                                value={filter.filter.pipeline}
+                                onChange={e => filter.filter.pipeline = e}
+                            >
+                                {filter.pipelines.map((item, k) => (
+                                    <Option key={k} value={item.id}>{item.name}</Option>
+                                ))}
+                            </Select>
+                        </Col>
+                    }
                     <Col xs={24} lg={4} xl={3}>
                         <Select
                             allowClear
                             placeholder="Год"
+                            value={filter.filter.year}
                             onChange={e => filter.filter.year = e}
                         >
                             {filter.years.map((item, k) => (
-                                <Option key={k} value={item.year}>{item.year}</Option>
+                                <Option key={k} value={item?.year ?? item}>{item?.year ?? item}</Option>
                             ))}
                         </Select>
                     </Col>
@@ -46,22 +72,14 @@ export const Header = observer(() => {
                         <Select
                             allowClear
                             placeholder="Месяц"
+                            value={filter.filter.month}
                             onChange={e => filter.filter.month = e}
                         >
                             {filter.months.map((item, k) => (
-                                <Option key={k} value={item.month}>{item.month_name}</Option>
+                                <Option key={k} value={item?.month ?? item.id}>{item?.month_name ?? item.name}</Option>
                             ))}
                         </Select>
                     </Col>
-                    {/*<Col xs={24} lg={4}>*/}
-                    {/*    <Select*/}
-                    {/*        allowClear*/}
-                    {/*        placeholder="Воронка"*/}
-                    {/*    >*/}
-                    {/*        <Option key="1" value="1">1</Option>*/}
-                    {/*        <Option key="2" value="2">2</Option>*/}
-                    {/*    </Select>*/}
-                    {/*</Col>*/}
                     <Col xs={24} lg={4} xl={3}>
                         <Button htmlType="submit">Перейти</Button>
                     </Col>

@@ -2,10 +2,12 @@ import {makeAutoObservable} from "mobx"
 import moment from "moment"
 
 class filterController {
+    filterType = "1"
     filter = {}
+    managers = []
+    pipelines = []
     years = []
     months = []
-    managers = []
 
     data = {}
 
@@ -16,15 +18,27 @@ class filterController {
     setDefaultFilterData() {
         this.filter = {
             managers: [],
-            year: 0,
-            month: 0
+            year: null,
+            month: null
         }
+        this.managers = []
+        this.pipelines = []
         this.years = []
         this.months = []
-        this.managers = []
         this.data = {
             all: {}
         }
+    }
+
+    getFilterPlan() {
+        axios.get("/api/filter_plan")
+            .then(result => {
+                console.log(result.data)
+                this.pipelines = result.data.pipelines
+                this.years = result.data.years
+                this.months = result.data.month
+            })
+            .catch(error => console.log(error))
     }
 
     getYears() {
@@ -54,8 +68,18 @@ class filterController {
     getData(e) {
         e.preventDefault()
         let filter = ""
+        if(this.filterType === "1"){
+            filter = "/api/plan/"
+        } else if(this.filterType === "2") {
+
+        } else {
+            filter = "/api/info/"
+        }
         if(this.filter.year > 0){
             filter += `?year=${this.filter.year}`
+        }
+        if(this.filter.pipeline > 0){
+            filter += `&pipeline_id=${this.filter.pipeline}`
         }
         if(this.filter.month > 0){
             filter += `&month=${this.filter.month}`
@@ -65,7 +89,7 @@ class filterController {
         }
 
         this.closeAllRows()
-        axios.get(`/api/info${filter}`)
+        axios.get(filter)
             .then(result => {
                 console.log(result.data)
                 this.data = result.data
