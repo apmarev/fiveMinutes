@@ -152,7 +152,7 @@ class AmoCrmController extends Controller {
             foreach($d as $k => $v) {
                 if($k != 'id' && $k != 'manager_id' && $k != 'manager_name' && $k != 'day' && $k != 'month' && $k != 'month_name' && $k != 'year') {
                     if(isset($ret['days'][$key][$k]))
-                        $ret['days'][$key][$k] = $ret[$k] + $v;
+                        $ret['days'][$key][$k] = $ret['days'][$key][$k] + $v;
                     else
                         $ret['days'][$key][$k] = $v;
 
@@ -235,10 +235,8 @@ class AmoCrmController extends Controller {
 
         $ret = [];
 
-        $managers = ManagersInfo::where('month', $request->input('month'))->where('year', $request->input('year'));
-
         foreach($request->input('managers') as $manager) {
-            $item = $managers->where('manager_id', $manager)->get()->toArray();
+            $item = ManagersInfo::where('month', $request->input('month'))->where('year', $request->input('year'))->where('manager_id', $manager)->get()->toArray();
             $ret = array_merge($ret, $item);
         }
 

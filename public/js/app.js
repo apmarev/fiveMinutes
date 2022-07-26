@@ -11479,7 +11479,7 @@ var filterController = /*#__PURE__*/function () {
       }
 
       this.closeAllRows();
-      axios.get("/api/info/".concat(filter)).then(function (result) {
+      axios.get("/api/info".concat(filter)).then(function (result) {
         console.log(result.data);
         _this4.data = result.data;
       })["catch"](function (error) {

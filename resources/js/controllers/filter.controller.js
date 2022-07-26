@@ -63,8 +63,9 @@ class filterController {
         if(this.filter.managers.length > 0){
             this.filter.managers.map(item => filter = `${filter}&managers[]=${item}`)
         }
+
         this.closeAllRows()
-        axios.get(`/api/info/${filter}`)
+        axios.get(`/api/info${filter}`)
             .then(result => {
                 console.log(result.data)
                 this.data = result.data
