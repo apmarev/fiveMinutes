@@ -50,21 +50,100 @@ class AmoCrmController extends Controller {
         return ManagersInfo::where('year', $year)->distinct()->get(['month_name', 'month']);
     }
 
-    protected static function calculateManagers($data) {
+    protected static function format($day, $month) {
+        return mb_substr("0{$day}", -2) . "." . mb_substr("0{$month}", -2);
+    }
+
+    protected static function calculateManagers($data, $month, $year) {
         $ret = [];
 
+        $count_days = date('t', mktime(0, 0, 0, $month, 1, $year));
+
+        for($i=1;$i<=$count_days;$i++) {
+            $ret['days'][$i] = [];
+        }
+
+        $all = [];
+
         foreach($data as $d) {
+            $key = $d['day'];
             foreach($d as $k => $v) {
                 if($k != 'id' && $k != 'manager_id' && $k != 'manager_name' && $k != 'day' && $k != 'month' && $k != 'month_name' && $k != 'year') {
-                    if(isset($ret[$k]))
-                        $ret[$k] = $ret[$k] + $v;
+                    if(isset($ret['days'][$key][$k]))
+                        $ret['days'][$key][$k] = $ret[$k] + $v;
                     else
-                        $ret[$k] = $v;
+                        $ret['days'][$key][$k] = $v;
+
+                    if(isset($all[$k]))
+                        $all[$k] = $all[$k] + $v;
+                    else
+                        $all[$k] = $v;
                 }
             }
         }
 
-        return $ret;
+        $week1 = [];
+        $week2 = [];
+        $week3 = [];
+        $week4 = [];
+        $size = [];
+        for($i=1;$i<=$count_days;$i++) {
+
+            foreach($ret['days'][$i] as $k => $v) {
+                if(isset($size[$k]))
+                    $size[$k] = $size[$k] + $v;
+                else
+                    $size[$k] = $v;
+            }
+
+            if($i == 7) {
+                $week1 = $size;
+                $size = [];
+            } else if($i == 14) {
+                $week2 = $size;
+                $size = [];
+            } else if($i == 21) {
+                $week3 = $size;
+                $size = [];
+            }
+            if($i == $count_days) {
+                $week4 = $size;
+                $size = [];
+            }
+        }
+
+        $report = [];
+
+        $i = 1;
+        foreach($ret['days'] as $key => $day) {
+            $el = $day;
+            $el['date'] = self::format($key, $month);
+            $report[] = $el;
+
+            if($i == 7) {
+                $weeks = $week1;
+                $weeks['date'] = 'Недельный план';
+                $report[] = $weeks;
+            } else if($i == 14) {
+                $weeks = $week2;
+                $weeks['date'] = 'Недельный план';
+                $report[] = $weeks;
+            } else if($i == 21) {
+                $weeks = $week3;
+                $weeks['date'] = 'Недельный план';
+                $report[] = $weeks;
+            }
+
+            if($i == $count_days) {
+                $weeks = $week4;
+                $weeks['date'] = 'Недельный план';
+                $report[] = $weeks;
+            }
+
+            $i++;
+        }
+
+        return ['all' => $all, 'days' => $report];
     }
 
     public function getWebInfoManager(Request $request) {
@@ -74,14 +153,14 @@ class AmoCrmController extends Controller {
 
         $ret = [];
 
-        $managers = ManagersInfo::where('month_name', $request->input('month'))->where('year', $request->input('year'));
+        $managers = ManagersInfo::where('month', $request->input('month'))->where('year', $request->input('year'));
 
         foreach($request->input('managers') as $manager) {
             $item = $managers->where('manager_id', $manager)->get()->toArray();
             $ret = array_merge($ret, $item);
         }
 
-        return self::calculateManagers($ret);
+        return self::calculateManagers($ret, $request->input('month'), $request->input('year'));
     }
 
     protected static function getTypeCourse(int $enum): string {
