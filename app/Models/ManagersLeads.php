@@ -13,6 +13,11 @@ class ManagersLeads extends Model {
     protected int $id;
     protected int $manager;
     protected int $pipeline_id;
+    protected bool $target;
+    protected int $contact;
+    protected string $type;
+    protected float $package;
+    protected string $course;
 
     protected $fillable = ['name'];
 }

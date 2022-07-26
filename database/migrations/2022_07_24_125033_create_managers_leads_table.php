@@ -12,6 +12,7 @@ return new class extends Migration {
 
             $table->integer('manager');
             $table->integer('pipeline_id');
+            $table->boolean('target');
 
             $table->timestamps();
         });

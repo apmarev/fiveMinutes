@@ -7,7 +7,10 @@ use App\Models\Lead;
 use App\Models\LeadCount;
 use App\Models\LeadCustom;
 use App\Models\Manager;
+use App\Models\ManagersInfo;
 use App\Models\ManagersLeads;
+use App\Models\ManagersLeadsSuccess;
+use App\Models\ManagersLeadsSuccessCustom;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\ReportCustom;
@@ -35,63 +38,662 @@ class AmoCrmController extends Controller {
         $this->__access = $__access;
     }
 
-    public function generate() {
+    protected static function calculateManagers($data) {
+        $ret = [];
 
-        $timestamp = strtotime("-1 day");
-        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
-        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
+        foreach($data as $d) {
+            foreach($d as $k => $v) {
+                if($k != 'id' && $k != 'manager_id' && $k != 'manager_name' && $k != 'day' && $k != 'month' && $k != 'month_name' && $k != 'year') {
+                    if(isset($ret[$k]))
+                        $ret[$k] = $ret[$k] + $v;
+                    else
+                        $ret[$k] = $v;
+                }
+            }
+        }
 
-        $this->managers();
+        return $ret;
+    }
 
-        $day = date('j', $timestamp);
-        $month = date('n', $timestamp);
-        $year = date('Y', $timestamp);
+    public function getWebInfoManager(Request $request) {
 
-        $monthName = "";
+        if(!$request->has('month') || !$request->has('managers') || !$request->has('year'))
+            return CustomApiException::error(400);
 
-        if($month == '01') $monthName = 'Январь';
-        else if($month == '02') $monthName = 'Февраль';
-        else if($month == '03') $monthName = 'Март';
-        else if($month == '04') $monthName = 'Апрель';
-        else if($month == '05') $monthName = 'Май';
-        else if($month == '06') $monthName = 'Июнь';
-        else if($month == '07') $monthName = 'Июль';
-        else if($month == '08') $monthName = 'Август';
-        else if($month == '09') $monthName = 'Сентябрь';
-        else if($month == '10') $monthName = 'Октябрь';
-        else if($month == '11') $monthName = 'Ноябрь';
-        else if($month == '12') $monthName = 'Декабрь';
+        $ret = [];
 
-        $dateArray = [
-            'day' => $day,
-            'month' => $month,
-            'monthName' => $monthName,
-            'year' => $year,
+        $managers = ManagersInfo::where('month_name', $request->input('month'))->where('year', $request->input('year'));
+
+        foreach($request->input('managers') as $manager) {
+            $item = $managers->where('manager_id', $manager)->get()->toArray();
+            $ret = array_merge($ret, $item);
+        }
+
+        return self::calculateManagers($ret);
+    }
+
+    protected static function getTypeCourse(int $enum): string {
+        $ret = 'none';
+
+        $ege = [
+            431967, // МГ - ЕГЭ
+            431973, // Предбанник - ЕГЭ
+            431979, // Курс ФЛЕШ - ЕГЭ
+            431985, // Игра "Рулетка" - ЕГЭ
+            432689, // Индивидуальные занятия с репетитором - ЕГЭ
+            432701, // Курс по основам - ЕГЭ
+            432709 // База заданий - ЕГЭ
         ];
 
-        $this->getCountLeadsByManagers($date_from, $date_to);
+        $oge = [
+            431969, // МГ - ОГЭ
+            431975, // Предбанник - ОГЭ
+            431981, // Курс ФЛЕШ - ОГЭ
+            431983, // Игра "Рулетка" - ОГЭ
+            432691, // Индивидуальные занятия с репетитором - ОГЭ
+            432703, // Курс по основам - ОГЭ
+            432707 // База заданий - ОГЭ
+        ];
 
+        $ten = [
+            431971, // МГ - 10 класс
+            431977, // Курс ФЛЕШ - 10 класс
+            432693 // Индивидуальные занятия с репетитором - 10 класс
+        ];
+
+        if(array_search($enum, $ege) > -1) {
+            $ret = 'ege';
+        } else if(array_search($enum, $oge) > -1) {
+            $ret = 'oge';
+        } else if(array_search($enum, $ten) > -1) {
+            $ret = 'ten';
+        }
+
+        return $ret;
+    }
+
+    public function getProductByType($lead_id, $package, $type_user) {
+        $ret_type = 'none';
+        $ret_course = 'none';
+        $ret_package = 'none';
+        if($product = ManagersLeadsSuccessCustom::where('lead_id', $lead_id)->where('field_id', 709405)->first()) {
+            if($product['enum']) {
+
+                if($type_user == 'Ученик')
+                    $ret_type = 'children';
+                else if($type_user == 'Родитель')
+                    $ret_type = 'parents';
+
+                $type = self::getTypeCourse($product['enum']);
+
+                if($package > 1) { // Пакет
+                    $ret_package = 'package';
+
+                    if($type == 'ege') {
+                        $ret_course = 'ege';
+                    } else if($type == 'oge') {
+                        $ret_course = 'oge';
+                    } else if($type == 'ten') {
+                        $ret_course = '10';
+                    }
+                } else if($package == 1) { // Месяц
+                    $ret_package = 'month';
+
+                    if($type == 'ege') {
+                        $ret_course = 'ege';
+                    } else if($type == 'oge') {
+                        $ret_course = 'oge';
+                    } else if($type == 'ten') {
+                        $ret_course = '10';
+                    }
+                }
+            }
+        }
+
+        return [
+            'type' => $ret_type,
+            'course' => $ret_course,
+            'package' => $ret_package,
+        ];
+    }
+
+    public static function getProduct(int $lead_id, int|float $package) {
+        if($product = ManagersLeadsSuccessCustom::where('lead_id', $lead_id)->where('field_id', 709405)->first()) {
+            if($product['enum']) {
+                $type = self::getTypeCourse($product['enum']);
+
+                if($package > 1) { // Пакет
+                    $status = true;
+
+                    if($type == 'ege') {
+
+                    } else if($type == 'oge') {
+
+                    } else if($type == 'ten') {
+
+                    }
+                } else if($package == 1) { // Месяц
+
+                    if($type == 'ege') {
+
+                    } else if($type == 'oge') {
+
+                    } else if($type == 'ten') {
+
+                    }
+                }
+            }
+        }
+    }
+
+    public static function getPackage(int $lead_id): int|float {
+        if($package = ManagersLeadsSuccessCustom::where('lead_id', $lead_id)->where('field_id', 708651)->first()) {
+            if($package['enum'] == 430903)
+                return 1; // Это значит пакет 1
+            else
+                return floatval(str_replace(',', '.', $package['value'])); // Пакет больше 1
+        } else return 0;
+    }
+
+    public function generate() {
+
+//        $timestamp = strtotime("-1 day");
+//        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
+//        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
+
+        $dates = [];
+        for($i=10;$i<=15;$i++) {
+            $day = mb_substr("0{$i}", -2);
+            $dates[] = "{$day}.06.2022";
+        }
+
+
+        foreach($dates as $d) {
+            $timestamp = strtotime($d);
+            $date_from = strtotime("{$d} 00:00:01");
+            $date_to = strtotime("{$d} 23:59:59");
+
+            $this->managers();
+
+            $day = date('j', $timestamp);
+            $month = date('n', $timestamp);
+            $year = date('Y', $timestamp);
+
+            $monthName = "";
+
+            if($month == 1) $monthName = 'Январь';
+            else if($month == 2) $monthName = 'Февраль';
+            else if($month == 3) $monthName = 'Март';
+            else if($month == 4) $monthName = 'Апрель';
+            else if($month == 5) $monthName = 'Май';
+            else if($month == 6) $monthName = 'Июнь';
+            else if($month == 7) $monthName = 'Июль';
+            else if($month == 8) $monthName = 'Август';
+            else if($month == 9) $monthName = 'Сентябрь';
+            else if($month == 10) $monthName = 'Октябрь';
+            else if($month == 11) $monthName = 'Ноябрь';
+            else if($month == 12) $monthName = 'Декабрь';
+
+            $dateArray = [
+                'day' => $day,
+                'month' => $month,
+                'month_name' => $monthName,
+                'year' => $year,
+            ];
+
+            $this->getCountLeadsByManagers($date_from, $date_to);
+            $this->getLeadsSuccessByManagers($date_from, $date_to);
+
+            $this->getManagersInfo($dateArray);
+
+            $this->clearManagersLeads();
+        }
     }
 
     public function getCountLeadsByManagers($from, $to) {
         $array = [];
 
+        $contacts = [];
+
         foreach(self::$pipelines as $pipeline) {
             $list = $this->getAllListByFilter('leads', "&filter[pipeline_id]={$pipeline}&filter[created_at][from]={$from}&filter[created_at][to]={$to}&with=contacts");
 
             foreach($list as $el) {
+                $target = false;
+                $package = 0;
+                $course = null;
+
+                foreach($this->getIsSetListCustomFields($el) as $c) {
+                    if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
+                        $target = true;
+                    }
+                    if($c['field_id'] == 708651) {
+                        $package = floatval($c['values'][0]['value']);
+                    }
+                    if($c['field_id'] == 709405) {
+                        if($c['values'][0]['enum_id'] > 0) {
+                            $course = self::getTypeCourse($c['values'][0]['enum_id']);
+                        }
+                    }
+                }
+
+                $contact = null;
+
+                if(isset($el['_embedded']) && isset($el['_embedded']['contacts']) && isset($el['_embedded']['contacts'][0])) {
+                    $contact = $el['_embedded']['contacts'][0]['id'];
+                    $contacts[] = $contact;
+                }
+
                 $array[] = [
                     'manager' => $el['responsible_user_id'],
-                    'pipeline_id' => $el['pipeline_id']
+                    'pipeline_id' => $el['pipeline_id'],
+                    'target' => $target,
+                    'contact' => $contact,
+                    'type' => null,
+                    'package' => $package,
+                    'course' => $course,
                 ];
             }
         }
 
+        $contacts = array_chunk($contacts, 100);
+
+
+
+        foreach($contacts as $elems) {
+            $filter = "";
+            $i=0;
+            foreach($elems as $e) {
+                $filter .= "&filter[id][{$i}]=$e";
+                $i++;
+            }
+            $list = $this->getAllListByFilter('contacts', $filter);
+            foreach($list as $l) {
+                $type = null;
+                foreach($this->getIsSetListCustomFields($l) as $c) {
+                    if($c['field_id'] == 707467) {
+                        $type = $c['values'][0]['value'];
+                    }
+                }
+
+                if($type != null) {
+                    $index = array_search($l['id'], array_column($array, 'contact'));
+
+                    if($index > -1) {
+                        $times = $array[$index];
+                        $times['type'] = $type;
+                        $array[$index] = $times;
+                    }
+
+                }
+            }
+        }
+
+        // return $array;
+
         ManagersLeads::insert($array);
     }
 
-    public function getLeadsSuccessByManagers($from, $to) {
+    protected function getContactsByIds(array $contacts) {
+        $filter = "";
 
+        $i = 0;
+        foreach($contacts as $contact) {
+            $filter .= "&filter[id][{$i}]={$contact}";
+            $i++;
+        }
+
+        $list = $this->getAllListByFilter('contacts', $filter);
+
+        $ret = [];
+
+        foreach($list as $c) {
+            $type = 'none';
+            foreach($this->getIsSetListCustomFields($c) as $custom) {
+                if($custom['field_id'] == 707467) {
+                    $type = $custom['values'][0]['value'];
+                }
+            }
+
+            $ret[] = [
+                'id' => $c['id'],
+                'type' => $type
+            ];
+        }
+
+        return $ret;
+    }
+
+    protected function clearManagersLeads() {
+        ManagersLeads::truncate();
+        ManagersLeadsSuccess::truncate();
+        ManagersLeadsSuccessCustom::truncate();
+    }
+
+    public function getLeadsSuccessByManagers($from, $to) {
+        $array = [];
+        $customs = [];
+        $contacts = [];
+
+        foreach(self::$pipelines as $pipeline) {
+            $list = $this->getAllListByFilter('leads', "&filter[statuses][0][pipeline_id]={$pipeline}&filter[statuses][0][status_id]=142&filter[closed_at][from]={$from}&filter[closed_at][to]={$to}&with=contacts");
+
+            foreach($list as $lead) {
+
+                $target = false;
+
+                foreach($this->getIsSetListCustomFields($lead) as $c) {
+                    if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
+                        $target = true;
+                    }
+                }
+
+                if(isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]))
+                    $contacts[] = $lead['_embedded']['contacts'][0]['id'];
+
+
+                $array[] = [
+                    'lead_id' => $lead['id'],
+                    'price' => $lead['price'],
+                    'manager' => $lead['responsible_user_id'],
+                    'pipeline_id' => $lead['pipeline_id'],
+                    'status_id' => $lead['status_id'],
+                    'created' => $lead['created_at'],
+                    'contact' => isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]) ? $lead['_embedded']['contacts'][0]['id'] : null,
+                    'target' => $target,
+                    'type' => 'none'
+                ];
+
+                foreach($this->getIsSetListCustomFields($lead) as $custom) {
+                    if(
+                        $custom['field_id'] == 709405 || // Продукт
+                        $custom['field_id'] == 708651 || // Пакет
+                        $custom['field_id'] == 702873 // Тариф
+                    ) {
+                        $customs[] = [
+                            'lead_id' => $lead['id'],
+                            'field_id' => $custom['field_id'],
+                            'value' => $custom['values'][0]['value'],
+                            'enum' => $custom['values'][0]['enum_id']
+                        ];
+                    }
+                }
+            }
+        }
+
+        $types = $this->getContactsByIds($contacts);
+
+        $i = 0;
+        foreach($array as $lead) {
+            $result = array_search($lead['contact'], array_column($types, 'id'));
+            if($result >= 0) {
+                $lead['type'] = $types[$result]['type'];
+            }
+            $array[$i] = $lead;
+            $i++;
+        }
+
+        ManagersLeadsSuccess::insert($array);
+        ManagersLeadsSuccessCustom::insert($customs);
+
+    }
+
+    protected static function getTemplateInfo(): array {
+        return [
+            'leads_count' => 0, // Новых сделок
+
+            'sum_month' => 0, // Выбран пакет 1
+            'sum_package' => 0, // Выбран пакет от 1 до 2
+            'sum_pro' => 0, // Выбран тариф PRO
+
+            'count' => 0,
+            'count_month' => 0, // Выбран пакет 1
+            'count_package' => 0, // Выбран пакет от 1 до 2
+            'count_pro' => 0, // Выбран тариф PRO
+
+            'count_clients_month' => 0, // Выбран пакет 1
+            'count_clients_package' => 0, // Выбран пакет от 1 до 2
+            'count_clients_pro' => 0, // Выбран тариф PRO
+
+            'children_ege' => 0, // Дети ЕГЭ (сумма бюджетов)
+            'children_oge' => 0, // Дети ОГЭ (сумма бюджетов)
+            'children_10' => 0, // Дети 10 класс (сумма бюджетов)
+            'parents_ege' => 0, // Родители ЕГЭ (сумма бюджетов)
+            'parents_oge' => 0, // Родители ОГЭ (сумма бюджетов)
+            'parents_10' => 0, // Родители 10 класс (сумма бюджетов)
+
+            'children_month_ege' => 0, // Дети ЕГЭ пакет 1 (сумма бюджетов)
+            'children_month_oge' => 0, // Дети ОГЭ пакет 1 (сумма бюджетов)
+            'children_month_10' => 0, // Дети 10 класс пакет 1 (сумма бюджетов)
+            'parents_month_ege' => 0, // Родители ЕГЭ пакет 1 (сумма бюджетов)
+            'parents_month_oge' => 0, // Родители ОГЭ пакет 1 (сумма бюджетов)
+            'parents_month_10' => 0, // Родители 10 класс пакет 1 (сумма бюджетов)
+
+            'children_package_ege' => 0, // Дети ЕГЭ пакет больше 1 (сумма бюджетов)
+            'children_package_oge' => 0, // Дети ОГЭ пакет больше 1 (сумма бюджетов)
+            'children_package_10' => 0, // Дети 10 класс пакет больше 1 (сумма бюджетов)
+            'parents_package_ege' => 0, // Родители ЕГЭ пакет больше 1 (сумма бюджетов)
+            'parents_package_oge' => 0, // Родители ОГЭ пакет больше 1 (сумма бюджетов)
+            'parents_package_10' => 0, // Родители 10 класс пакет больше 1 (сумма бюджетов)
+
+            'count_children_none' => 0, // Дети неизвестно (кол-во лидов)
+            'count_children_ege' => 0, // Дети ЕГЭ (кол-во лидов)
+            'count_children_oge' => 0, // Дети ОГЭ (кол-во лидов)
+            'count_children_10' => 0, // Дети 10 класс (кол-во лидов)
+            'count_parents_none' => 0, // Родители неизвестно (кол-во лидов)
+            'count_parents_ege' => 0, // Родители ЕГЭ (кол-во лидов)
+            'count_parents_oge' => 0, // Родители ОГЭ (кол-во лидов)
+            'count_parents_10' => 0, // Родители 10 класс (кол-во лидов)
+
+            'count_sale_children_ege' => 0, // Дети ЕГЭ (кол-во продаж)
+            'count_sale_children_oge' => 0, // Дети ОГЭ (кол-во продаж)
+            'count_sale_children_10' => 0, // Дети 10 класс (кол-во продаж)
+            'count_sale_parents_ege' => 0, // Родители ЕГЭ (кол-во продаж)
+            'count_sale_parents_oge' => 0, // Родители ОГЭ (кол-во продаж)
+            'count_sale_parents_10' => 0, // Родители 10 класс (кол-во продаж)
+
+            'unique_children_ege' => 0, // Уникальных ЕГЭ (Дети)
+            'unique_children_oge' => 0, // Уникальных ОГЭ (Дети)
+            'unique_children_10' => 0, // Уникальных 10 класс (Дети)
+            'unique_parents_ege' => 0, // Уникальных ЕГЭ (Родители)
+            'unique_parents_oge' => 0, // Уникальных ОГЭ (Родители)
+            'unique_parents_10' => 0, // Уникальных 10 класс (Родители)
+
+            'average_check' => 0, // Средний чек
+            'average_check_children_ege' => 0, // Средний чек ЕГЭ (Дети)
+            'average_check_children_oge' => 0, // Средний чек ОГЭ (Дети)
+            'average_check_children_10' => 0, // Средний чек 10 класс (Дети)
+            'average_check_parents_ege' => 0, // Средний чек ЕГЭ (Родители)
+            'average_check_parents_oge' => 0, // Средний чек ОГЭ (Родители)
+            'average_check_parents_10' => 0, // Средний чек 10 класс (Родители)
+
+            'substandard_leads' => 0, // Некачественные клиенты
+        ];
+    }
+
+    public function getManagersInfo($date = []) {
+        $managers = Manager::all();
+
+        $pro = ManagersLeadsSuccessCustom::where('field_id', 702873)->where('enum', 425115)->get()->toArray();
+
+        foreach(self::$pipelines as $pipeline) {
+            $ret = [];
+
+            $leads = ManagersLeads::where('pipeline_id', $pipeline)->get();
+            $leadsSuccess = ManagersLeadsSuccess::where('pipeline_id', $pipeline)->get();
+
+            foreach($managers as $manager) {
+                $el = self::getTemplateInfo();
+
+                foreach($leads as $lead) {
+                    if($lead['manager'] == $manager['id']) {
+                        $el['leads_count'] = $el['leads_count'] + 1;
+
+                        if($lead['target'] == 0)
+                            $el['substandard_leads'] = $el['substandard_leads'] + 1;
+                    }
+                }
+
+                $completed = [];
+
+                $contacts = [
+                    'all' => [],
+                    'month' => [],
+                    'package' => [],
+                    'pro' => [],
+                    'ege' => [],
+                    'oge' => [],
+                    'ten' => []
+                ];
+
+                foreach($leadsSuccess as $lead) {
+                    if($lead['manager'] == $manager['id']) {
+                        $completed[] = $lead;
+                        $contacts['all'][] = $lead['contact'];
+                    }
+
+                }
+
+                $unique = [
+                    'children_ege' => [],
+                    'children_oge' => [],
+                    'children_ten' => [],
+                    'parents_ege' => [],
+                    'parents_oge' => [],
+                    'parents_ten' => [],
+                ];
+
+                foreach($completed as $complete) {
+
+                    $el['average_check'] = $el['average_check'] + $complete['price'];
+
+                    if($package = self::getPackage($complete['lead_id']) > 0) {
+
+                        $search_pro = array_search($complete['lead_id'], array_column($pro, 'lead_id'));
+
+                        $product = $this->getProductByType($complete['lead_id'], $package, $complete['type']);
+
+                        if($product['type'] != 'none' && $product['course'] != 'none') {
+                            $el["{$product['type']}_{$product['course']}"] = $el["{$product['type']}_{$product['course']}"] + $complete['price'];
+
+                            $el["{$product['type']}_{$product['package']}_{$product['course']}"] = $el["{$product['type']}_{$product['package']}_{$product['course']}"] + $complete['price'];
+
+                            $el["count_{$product['type']}_{$product['course']}"] = $el["count_{$product['type']}_{$product['course']}"] + 1;
+
+                            $el["count_sale_{$product['type']}_{$product['course']}"] = $el["count_sale_{$product['type']}_{$product['course']}"] + 1;
+
+                            $el["average_check_{$product['type']}_{$product['course']}"] = $el["average_check_{$product['type']}_{$product['course']}"] + $complete['price'];
+
+                            $unique["{$product['type']}_{$product['course']}"][] = $complete["contact"];
+                        }
+
+
+                        if($package == 1) {
+                            // Месяц
+
+                            $el['count_month'] = $el['count_month'] + 1;
+                            $el['sum_month'] = $el['sum_month'] + $complete['price'];
+
+                            $contacts['month'][] = $complete['contact'];
+                        } else if($package >= 2) {
+                            // Пакет
+
+                            $el['count_package'] = $el['count_package'] + 1;
+                            $el['sum_package'] = $el['sum_package'] + $complete['price'];
+                            $contacts['package'][] = $complete['contact'];
+                        }
+
+                        if($search_pro > -1) {
+                            $el['count_pro'] = $el['count_pro'] + 1;
+                            $el['sum_pro'] = $el['sum_pro'] + $complete['price'];
+                            $contacts['pro'][] = $complete['contact'];
+                        }
+                    }
+
+                }
+
+                $el['average_check_children_ege'] = $el['count_sale_children_ege'] > 0 ? $el['average_check_children_ege'] / $el['count_sale_children_ege'] : 0;
+                $el['average_check_children_oge'] = $el['count_sale_children_oge'] > 0 ? $el['average_check_children_oge'] / $el['count_sale_children_oge'] : 0;
+                $el['average_check_children_10'] = $el['count_sale_children_10'] > 0 ? $el['average_check_children_10'] / $el['count_sale_children_10'] : 0;
+                $el['average_check_parents_ege'] = $el['count_sale_parents_ege'] > 0 ? $el['average_check_parents_ege'] / $el['count_sale_parents_ege'] : 0;
+                $el['average_check_parents_oge'] = $el['count_sale_parents_oge'] > 0 ? $el['average_check_parents_oge'] / $el['count_sale_parents_oge'] : 0;
+                $el['average_check_parents_10'] = $el['count_sale_parents_10'] > 0 ? $el['average_check_parents_10'] / $el['count_sale_parents_10'] : 0;
+
+                $unique = [
+                    'children_ege' => array_unique($unique['children_ege']),
+                    'children_oge' => array_unique($unique['children_oge']),
+                    'children_ten' => array_unique($unique['children_ten']),
+                    'parents_ege' => array_unique($unique['parents_ege']),
+                    'parents_oge' => array_unique($unique['parents_oge']),
+                    'parents_ten' => array_unique($unique['parents_ten']),
+                ];
+
+                $el['unique_children_ege'] = sizeof($unique['children_ege']);
+                $el['unique_children_oge'] = sizeof($unique['children_oge']);
+                $el['unique_children_10'] = sizeof($unique['children_ten']);
+                $el['unique_parents_ege'] = sizeof($unique['parents_ege']);
+                $el['unique_parents_oge'] = sizeof($unique['parents_oge']);
+                $el['unique_parents_10'] = sizeof($unique['parents_ten']);
+
+                $contacts = [
+                    'all' => array_unique($contacts['all']),
+                    'month' => array_unique($contacts['month']),
+                    'package' => array_unique($contacts['package']),
+                    'pro' => array_unique($contacts['pro']),
+                    'ege' => array_unique($contacts['ege']),
+                    'oge' => array_unique($contacts['oge']),
+                    'ten' => array_unique($contacts['ten']),
+                ];
+
+                $el['count_clients_month'] = sizeof($contacts['month']);
+                $el['count_clients_package'] = sizeof($contacts['package']);
+                $el['count_clients_pro'] = sizeof($contacts['pro']);
+
+                $el['count'] = $el['count_month'] + $el['count_package'] + $el['count_pro'];
+
+
+                $count_children_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ege')->count();
+                $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
+
+                $count_children_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'oge')->count();
+                $el['count_children_oge'] = $el['count_children_oge'] + $count_children_oge;
+
+                $count_children_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ten')->count();
+                $el['count_children_10'] = $el['count_children_10'] + $count_children_10;
+
+                $count_children_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'none')->count();
+                $el['count_children_none'] = $el['count_children_none'] + $count_children_none;
+
+
+                $count_parents_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ege')->count();
+                $el['count_parents_ege'] = $el['count_parents_ege'] + $count_parents_ege;
+
+                $count_parents_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'oge')->count();
+                $el['count_parents_oge'] = $el['count_parents_oge'] + $count_parents_oge;
+
+                $count_parents_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ten')->count();
+                $el['count_parents_10'] = $el['count_parents_10'] + $count_parents_10;
+
+                $count_parents_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'none')->count();
+                $el['count_parents_none'] = $el['count_parents_none'] + $count_parents_none;
+
+
+                if($el['count'] > 0)
+                    $el['average_check'] = $el['average_check'] / $el['count'];
+
+                $el['day'] = $date['day'];
+                $el['month'] = $date['month'];
+                $el['month_name'] = $date['month_name'];
+                $el['year'] = $date['year'];
+                $el['manager_id'] = $manager['id'];
+                $el['manager_name'] = $manager['name'];
+
+                $ret[] = $el;
+
+            }
+
+            return ManagersInfo::insert($ret);
+        }
     }
 
     public function managers() {
@@ -1652,6 +2254,61 @@ class AmoCrmController extends Controller {
         }
 
         return false;
+    }
+
+    public function getTestCSV() {
+        $ret = 0;
+        for($i=601;$i<=700;$i++) {
+
+            $query = "/leads?page={$i}&limit=250&filter[created_at][from]=1593561601&filter[created_at][to]=1657670399&filter[statuses][0][pipeline_id]=3493222&&filter[statuses][0][status_id]=143&with=contacts";
+            $res = $this->amoGet($query);
+            $list = self::getIsSetList($res, 'leads');
+
+            if(sizeof($list) > 0) {
+                $str = [];
+
+
+                foreach($list as $lead) {
+                    $contact = '';
+                    $prichina = '';
+                    $oi = '';
+                    $napr = '';
+                    $predmet = '';
+
+                    if(isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]) && isset($lead['_embedded']['contacts'][0]['id']))
+                        $contact = $lead['_embedded']['contacts'][0]['id'];
+
+                    if(isset($lead['custom_fields_values']) && is_array($lead['custom_fields_values'])) {
+                        foreach($lead['custom_fields_values'] as $custom) {
+                            if($custom['field_id'] == 702227) $prichina = $custom['values'][0]['value'];
+                            if($custom['field_id'] == 707155) $oi = $custom['values'][0]['value'];
+                            if($custom['field_id'] == 702875) $napr = $custom['values'][0]['value'];
+                            if($custom['field_id'] == 709399) $predmet = $custom['values'][0]['value'];
+                        }
+                    }
+
+                    $str[] = [
+                        $contact, $prichina, $oi, $napr, $predmet
+                    ];
+                }
+
+                $fp = fopen(__DIR__ . '/test.csv', 'a');
+                foreach ($str as $fields) {
+                    fputcsv($fp, $fields, ';');
+                }
+                fclose($fp);
+                unset($list);
+                unset($fp);
+                unset($str);
+            } else {
+                $ret = $i;
+                break;
+            }
+        }
+
+        return $ret;
+
+
     }
 
     public function getCsv() {

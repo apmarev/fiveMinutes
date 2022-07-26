@@ -28,7 +28,8 @@ Route::post('/hooks/senler', [AmoCrmController::class, 'senler']);
 
 Route::post('/unisender', [\App\Http\Controllers\UnisenderController::class, 'getSheet']);
 
-Route::post('/test', [AmoCrmController::class, 'getSenlerQueues']);
+Route::post('/test', [AmoCrmController::class, 'getManagersInfo']);
 
+Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
 
-Route::post('/csv', [AmoCrmController::class, 'getCsv']);
+Route::post('/csv', [AmoCrmController::class, 'getTestCSV']);
