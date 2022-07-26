@@ -31,5 +31,6 @@ Route::post('/unisender', [\App\Http\Controllers\UnisenderController::class, 'ge
 Route::post('/test', [AmoCrmController::class, 'getManagersInfo']);
 
 Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
+Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
 
 Route::post('/csv', [AmoCrmController::class, 'getTestCSV']);

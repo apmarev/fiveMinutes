@@ -38,6 +38,14 @@ class AmoCrmController extends Controller {
         $this->__access = $__access;
     }
 
+    public function getWebManagers() {
+        return Manager::all();
+    }
+
+    public function getWebYears() {
+
+    }
+
     protected static function calculateManagers($data) {
         $ret = [];
 
