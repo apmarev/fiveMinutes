@@ -38298,3 +38298,65 @@ body {
 .header .ant-select {
   width: 100%;
 }
+
+.report {
+  position: relative;
+  padding: 0 15px;
+  overflow: hidden;
+}
+.report-columns {
+  display: flex;
+  flex-flow: row nowrap;
+  overflow-x: auto;
+}
+
+.column {
+  flex: 0 0 100px;
+}
+.column .column-row {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.column .column-row:first-child {
+  height: 50px;
+  font-weight: 700;
+}
+.column .column-row:last-child {
+  border-bottom: 1px solid #000;
+}
+.column .column-row.has-subrows {
+  color: blue;
+  cursor: pointer;
+}
+.column .column-row.has-subrows .sub-row {
+  display: none;
+}
+.column .column-row.has-subrows.active .sub-row {
+  display: block;
+}
+
+.main-column {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  flex: 0 0 300px;
+  z-index: 2;
+  background: #fff;
+}
+.main-column .column-row {
+  text-align: left;
+  align-items: flex-start;
+  border-left: 1px solid #000;
+}
+.main-column .column-row:first-child {
+  border-left: none;
+  border-top: none;
+}

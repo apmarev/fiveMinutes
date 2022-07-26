@@ -11037,7 +11037,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _layout_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout/Header */ "./resources/js/components/layout/Header.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _reports_Manager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reports/Manager */ "./resources/js/components/reports/Manager.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
@@ -11045,14 +11048,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Reports = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_layout_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {})
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_layout_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_reports_Manager__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
   });
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Reports);
 
 if (document.getElementById('app')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Reports, {}), document.getElementById('app'));
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Reports, {}), document.getElementById('app'));
 }
 
 /***/ }),
@@ -11091,6 +11094,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var Option = antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option;
 var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getYears();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getManagers();
+    _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].getMonthsByYear(2022);
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("form", {
       onSubmit: function onSubmit(e) {
@@ -11102,60 +11110,51 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             mode: "multiple",
             allowClear: true,
             placeholder: "\u041C\u0435\u043D\u0435\u0434\u0436\u0435\u0440",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "1",
-              children: "1"
-            }, "1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "2",
-              children: "2"
-            }, "2")]
+            onChange: function onChange(e) {
+              return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.managers = e;
+            },
+            children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].managers.map(function (item, k) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+                value: item.id,
+                children: item.name
+              }, k);
+            })
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u0413\u043E\u0434",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "1",
-              children: "1"
-            }, "1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "2",
-              children: "2"
-            }, "2")]
+            onChange: function onChange(e) {
+              return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.year = e;
+            },
+            children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].years.map(function (item, k) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+                value: item.year,
+                children: item.year
+              }, k);
+            })
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
           lg: 4,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            mode: "multiple",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
             allowClear: true,
             placeholder: "\u041C\u0435\u0441\u044F\u0446",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "1",
-              children: "1"
-            }, "1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "2",
-              children: "2"
-            }, "2")]
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
-          xs: 24,
-          lg: 4,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            allowClear: true,
-            placeholder: "\u0412\u043E\u0440\u043E\u043D\u043A\u0430",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "1",
-              children: "1"
-            }, "1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
-              value: "2",
-              children: "2"
-            }, "2")]
+            onChange: function onChange(e) {
+              return _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].filter.month = e;
+            },
+            children: _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_3__["default"].months.map(function (item, k) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Option, {
+                value: item.month,
+                children: item.month_name
+              }, k);
+            })
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
           xs: 24,
@@ -11170,6 +11169,155 @@ var Header = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function 
   });
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/Manager.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/reports/Manager.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Manager": () => (/* binding */ Manager),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../controllers/filter.controller */ "./resources/js/controllers/filter.controller.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+var Manager = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_0__.observer)(function () {
+  var mainRows = [{
+    name: "Количество лидов",
+    subrows: []
+  }, {
+    name: "Сумма продаж",
+    subrows: [{
+      name: "Месяц"
+    }, {
+      name: "Пакет"
+    }, {
+      name: "Тариф Про"
+    }]
+  }, {
+    name: "Количество продаж",
+    subrows: [{
+      name: "Месяц"
+    }, {
+      name: "Пакет"
+    }, {
+      name: "Тариф Про"
+    }]
+  }, {
+    name: "Количество клиентов",
+    subrows: [{
+      name: "Месяц"
+    }, {
+      name: "Пакет"
+    }, {
+      name: "Тариф Про"
+    }]
+  }, {
+    name: "Средний чек",
+    subrows: []
+  }];
+
+  var toggleRow = function toggleRow(index) {
+    index = index + 2;
+    document.querySelectorAll(".column > *:nth-child(".concat(index, ")")).forEach(function (item) {
+      item.classList.toggle("active");
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "report",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "report-columns",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "main-column column",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "column-row"
+          }), mainRows.map(function (item, k) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                className: item.subrows.length > 0 ? "column-row has-subrows" : "column-row",
+                onClick: function onClick(_) {
+                  return toggleRow(k);
+                },
+                children: [item.name, item.subrows.length > 0 && item.subrows.map(function (subitem, sk) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    className: "sub-row",
+                    children: subitem.name
+                  }, sk);
+                })]
+              }, k)
+            });
+          })]
+        }), Object.keys(_controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data).length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.length > 0 && _controllers_filter_controller__WEBPACK_IMPORTED_MODULE_1__["default"].data.days.map(function (item, k) {
+          var _item$leads_count, _item$sum_month, _item$sum_month2, _item$sum_month3, _item$sum_month4, _item$sum_month5, _item$sum_month6, _item$sum_month7, _item$sum_month8, _item$sum_month9, _item$sum_month10, _item$sum_month11, _item$sum_month12, _item$sum_month13;
+
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "column",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "column-row",
+              children: item.date
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "column-row",
+              children: (_item$leads_count = item === null || item === void 0 ? void 0 : item.leads_count) !== null && _item$leads_count !== void 0 ? _item$leads_count : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "column-row has-subrows",
+              children: [(_item$sum_month = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month !== void 0 ? _item$sum_month : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month2 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month2 !== void 0 ? _item$sum_month2 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month3 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month3 !== void 0 ? _item$sum_month3 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month4 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month4 !== void 0 ? _item$sum_month4 : 0
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "column-row has-subrows",
+              children: [(_item$sum_month5 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month5 !== void 0 ? _item$sum_month5 : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month6 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month6 !== void 0 ? _item$sum_month6 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month7 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month7 !== void 0 ? _item$sum_month7 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month8 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month8 !== void 0 ? _item$sum_month8 : 0
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "column-row has-subrows",
+              children: [(_item$sum_month9 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month9 !== void 0 ? _item$sum_month9 : 0, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month10 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month10 !== void 0 ? _item$sum_month10 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month11 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month11 !== void 0 ? _item$sum_month11 : 0
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "sub-row",
+                children: (_item$sum_month12 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month12 !== void 0 ? _item$sum_month12 : 0
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "column-row",
+              children: (_item$sum_month13 = item === null || item === void 0 ? void 0 : item.sum_month) !== null && _item$sum_month13 !== void 0 ? _item$sum_month13 : 0
+            })]
+          }, k);
+        })]
+      })
+    })
+  });
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Manager);
 
 /***/ }),
 
@@ -11202,15 +11350,84 @@ var filterController = /*#__PURE__*/function () {
   function filterController() {
     _classCallCheck(this, filterController);
 
-    _defineProperty(this, "filter", {});
+    _defineProperty(this, "filter", {
+      managers: [],
+      year: 0,
+      month: 0
+    });
+
+    _defineProperty(this, "years", []);
+
+    _defineProperty(this, "months", []);
+
+    _defineProperty(this, "managers", []);
+
+    _defineProperty(this, "data", {});
 
     (0,mobx__WEBPACK_IMPORTED_MODULE_1__.makeAutoObservable)(this);
   }
 
   _createClass(filterController, [{
+    key: "getYears",
+    value: function getYears() {
+      var _this = this;
+
+      axios.get("/api/years").then(function (result) {
+        _this.years = result.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }, {
+    key: "getMonthsByYear",
+    value: function getMonthsByYear(year) {
+      var _this2 = this;
+
+      axios.get("/api/month/".concat(year)).then(function (result) {
+        _this2.months = result.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }, {
+    key: "getManagers",
+    value: function getManagers() {
+      var _this3 = this;
+
+      axios.get("/api/managers").then(function (result) {
+        _this3.managers = result.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }, {
     key: "getData",
     value: function getData(e) {
+      var _this4 = this;
+
       e.preventDefault();
+      var filter = "";
+
+      if (this.filter.year > 0) {
+        filter += "?year=".concat(this.filter.year);
+      }
+
+      if (this.filter.month > 0) {
+        filter += "&month=".concat(this.filter.month);
+      }
+
+      if (this.filter.managers.length > 0) {
+        this.filter.managers.map(function (item) {
+          return filter = "".concat(filter, "&managers[]=").concat(item);
+        });
+      }
+
+      axios.get("/api/info/".concat(filter)).then(function (result) {
+        console.log(result.data);
+        _this4.data = result.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   }]);
 
