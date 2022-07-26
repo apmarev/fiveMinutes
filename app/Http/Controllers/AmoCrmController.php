@@ -47,6 +47,23 @@ class AmoCrmController extends Controller {
         ];
     }
 
+    public function getManagersPlan(Request $request) {
+        if(!$request->has('year') || !$request->has('month') || !$request->has('pipeline_id'))
+            return CustomApiException::error(400);
+
+        $ret = [];
+
+        foreach($this->getWebManagers() as $manager) {
+            $ret[] = [
+                'manager_id' => $manager['id'],
+                'manager_name' => $manager['name'],
+                'plan' => ManagersPlan::where('manager_id', $manager['id'])->where('year', $request->input('year'))->where('month', $request->input('month'))->where('pipeline_id', $request->input('pipeline_id'))->get(),
+            ];
+        }
+
+        return $ret;
+    }
+
     public function getFilterPlan() {
         return [
             'month' => [
