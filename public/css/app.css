@@ -38410,3 +38410,7 @@ body {
   position: sticky;
   left: 160px;
 }
+
+.auth {
+  height: 100vh;
+}

@@ -6,10 +6,12 @@ import filter from "../controllers/filter.controller"
 import Plan from "./reports/Plan"
 import Common from "./reports/Common"
 import Manager from "./reports/Manager"
+import { Auth } from './reports/Auth'
+import store from 'store'
 
 export const Reports = observer(() => {
 
-    return (
+    return store.get('token') && store.get('token') !== '' ? (
         <>
             <Header />
             {filter.filterType === "1" &&
@@ -22,7 +24,7 @@ export const Reports = observer(() => {
                 <Manager />
             }
         </>
-    )
+    ) : <Auth />
 })
 
 export default Reports

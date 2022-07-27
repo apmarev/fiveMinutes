@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { request } from './request'
 import store from 'store'
 import sha1 from 'sha1'
+import { message } from 'antd'
 
 class userController {
 
@@ -23,10 +24,15 @@ class userController {
         makeAutoObservable(this)
     }
 
+    onChange(name, value) {
+        this.data[name] = value
+    }
+
     /**
      * Авторизация пользователя
      */
-    login() {
+    login(e) {
+        e.preventDefault()
         const data = new FormData()
         data.append('login', this.data.login)
         data.append('password', sha1(this.data.password))
@@ -40,8 +46,7 @@ class userController {
                 }
             })
             .catch(error => {
-                // Тут бы вывести ошибку с текстом ниже
-                console.log(error.response.data.message)
+                message.error(error.response.data.message)
             })
     }
 
