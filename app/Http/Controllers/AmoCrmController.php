@@ -138,7 +138,67 @@ class AmoCrmController extends Controller {
         return mb_substr("0{$day}", -2) . "." . mb_substr("0{$month}", -2);
     }
 
-    protected static function calculateManagers($data, $month, $year) {
+    protected static function getWeeksPlansByManagers(array $ids, $month, $year, $pipeline = null) {
+        $ret = [
+            'week1' => [
+                'plan_month' => 0,
+                'plan_package' => 0,
+                'plan_pro' => 0,
+                'plan_count' => 0,
+            ],
+            'week2' => [
+                'plan_month' => 0,
+                'plan_package' => 0,
+                'plan_pro' => 0,
+                'plan_count' => 0,
+            ],
+            'week3' => [
+                'plan_month' => 0,
+                'plan_package' => 0,
+                'plan_pro' => 0,
+                'plan_count' => 0,
+            ],
+            'week4' => [
+                'plan_month' => 0,
+                'plan_package' => 0,
+                'plan_pro' => 0,
+                'plan_count' => 0,
+            ],
+        ];
+
+        foreach($ids as $id) {
+            $user = ManagersPlan::where('manager_id', $id)
+                ->where('month', $month)
+                ->where('year', $year);
+
+            if($pipeline) $user = $user->where('pipeline_id', $pipeline);
+
+            $user = $user->get()->toArray();
+
+            for($i=1;$i<=4;$i++) {
+                $index = array_search($i, array_column($user, 'week'));
+                if($index > -1) {
+                    $ret["week{$i}"]['plan_month'] = $ret["week{$i}"]['plan_month'] + $user[$index]['month_sum'];
+                    $ret["week{$i}"]['plan_package'] = $ret["week{$i}"]['plan_package'] + $user[$index]['package_sum'];
+                    $ret["week{$i}"]['plan_count'] = $ret["week{$i}"]['plan_count'] + $user[$index]['count'];
+                    $ret["week{$i}"]['plan_pro'] = $ret["week{$i}"]['plan_pro'] + $user[$index]['pro_count'];
+                }
+            }
+
+        }
+
+        return $ret;
+    }
+
+    protected static function getPercent($from, $to) {
+        return $to > 0 ? round(($from / $to) * 100, 1) : 0;
+    }
+
+    protected static function getRemainder($plan, $facts) {
+        return $plan - $facts;
+    }
+
+    protected static function calculateManagers($data, $month, $year, $pipeline = null) {
         $ret = [];
 
         $count_days = date('t', mktime(0, 0, 0, $month, 1, $year));
@@ -149,9 +209,12 @@ class AmoCrmController extends Controller {
 
         $all = [];
 
+        $managers_ids = [];
+
         foreach($data as $d) {
             $key = $d['day'];
             foreach($d as $k => $v) {
+                if($k == 'manager_id') $managers_ids[] = $v;
                 if($k != 'id' && $k != 'manager_id' && $k != 'manager_name' && $k != 'day' && $k != 'month' && $k != 'month_name' && $k != 'year') {
                     if(isset($ret['days'][$key][$k]))
                         $ret['days'][$key][$k] = $ret['days'][$key][$k] + $v;
@@ -166,11 +229,21 @@ class AmoCrmController extends Controller {
             }
         }
 
+        $plans = self::getWeeksPlansByManagers(array_unique($managers_ids), $month, $year, $pipeline);
+
         $week1 = [];
         $week2 = [];
         $week3 = [];
         $week4 = [];
         $size = [];
+
+        $monthPlan = [
+            'month' => 0,
+            'package' => 0,
+            'pro' => 0,
+            'count' => 0
+        ];
+
         for($i=1;$i<=$count_days;$i++) {
 
             foreach($ret['days'][$i] as $k => $v) {
@@ -181,16 +254,24 @@ class AmoCrmController extends Controller {
             }
 
             if($i == 7) {
+                $size['plan'] = $plans['week1'];
+                $size = self::getPlanWeekPlan($size);
                 $week1 = $size;
                 $size = [];
             } else if($i == 14) {
+                $size['plan'] = $plans['week2'];
+                $size = self::getPlanWeekPlan($size);
                 $week2 = $size;
                 $size = [];
             } else if($i == 21) {
+                $size['plan'] = $plans['week3'];
+                $size = self::getPlanWeekPlan($size);
                 $week3 = $size;
                 $size = [];
             }
             if($i == $count_days) {
+                $size['plan'] = $plans['week4'];
+                $size = self::getPlanWeekPlan($size);
                 $week4 = $size;
                 $size = [];
             }
@@ -207,25 +288,63 @@ class AmoCrmController extends Controller {
             if($i == 7) {
                 $weeks = $week1;
                 $weeks['date'] = 'Недельный план';
+
+                $monthPlan['month'] = $monthPlan['month'] + $weeks['plan']['plan_month'];
+                $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
+                $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
+                $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
                 $report[] = $weeks;
             } else if($i == 14) {
                 $weeks = $week2;
                 $weeks['date'] = 'Недельный план';
+
+                $monthPlan['month'] = $monthPlan['month'] + $weeks['plan']['plan_month'];
+                $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
+                $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
+                $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
                 $report[] = $weeks;
             } else if($i == 21) {
                 $weeks = $week3;
                 $weeks['date'] = 'Недельный план';
+
+                $monthPlan['month'] = $monthPlan['month'] + $weeks['plan']['plan_month'];
+                $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
+                $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
+                $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
                 $report[] = $weeks;
             }
 
             if($i == $count_days) {
                 $weeks = $week4;
                 $weeks['date'] = 'Недельный план';
+
+                $monthPlan['month'] = $monthPlan['month'] + $weeks['plan']['plan_month'];
+                $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
+                $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
+                $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
                 $report[] = $weeks;
             }
 
             $i++;
         }
+
+        $all['plan'] = $monthPlan;
+
+        $all['plan']['month_percent'] = $all['plan']['month'] > 0 ? round($all['sum_month'] / $all['plan']['month'] * 100, 1) : 0;
+        $all['plan']['month_remainder'] = $all['plan']['month'] - $all['sum_month'];
+
+        $all['plan']['package_percent'] = $all['plan']['package'] > 0 ? round($all['sum_package'] / $all['plan']['package'] * 100, 1) : 0;
+        $all['plan']['package_remainder'] = $all['plan']['package'] - $all['sum_package'];
+
+        $all['plan']['pro_percent'] = $all['plan']['pro'] > 0 ? round($all['count_pro'] / $all['plan']['pro'] * 100, 1) : 0;
+        $all['plan']['pro_remainder'] = $all['plan']['pro'] - $all['count_pro'];
+
+        $all['plan']['count_percent'] = $all['plan']['count'] > 0 ? round($all['count'] / $all['plan']['count'] * 100, 1) : 0;
+        $all['plan']['count_remainder'] = $all['plan']['count'] - $all['count'];
 
         return ['all' => $all, 'days' => $report];
     }
@@ -682,6 +801,22 @@ class AmoCrmController extends Controller {
 
             'substandard_leads' => 0, // Некачественные клиенты
         ];
+    }
+
+    protected static function getPlanWeekPlan($size) {
+        $size['plan']['plan_month_percent'] = isset($size['sum_month']) ? self::getPercent($size['sum_month'], $size['plan']['plan_month']) : null;
+        $size['plan']['plan_month_remainder'] = isset($size['sum_month']) ? self::getRemainder($size['plan']['plan_month'], $size['sum_month']) : null;
+
+        $size['plan']['plan_package_percent'] = isset($size['sum_package']) ? self::getPercent($size['sum_package'], $size['plan']['plan_package']) : null;
+        $size['plan']['plan_package_remainder'] = isset($size['sum_package']) ? self::getRemainder($size['plan']['plan_package'], $size['sum_package']) : null;
+
+        $size['plan']['plan_pro_percent'] = isset($size['count_pro']) ? self::getPercent($size['count_pro'], $size['plan']['plan_pro']) : null;
+        $size['plan']['plan_pro_remainder'] = isset($size['count_pro']) ? self::getRemainder($size['plan']['plan_pro'], $size['count_pro']) : null;
+
+        $size['plan']['plan_count_percent'] = isset($size['count']) ? self::getPercent($size['count'], $size['plan']['plan_count']) : null;
+        $size['plan']['plan_count_remainder'] = isset($size['count']) ? self::getRemainder($size['plan']['plan_count'], $size['count']) : null;
+
+        return $size;
     }
 
     public function getManagersInfo($date = []) {
