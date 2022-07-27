@@ -14,15 +14,18 @@ export const Reports = observer(() => {
     return store.get('token') && store.get('token') !== '' ? (
         <>
             <Header />
-            {filter.filterType === "1" &&
-                <Plan />
-            }
-            {filter.filterType === "2" &&
-                <Common />
-            }
-            {filter.filterType === "3" &&
-                <Manager />
-            }
+            <main>
+                {filter.filterType === "1" &&
+                    <Plan />
+                }
+                {filter.filterType === "2" &&
+                    <Common />
+                }
+                {filter.filterType === "3" &&
+                    <Manager />
+                }
+            </main>
+            <footer></footer>
         </>
     ) : <Auth />
 })

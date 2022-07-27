@@ -1,14 +1,16 @@
 import { observer } from "mobx-react-lite"
 import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
+import Formatter from "../helpers/formatter"
 
 export const Manager = observer(() => {
 
     useEffect(() => {
+        filter.buttonState = true
         filter.setDefaultFilterData()
         filter.getYears()
         filter.getManagers()
-        filter.getMonthsByYear(2022)
+        filter.reportOpened = true
     }, [])
 
     const mainRows = [
@@ -71,27 +73,47 @@ export const Manager = observer(() => {
                     </div>
                     <div className="month-column column bold">
                         <div className="column-row">Месяц</div>
-                        <div className="column-row">{filter.data.all?.leads_count ?? 0}</div>
+                        <div className="column-row">
+                            <Formatter number={filter.data.all?.leads_count ?? 0} />
+                        </div>
                         <div className="column-row has-subrows">
                             &nbsp;
-                            <div className="sub-row">{filter.data.all?.sum_month ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.sum_package ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.sum_pro ?? 0}</div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.sum_month ?? 0} finance={true} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.sum_package ?? 0} finance={true} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.sum_pro ?? 0} finance={true} />
+                            </div>
                         </div>
                         <div className="column-row has-subrows">
                             {filter.data.all?.count ?? 0}
-                            <div className="sub-row">{filter.data.all?.count_month ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.count_package ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.count_pro ?? 0}</div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_month ?? 0} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_package ?? 0} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_pro ?? 0} />
+                            </div>
                         </div>
                         <div className="column-row has-subrows">
                             &nbsp;
-                            <div className="sub-row">{filter.data.all?.count_clients_month ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.count_clients_package ?? 0}</div>
-                            <div className="sub-row">{filter.data.all?.count_clients_pro ?? 0}</div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_clients_month ?? 0} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_clients_package ?? 0} />
+                            </div>
+                            <div className="sub-row">
+                                <Formatter number={filter.data.all?.count_clients_pro ?? 0} />
+                            </div>
                         </div>
                         <div className="column-row">
-                            {filter.data.all?.average_check ?? 0}
+                            <Formatter number={filter.data.all?.average_check ?? 0} finance={true} />
                         </div>
                     </div>
                     {Object.keys(filter.data).length > 1 && filter.data.days.length > 0 &&
@@ -101,27 +123,47 @@ export const Manager = observer(() => {
                                 key={k}
                             >
                                 <div className="column-row">{item.date}</div>
-                                <div className="column-row">{item?.leads_count ?? 0}</div>
+                                <div className="column-row">
+                                    <Formatter number={item?.leads_count ?? 0} />
+                                </div>
                                 <div className="column-row has-subrows">
                                     &nbsp;
-                                    <div className="sub-row">{item?.sum_month ?? 0}</div>
-                                    <div className="sub-row">{item?.sum_package ?? 0}</div>
-                                    <div className="sub-row">{item?.sum_pro ?? 0}</div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.sum_month ?? 0} finance={true} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.sum_package ?? 0} finance={true} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.sum_pro ?? 0} finance={true} />
+                                    </div>
                                 </div>
                                 <div className="column-row has-subrows">
                                     {item?.count ?? 0}
-                                    <div className="sub-row">{item?.count_month ?? 0}</div>
-                                    <div className="sub-row">{item?.count_package ?? 0}</div>
-                                    <div className="sub-row">{item?.count_pro ?? 0}</div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_month ?? 0} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_package ?? 0} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_pro ?? 0} />
+                                    </div>
                                 </div>
                                 <div className="column-row has-subrows">
                                     &nbsp;
-                                    <div className="sub-row">{item?.count_clients_month ?? 0}</div>
-                                    <div className="sub-row">{item?.count_clients_package ?? 0}</div>
-                                    <div className="sub-row">{item?.count_clients_pro ?? 0}</div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_clients_month ?? 0} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_clients_package ?? 0} />
+                                    </div>
+                                    <div className="sub-row">
+                                        <Formatter number={item?.count_clients_pro ?? 0} />
+                                    </div>
                                 </div>
                                 <div className="column-row">
-                                    {item?.average_check ?? 0}
+                                    <Formatter number={item?.average_check ?? 0} finance={true} />
                                 </div>
                             </div>
                         ))

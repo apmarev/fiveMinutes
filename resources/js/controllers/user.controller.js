@@ -37,7 +37,7 @@ class userController {
         data.append('login', this.data.login)
         data.append('password', sha1(this.data.password))
 
-        request.post(`/report/user/login`, data)
+        request.post(`/user/login`, data)
             .then(result => {
                 const user = result.data
                 if(user.token && user.token !== '') {
@@ -52,7 +52,7 @@ class userController {
     }
 
     getList() {
-        request.get('/report/user').then(result => this.list = result.data)
+        request.get('/user').then(result => this.list = result.data)
     }
 
     selectUser(userID) {
@@ -70,13 +70,13 @@ class userController {
         data.append('super', `${this.element.super}`)
 
         if(this.element.id && this.element.id > 0)
-            request.put(`/report/user/${this.element.id}`, data)
+            request.put(`/user/${this.element.id}`, data)
                 .then(result => {
                     this.clearElement()
                     this.getList()
                 })
         else
-            request.post(`/report/user`, data)
+            request.post(`/user`, data)
                 .then(result => {
                     this.clearElement()
                     this.getList()
@@ -84,7 +84,7 @@ class userController {
     }
 
     delete(userID) {
-        request.delete(`/report/user/${userID}`)
+        request.delete(`/user/${userID}`)
             .then(result => {
                 this.getList()
             })

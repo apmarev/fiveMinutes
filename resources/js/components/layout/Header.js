@@ -2,37 +2,44 @@ import { observer } from "mobx-react-lite"
 import ReactDOM from "react-dom"
 import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
-import { Row, Col, Button, Select } from "antd"
+import { Row, Col, Button, Select, Radio, Space } from "antd"
 import moment from "moment"
 const { Option } = Select
 
 export const Header = observer(() => {
+    useEffect(() => {
+
+    }, [])
 
     return (
         <>
             <form onSubmit={e => filter.getData(e)} className="header">
                 <Row gutter={[20,20]} className="filter-type">
-                    <Col xs={24} lg={4} xl={3}>
-                        <Select
-                            value={filter.filterType}
+                    <Col xs={24}>
+                        <Radio.Group
+                            disabled={filter.buttonState}
+                            size="large"
                             onChange={e => {
                                 filter.setDefaultFilterData()
-                                filter.filterType = e
+                                filter.filterType = e.target.value
                             }}
+                            value={filter.filterType}
                         >
-                            <Option value="1">План</Option>
-                            <Option value="2">Общий отчет</Option>
-                            <Option value="3">Менеджер</Option>
-                        </Select>
+                            <Radio.Button value="1">План</Radio.Button>
+                            <Radio.Button value="2">Общий отчет</Radio.Button>
+                            <Radio.Button value="3">Менеджер</Radio.Button>
+                        </Radio.Group>
                     </Col>
                 </Row>
                 <Row gutter={[20,20]}>
                     {filter.filterType === "3" &&
-                        <Col xs={24}>
+                        <Col xs={24} lg={5} xl={4}>
                             <Select
+                                disabled={filter.buttonState}
                                 mode="multiple"
                                 allowClear
                                 placeholder="Менеджер"
+                                maxTagCount="responsive"
                                 value={filter.filter.managers}
                                 onChange={e => filter.filter.managers = e}
                             >
@@ -45,6 +52,7 @@ export const Header = observer(() => {
                     {filter.filterType !== "3" &&
                         <Col xs={24} lg={4} xl={3}>
                             <Select
+                                disabled={filter.buttonState}
                                 allowClear
                                 placeholder="Воронка"
                                 value={filter.filter.pipeline}
@@ -58,6 +66,7 @@ export const Header = observer(() => {
                     }
                     <Col xs={24} lg={4} xl={3}>
                         <Select
+                            disabled={filter.buttonState}
                             allowClear
                             placeholder="Год"
                             value={filter.filter.year}
@@ -70,6 +79,7 @@ export const Header = observer(() => {
                     </Col>
                     <Col xs={24} lg={4} xl={3}>
                         <Select
+                            disabled={filter.buttonState}
                             allowClear
                             placeholder="Месяц"
                             value={filter.filter.month}
@@ -80,8 +90,24 @@ export const Header = observer(() => {
                             ))}
                         </Select>
                     </Col>
-                    <Col xs={24} lg={4} xl={3}>
-                        <Button htmlType="submit">Перейти</Button>
+                    <Col xs={24} lg={3} xl={2}>
+                        <Space size="middle">
+                            <Button
+                                disabled={filter.buttonState}
+                                htmlType="submit"
+                            >
+                                Показать
+                            </Button>
+                            {filter.filterType === "1" && filter.data.length > 0 &&
+                                <Button
+                                    type="primary"
+                                    disabled={filter.buttonState}
+                                    onClick={e => filter.savePlan(e)}
+                                >
+                                    Сохранить
+                                </Button>
+                            }
+                        </Space>
                     </Col>
                 </Row>
             </form>

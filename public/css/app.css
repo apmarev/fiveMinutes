@@ -38292,6 +38292,11 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  padding: 0 15px;
+  overflow: hidden;
+}
+
 .header {
   padding: 20px 15px;
 }
@@ -38305,24 +38310,36 @@ body {
 .report {
   position: relative;
   margin: 0 0 50px;
-  padding: 0 15px;
-  overflow: hidden;
+  overflow-x: auto;
 }
 .report-columns {
   display: flex;
   flex-flow: row nowrap;
-  overflow-x: auto;
+}
+
+.heading-columns {
+  margin-left: 159px;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.plan-heading-column {
+  flex: 0 0 500px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+}
+.plan-heading-column:last-child {
+  border-right: 1px solid #000;
 }
 
 .column {
-  flex: 0 0 55px;
+  flex: 0 0 100px;
 }
 .column.bold {
   font-weight: 700;
-}
-.column.bold .column-row:first-child {
-  font-size: 9px;
-  line-height: 1;
 }
 .column .column-row {
   width: 100%;
@@ -38344,6 +38361,15 @@ body {
 }
 .column .column-row:last-child {
   border-bottom: 1px solid #000;
+}
+.column .column-row .ant-input {
+  max-height: 16.5px;
+  padding: 2px;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+  border: none;
+  border-radius: 0;
 }
 .column .column-row.has-subrows .sub-row {
   width: calc(100% + 4px);
