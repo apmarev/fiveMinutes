@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmoCrmController;
+use App\Http\Controllers\ReportUsersController;
+
+Route::post('/v1/report/user/login', [ReportUsersController::class, 'login']);
 
 Route::prefix('v1')->group(function() {
     Route::prefix('report')->group(function() {
@@ -13,6 +16,13 @@ Route::prefix('v1')->group(function() {
         Route::get('/filter_plan', [AmoCrmController::class, 'getFilterPlan']);
 
         Route::post('/plan', [AmoCrmController::class, 'setManagersPlan']);
+
+        Route::prefix('user')->group(function() {
+            Route::get('/', [ReportUsersController::class, 'get']);
+            Route::post('/', [ReportUsersController::class, 'create']);
+            Route::put('/{id}', [ReportUsersController::class, 'edit']);
+            Route::delete('/{id}', [ReportUsersController::class, 'delete']);
+        });
     });
 });
 
