@@ -42,6 +42,7 @@ class userController {
                 const user = result.data
                 if(user.token && user.token !== '') {
                     store.set('token', user.token)
+                    store.set('super', user.super)
                     window.location.href = '/'
                 }
             })
