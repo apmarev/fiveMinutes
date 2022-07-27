@@ -59,7 +59,7 @@ export const Plan = observer(() => {
                                             <div className="column" key={c}>
                                                 <div className="column-row">{col.name}</div>
                                                 {filter.data.map((item, k) => (
-                                                    <div key={k} className="column-row">
+                                                    <div key={k} className="column-row with-input">
                                                         <Input
                                                             disabled={filter.buttonState}
                                                             value={item.weeks[col.id][field]}
