@@ -14,11 +14,10 @@ export const Header = observer(() => {
     return (
         <>
             <form onSubmit={e => filter.getData(e)} className="header">
-                <Row gutter={[20,20]} className="filter-type">
-                    <Col xs={24}>
+                <Row gutter={[20,20]}>
+                    <Col xs={24} lg={6} xl={5}>
                         <Radio.Group
-                            disabled={filter.buttonState}
-                            size="large"
+                            disabled={filter.searchDisabled}
                             onChange={e => {
                                 filter.setDefaultFilterData()
                                 filter.filterType = e.target.value
@@ -30,12 +29,10 @@ export const Header = observer(() => {
                             <Radio.Button value="3">Менеджер</Radio.Button>
                         </Radio.Group>
                     </Col>
-                </Row>
-                <Row gutter={[20,20]}>
                     {filter.filterType === "3" &&
                         <Col xs={24} lg={5} xl={4}>
                             <Select
-                                disabled={filter.buttonState}
+                                disabled={filter.searchDisabled}
                                 mode="multiple"
                                 allowClear
                                 placeholder="Менеджер"
@@ -52,7 +49,7 @@ export const Header = observer(() => {
                     {filter.filterType !== "3" &&
                         <Col xs={24} lg={4} xl={3}>
                             <Select
-                                disabled={filter.buttonState}
+                                disabled={filter.searchDisabled}
                                 allowClear
                                 placeholder="Воронка"
                                 value={filter.filter.pipeline}
@@ -66,7 +63,7 @@ export const Header = observer(() => {
                     }
                     <Col xs={24} lg={4} xl={3}>
                         <Select
-                            disabled={filter.buttonState}
+                            disabled={filter.searchDisabled}
                             allowClear
                             placeholder="Год"
                             value={filter.filter.year}
@@ -79,7 +76,7 @@ export const Header = observer(() => {
                     </Col>
                     <Col xs={24} lg={4} xl={3}>
                         <Select
-                            disabled={filter.buttonState}
+                            disabled={filter.searchDisabled}
                             allowClear
                             placeholder="Месяц"
                             value={filter.filter.month}
@@ -93,7 +90,7 @@ export const Header = observer(() => {
                     <Col xs={24} lg={3} xl={2}>
                         <Space size="middle">
                             <Button
-                                disabled={filter.buttonState}
+                                disabled={filter.searchDisabled}
                                 htmlType="submit"
                             >
                                 Показать
@@ -101,7 +98,7 @@ export const Header = observer(() => {
                             {filter.filterType === "1" && filter.data.length > 0 &&
                                 <Button
                                     type="primary"
-                                    disabled={filter.buttonState}
+                                    disabled={filter.searchDisabled}
                                     onClick={e => filter.savePlan(e)}
                                 >
                                     Сохранить

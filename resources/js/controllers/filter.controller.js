@@ -1,6 +1,7 @@
 import { makeAutoObservable, configure } from "mobx"
 import { request } from './request'
 import moment from "moment"
+import {message} from "antd";
 
 configure({
     enforceActions: "never",
@@ -17,7 +18,7 @@ class filterController {
     data = {}
     plan = []
 
-    buttonState = false
+    searchDisabled = false
     reportOpened = true
 
     constructor() {
@@ -82,6 +83,7 @@ class filterController {
 
     getData(e) {
         if(e !== false) e.preventDefault()
+
         let filter = ""
         if(this.filterType === "1"){
             filter = "/plan/"
@@ -90,21 +92,34 @@ class filterController {
         } else {
             filter = "/info/"
         }
-        if(this.filter.year > 0){
+
+        if(this.filter.year > 0)
             filter += `?year=${this.filter.year}`
+        else
+            return message.error("Выберите год")
+
+        if(this.filterType !== "3"){
+            if(this.filter.pipeline > 0)
+                filter += `&pipeline_id=${this.filter.pipeline}`
+            else
+                return message.error("Выберите воронку")
         }
-        if(this.filter.pipeline > 0){
-            filter += `&pipeline_id=${this.filter.pipeline}`
-        }
-        if(this.filter.month > 0){
+
+        if(this.filter.month > 0)
             filter += `&month=${this.filter.month}`
-        }
-        if(this.filter.managers.length > 0){
-            this.filter.managers.map(item => filter = `${filter}&managers[]=${item}`)
+        else
+            return message.error("Выберите месяц")
+
+        if(this.filterType === "3") {
+            if (this.filter.managers.length > 0)
+                this.filter.managers.map(item => filter = `${filter}&managers[]=${item}`)
+            else
+                return message.error("Выберите хотя бы одного менеджера")
         }
 
         this.closeAllRows()
-        this.buttonState = true
+        this.searchDisabled = true
+
         request.get(filter)
             .then(result => {
                 if(this.filterType === "1"){
@@ -156,14 +171,14 @@ class filterController {
                     console.log(result.data)
                     this.data = result.data
                 }
-                this.buttonState = false
+                this.searchDisabled = false
             })
             .catch(error => console.log(error))
     }
 
     savePlan(e) {
         e.preventDefault()
-        this.buttonState = true
+        this.searchDisabled = true
         let data = []
         this.data.map(item => {
             item.weeks.map((week, k) => {
@@ -186,7 +201,7 @@ class filterController {
         request.post("/plan", fd)
             .then(result => {
                 console.log(result)
-                this.buttonState = false
+                this.searchDisabled = false
             })
             .catch(error => console.log(error))
     }

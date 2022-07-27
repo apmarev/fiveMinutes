@@ -2684,7 +2684,7 @@ class AmoCrmController extends Controller {
                         }
                         fclose($fp);
                     } catch (\Exception $e) {
-                        return 'Сука';
+                        return 'Error';
                     }
 
                 }

@@ -6,7 +6,7 @@ import Formatter from "../helpers/formatter"
 export const Manager = observer(() => {
 
     useEffect(() => {
-        filter.buttonState = true
+        filter.searchDisabled = true
         filter.setDefaultFilterData()
         filter.getYears()
         filter.getManagers()
