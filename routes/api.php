@@ -3,6 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmoCrmController;
 
+Route::prefix('v1')->group(function() {
+    Route::prefix('report')->group(function() {
+        Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
+        Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
+        Route::get('/years', [AmoCrmController::class, 'getWebYears']);
+        Route::get('/month/{year}', [AmoCrmController::class, 'getWebMonthByYear']);
+        Route::get('/plan', [AmoCrmController::class, 'getManagersPlan']);
+        Route::get('/filter_plan', [AmoCrmController::class, 'getFilterPlan']);
+
+        Route::post('/plan', [AmoCrmController::class, 'setManagersPlan']);
+    });
+});
+
 Route::post('/access/amo/new', [AmoCrmController::class, 'amoNewAccess']);
 
 Route::post('/generate', [AmoCrmController::class, 'generate']);
@@ -29,13 +42,5 @@ Route::post('/hooks/senler', [AmoCrmController::class, 'senler']);
 Route::post('/unisender', [\App\Http\Controllers\UnisenderController::class, 'getSheet']);
 
 Route::post('/test', [AmoCrmController::class, 'getManagersInfo']);
-
-Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
-Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
-Route::get('/years', [AmoCrmController::class, 'getWebYears']);
-Route::get('/month/{year}', [AmoCrmController::class, 'getWebMonthByYear']);
-Route::post('/plan', [AmoCrmController::class, 'setManagersPlan']);
-Route::get('/plan', [AmoCrmController::class, 'getManagersPlan']);
-Route::get('/filter_plan', [AmoCrmController::class, 'getFilterPlan']);
 
 Route::post('/csv', [AmoCrmController::class, 'getTestCSV']);
