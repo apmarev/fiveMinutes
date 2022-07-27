@@ -90,6 +90,7 @@ class AmoCrmController extends Controller {
     public function setManagersPlan(Request $request) {
 
         foreach($request->input('managers') as $manager) {
+            $manager = json_encode($manager, true);
             if(
                 $entity = ManagersPlan::where('manager_id', $manager['id'])
                 ->where('pipeline_id', $request->input('pipeline_id'))
