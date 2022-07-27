@@ -96,6 +96,7 @@ class AmoCrmController extends Controller {
                 ->where('pipeline_id', $request->input('pipeline_id'))
                     ->where('year', $request->input('year'))
                     ->where('month', $request->input('month'))
+                    ->where('week', $manager['week'])
                 ->first()
             ) {
 
