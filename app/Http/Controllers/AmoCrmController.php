@@ -294,7 +294,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $report[] = $weeks;
+                if(!$pipeline)
+                    $report[] = $weeks;
             } else if($i == 14) {
                 $weeks = $week2;
                 $weeks['date'] = 'Недельный план';
@@ -304,7 +305,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $report[] = $weeks;
+                if(!$pipeline)
+                    $report[] = $weeks;
             } else if($i == 21) {
                 $weeks = $week3;
                 $weeks['date'] = 'Недельный план';
@@ -314,7 +316,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $report[] = $weeks;
+                if(!$pipeline)
+                    $report[] = $weeks;
             }
 
             if($i == $count_days) {
@@ -326,7 +329,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $report[] = $weeks;
+                if(!$pipeline)
+                    $report[] = $weeks;
             }
 
             $i++;
@@ -1039,7 +1043,7 @@ class AmoCrmController extends Controller {
 
             }
 
-            return ManagersInfo::insert($ret);
+            ManagersInfo::insert($ret);
         }
     }
 
