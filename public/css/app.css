@@ -38303,9 +38303,6 @@ main {
 .header .ant-select {
   width: 100%;
 }
-.header .filter-type {
-  margin-bottom: 20px;
-}
 
 .report {
   position: relative;
@@ -38370,6 +38367,9 @@ main {
   text-align: center;
   border: none;
   border-radius: 0;
+}
+.column .column-row.with-input {
+  background: #fff;
 }
 .column .column-row.has-subrows .sub-row {
   width: calc(100% + 4px);

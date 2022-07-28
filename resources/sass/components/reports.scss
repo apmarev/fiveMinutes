@@ -68,6 +68,10 @@
             border-radius: 0;
         }
 
+        &.with-input {
+            background: $white;
+        }
+
         &.has-subrows {
             .sub-row {
                 width: calc(100% + ($p * 2));
