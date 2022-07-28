@@ -9,6 +9,7 @@ Route::post('/v1/report/user/login', [ReportUsersController::class, 'login']);
 Route::prefix('v1')->group(function() {
     Route::prefix('report')->group(function() {
         Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
+        Route::get('/main', [AmoCrmController::class, 'getWebInfoMain']);
         Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
         Route::get('/years', [AmoCrmController::class, 'getWebYears']);
         Route::get('/month/{year}', [AmoCrmController::class, 'getWebMonthByYear']);

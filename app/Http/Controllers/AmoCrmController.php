@@ -349,6 +349,16 @@ class AmoCrmController extends Controller {
         return ['all' => $all, 'days' => $report];
     }
 
+    public function getWebInfoMain(Request $request) {
+
+        if(!$request->has('month') || !$request->has('pipeline') || !$request->has('year'))
+            return CustomApiException::error(400);
+
+        $data = ManagersInfo::where('pipeline_id', $request->has('pipeline'))->where('month', $request->input('month'))->where('year', $request->input('year'))->get()->toArray();
+
+        return $data;
+    }
+
     public function getWebInfoManager(Request $request) {
 
         if(!$request->has('month') || !$request->has('managers') || !$request->has('year'))
@@ -487,59 +497,55 @@ class AmoCrmController extends Controller {
         } else return 0;
     }
 
+    protected static function getMonthNameByMonthNumber(int $number): string {
+        $monthName = '';
+        if($number == 1) $monthName = 'Январь';
+        else if($number == 2) $monthName = 'Февраль';
+        else if($number == 3) $monthName = 'Март';
+        else if($number == 4) $monthName = 'Апрель';
+        else if($number == 5) $monthName = 'Май';
+        else if($number == 6) $monthName = 'Июнь';
+        else if($number == 7) $monthName = 'Июль';
+        else if($number == 8) $monthName = 'Август';
+        else if($number == 9) $monthName = 'Сентябрь';
+        else if($number == 10) $monthName = 'Октябрь';
+        else if($number == 11) $monthName = 'Ноябрь';
+        else if($number == 12) $monthName = 'Декабрь';
+
+        return $monthName;
+    }
+
     public function generate() {
+        $timestamp = strtotime("-13 day");
+        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
+        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
 
-//        $timestamp = strtotime("-1 day");
-//        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
-//        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
+        $this->managers();
 
-        $dates = [];
-        for($i=10;$i<=15;$i++) {
-            $day = mb_substr("0{$i}", -2);
-            $dates[] = "{$day}.06.2022";
-        }
+        $day = date('j', $timestamp);
+        $month = date('n', $timestamp);
+        $year = date('Y', $timestamp);
 
+        $monthName = self::getMonthNameByMonthNumber($month);
 
-        foreach($dates as $d) {
-            $timestamp = strtotime($d);
-            $date_from = strtotime("{$d} 00:00:01");
-            $date_to = strtotime("{$d} 23:59:59");
+        $dateArray = [
+            'day' => $day,
+            'month' => $month,
+            'month_name' => $monthName,
+            'year' => $year,
+        ];
 
-            $this->managers();
-
-            $day = date('j', $timestamp);
-            $month = date('n', $timestamp);
-            $year = date('Y', $timestamp);
-
-            $monthName = "";
-
-            if($month == 1) $monthName = 'Январь';
-            else if($month == 2) $monthName = 'Февраль';
-            else if($month == 3) $monthName = 'Март';
-            else if($month == 4) $monthName = 'Апрель';
-            else if($month == 5) $monthName = 'Май';
-            else if($month == 6) $monthName = 'Июнь';
-            else if($month == 7) $monthName = 'Июль';
-            else if($month == 8) $monthName = 'Август';
-            else if($month == 9) $monthName = 'Сентябрь';
-            else if($month == 10) $monthName = 'Октябрь';
-            else if($month == 11) $monthName = 'Ноябрь';
-            else if($month == 12) $monthName = 'Декабрь';
-
-            $dateArray = [
-                'day' => $day,
-                'month' => $month,
-                'month_name' => $monthName,
-                'year' => $year,
-            ];
-
+        try {
             $this->getCountLeadsByManagers($date_from, $date_to);
             $this->getLeadsSuccessByManagers($date_from, $date_to);
 
             $this->getManagersInfo($dateArray);
 
             $this->clearManagersLeads();
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
+
     }
 
     public function getCountLeadsByManagers($from, $to) {
@@ -590,8 +596,6 @@ class AmoCrmController extends Controller {
 
         $contacts = array_chunk($contacts, 100);
 
-
-
         foreach($contacts as $elems) {
             $filter = "";
             $i=0;
@@ -623,7 +627,10 @@ class AmoCrmController extends Controller {
 
         // return $array;
 
-        ManagersLeads::insert($array);
+        $array = array_chunk($array, 50);
+
+        foreach($array as $a)
+            ManagersLeads::insert($a);
     }
 
     protected function getContactsByIds(array $contacts) {
@@ -898,14 +905,12 @@ class AmoCrmController extends Controller {
 
                         if($package == 1) {
                             // Месяц
-
                             $el['count_month'] = $el['count_month'] + 1;
                             $el['sum_month'] = $el['sum_month'] + $complete['price'];
 
                             $contacts['month'][] = $complete['contact'];
                         } else if($package >= 2) {
                             // Пакет
-
                             $el['count_package'] = $el['count_package'] + 1;
                             $el['sum_package'] = $el['sum_package'] + $complete['price'];
                             $contacts['package'][] = $complete['contact'];
@@ -959,30 +964,60 @@ class AmoCrmController extends Controller {
 
                 $el['count'] = $el['count_month'] + $el['count_package'] + $el['count_pro'];
 
+                // -----
+                $managers_leads = ManagersLeads::where('manager', $manager['id'])->get()->toArray();
 
-                $count_children_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ege')->count();
+                $count_children_ege = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Ученик' && $el['course'] == 'ege') return $el['id']; else return false;
+                }));
+                $count_children_oge = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Ученик' && $el['course'] == 'oge') return $el['id']; else return false;
+                }));
+                $count_children_10 = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Ученик' && $el['course'] == 'ten') return $el['id']; else return false;
+                }));
+                $count_children_none = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Ученик' && $el['course'] == 'none') return $el['id']; else return false;
+                }));
+
+                $count_parents_ege = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Родитель' && $el['course'] == 'ege') return $el['id']; else return false;
+                }));
+                $count_parents_oge = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Родитель' && $el['course'] == 'oge') return $el['id']; else return false;
+                }));
+                $count_parents_10 = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Родитель' && $el['course'] == 'ten') return $el['id']; else return false;
+                }));
+                $count_parents_none = sizeof(array_filter($managers_leads, function($el) {
+                    if($el['type'] == 'Родитель' && $el['course'] == 'none') return $el['id']; else return false;
+                }));
+
+                // -----
+
+                //$count_children_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ege')->count();
                 $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
 
-                $count_children_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'oge')->count();
+                //$count_children_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'oge')->count();
                 $el['count_children_oge'] = $el['count_children_oge'] + $count_children_oge;
 
-                $count_children_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ten')->count();
+                //$count_children_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ten')->count();
                 $el['count_children_10'] = $el['count_children_10'] + $count_children_10;
 
-                $count_children_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'none')->count();
+                //$count_children_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'none')->count();
                 $el['count_children_none'] = $el['count_children_none'] + $count_children_none;
 
 
-                $count_parents_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ege')->count();
+                //$count_parents_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ege')->count();
                 $el['count_parents_ege'] = $el['count_parents_ege'] + $count_parents_ege;
 
-                $count_parents_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'oge')->count();
+                //$count_parents_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'oge')->count();
                 $el['count_parents_oge'] = $el['count_parents_oge'] + $count_parents_oge;
 
-                $count_parents_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ten')->count();
+                //$count_parents_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ten')->count();
                 $el['count_parents_10'] = $el['count_parents_10'] + $count_parents_10;
 
-                $count_parents_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'none')->count();
+                //$count_parents_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'none')->count();
                 $el['count_parents_none'] = $el['count_parents_none'] + $count_parents_none;
 
 
@@ -995,6 +1030,7 @@ class AmoCrmController extends Controller {
                 $el['year'] = $date['year'];
                 $el['manager_id'] = $manager['id'];
                 $el['manager_name'] = $manager['name'];
+                $el['pipeline_id'] = $pipeline;
 
                 $ret[] = $el;
 

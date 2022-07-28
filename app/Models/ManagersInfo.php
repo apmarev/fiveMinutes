@@ -18,6 +18,7 @@ class ManagersInfo extends Model {
     protected int $month;
     protected string $month_name;
     protected int $year;
+    protected int $pipeline_id;
 
     protected int $leads_count;
     protected int $sum_month;
