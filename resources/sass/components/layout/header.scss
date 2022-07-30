@@ -1,9 +1,15 @@
 @import "../../variables";
 
 .header {
+    margin: 0;
     padding: 20px 15px;
 
     .ant-select {
         width: 100%;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
     }
 }
