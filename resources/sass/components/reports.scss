@@ -66,6 +66,9 @@
             text-align: center;
             border: none;
             border-radius: 0;
+            &[disabled] {
+                color: $black;
+            }
         }
 
         &.with-input {
@@ -84,6 +87,18 @@
                 }
                 &:last-child {
                     margin-bottom: ($p * -1);
+                }
+                &.has-subrows {
+                    background: $orange;
+                    .sub-row {
+                        margin-left: ($p * -1);
+                        display: none;
+                    }
+                    &.active {
+                        .sub-row {
+                            display: block;
+                        }
+                    }
                 }
             }
 
@@ -113,32 +128,48 @@
             }
 
             &.has-subrows {
-                position: relative;
-                cursor: pointer;
-                &::after {
-                    $size: 12px;
-                    content: "\002B";
-                    position: absolute;
-                    top: 4px;
-                    right: $p;
-                    width: $size;
-                    height: $size;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: $white;
-                    font-size: 8px;
-                    line-height: 1;
-                    border-radius: 5px;
-                }
-                &.active::after {
-                    content: "\002D";
-                }
-
                 .sub-row {
                     margin-left: ($p * -1);
                     cursor: default;
+                    &.has-subrows {
+                        background: $orange;
+                        cursor: pointer;
+                        .sub-row {
+                            display: none;
+                        }
+                        &.active {
+                            .sub-row {
+                                display: block;
+                            }
+                        }
+                    }
                 }
+            }
+        }
+
+        .has-subrows {
+            position: relative;
+            cursor: pointer;
+
+            &::after {
+                $size: 12px;
+                content: "\002B";
+                position: absolute;
+                top: 4px;
+                right: $p;
+                width: $size;
+                height: $size;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: $white;
+                font-size: 8px;
+                line-height: 1;
+                border-radius: 5px;
+            }
+
+            &.active::after {
+                content: "\002D";
             }
         }
     }
@@ -147,4 +178,17 @@
         position: sticky;
         left: $stickyOffset;
     }
+}
+
+.lightRed {
+    background: $lightRed!important;
+}
+.lightBlue {
+    background: $lightBlue!important;
+}
+.purple {
+    background: $purple!important;
+}
+.lightOrange {
+    background: $lightOrange!important;
 }

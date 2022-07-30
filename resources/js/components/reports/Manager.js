@@ -2,6 +2,8 @@ import { observer } from "mobx-react-lite"
 import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
 import Formatter from "../helpers/formatter"
+import MainColumn from "./components/MainColumn"
+import Column from "./components/Column"
 
 export const Manager = observer(() => {
 
@@ -21,32 +23,212 @@ export const Manager = observer(() => {
         {
             name: "Сумма продаж",
             subrows: [
-                {name: "Месяц"},
-                {name: "Пакет"},
-                {name: "Тариф Про"},
+                {
+                    name: "Месяц",
+                    subrows: []
+                },
+                {
+                    name: "Пакет",
+                    subrows: []
+                },
+                {
+                    name: "Тариф Про",
+                    subrows: []
+                },
             ]
         },
         {
             name: "Количество продаж",
             subrows: [
-                {name: "Месяц"},
-                {name: "Пакет"},
-                {name: "Тариф Про"},
+                {
+                    name: "Месяц",
+                    subrows: []
+                },
+                {
+                    name: "Пакет",
+                    subrows: []
+                },
+                {
+                    name: "Тариф Про",
+                    subrows: []
+                },
             ]
         },
         {
             name: "Количество клиентов",
             subrows: [
-                {name: "Месяц"},
-                {name: "Пакет"},
-                {name: "Тариф Про"},
+                {
+                    name: "Месяц",
+                    subrows: []
+                },
+                {
+                    name: "Пакет",
+                    subrows: []
+                },
+                {
+                    name: "Тариф Про",
+                    subrows: []
+                },
             ]
         },
         {
             name: "Средний чек",
             subrows: []
         },
+        {
+            name: "План месяц сумма",
+            subrows: [],
+            additionalClass: "lightRed"
+        },
+        {
+            name: "% выполнения",
+            subrows: [],
+            additionalClass: "lightRed"
+        },
+        {
+            name: "Остаток плана",
+            subrows: [],
+            additionalClass: "lightRed"
+        },
+        {
+            name: "План Пакет сумма",
+            subrows: [],
+            additionalClass: "lightBlue"
+        },
+        {
+            name: "% выполнения",
+            subrows: [],
+            additionalClass: "lightBlue"
+        },
+        {
+            name: "Остаток плана",
+            subrows: [],
+            additionalClass: "lightBlue"
+        },
+        {
+            name: "План ПРО количество",
+            subrows: [],
+            additionalClass: "purple"
+        },
+        {
+            name: "% выполнения",
+            subrows: [],
+            additionalClass: "purple"
+        },
+        {
+            name: "Остаток плана",
+            subrows: [],
+            additionalClass: "purple"
+        },
+        {
+            name: "План Месяц количество",
+            subrows: [],
+            additionalClass: "lightOrange"
+        },
+        {
+            name: "% выполнения",
+            subrows: [],
+            additionalClass: "lightOrange"
+        },
+        {
+            name: "Остаток плана",
+            subrows: [],
+            additionalClass: "lightOrange"
+        }
     ]
+
+    const allRows = (source) => {
+        return [
+            {
+                "value": source?.leads_count,
+                "subrows": []
+            },
+            {
+                "value": "&nbsp;",
+                "finance": true,
+                "subrows": [
+                    {
+                        "value": source?.sum_month,
+                        "finance": true,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.sum_package,
+                        "finance": true,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.sum_pro,
+                        "finance": true,
+                        "subrows": []
+                    },
+                ]
+            },
+            {
+                "value": source?.count,
+                "subrows": [
+                    {
+                        "value": source?.count_month,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.count_package,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.count_pro,
+                        "subrows": []
+                    },
+                ]
+            },
+            {
+                "value": "&nbsp;",
+                "finance": true,
+                "subrows": [
+                    {
+                        "value": source?.count_clients_month,
+                        "finance": true,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.count_clients_package,
+                        "finance": true,
+                        "subrows": []
+                    },
+                    {
+                        "value": source?.count_clients_pro,
+                        "finance": true,
+                        "subrows": []
+                    },
+                ]
+            },
+            {
+                "value": filter.data.all?.average_check,
+                "finance": true,
+                "subrows": []
+            }
+        ]
+    }
+
+    let monthRows = {
+        "name": "Месяц",
+        "additionalClass": "month-column bold",
+        "rows": allRows(filter.data.all)
+    }
+
+    let daysRows = []
+
+    if(Object.keys(filter.data).length > 1 && filter.data.days.length > 0){
+        filter.data.days.map((item, k) => {
+            let rowClass = (item.date === "Недельный план") ?? "bold"
+            return daysRows.push({
+                "name": item.date,
+                "additionalClass": rowClass,
+                "rows": allRows(item)
+            })
+        })
+
+    }
 
     return (
         <>
@@ -55,117 +237,13 @@ export const Manager = observer(() => {
                     <div className="main-column column bold">
                         <div className="column-row"></div>
                         {mainRows.map((item, k) => (
-                            <>
-                                <div
-                                    key={k}
-                                    className={(item.subrows.length > 0) ? "column-row has-subrows" : "column-row"}
-                                    onClick={_ => filter.toggleRow(k, _)}
-                                >
-                                    {item.name}
-                                    {item.subrows.length > 0 &&
-                                        item.subrows.map((subitem, sk) => (
-                                            <div key={sk} className="sub-row">{subitem.name}</div>
-                                        ))
-                                    }
-                                </div>
-                            </>
+                            <MainColumn item={item} k={k} />
                         ))}
                     </div>
-                    <div className="month-column column bold">
-                        <div className="column-row">Месяц</div>
-                        <div className="column-row">
-                            <Formatter number={filter.data.all?.leads_count ?? 0} />
-                        </div>
-                        <div className="column-row has-subrows">
-                            &nbsp;
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.sum_month ?? 0} finance={true} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.sum_package ?? 0} finance={true} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.sum_pro ?? 0} finance={true} />
-                            </div>
-                        </div>
-                        <div className="column-row has-subrows">
-                            {filter.data.all?.count ?? 0}
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_month ?? 0} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_package ?? 0} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_pro ?? 0} />
-                            </div>
-                        </div>
-                        <div className="column-row has-subrows">
-                            &nbsp;
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_clients_month ?? 0} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_clients_package ?? 0} />
-                            </div>
-                            <div className="sub-row">
-                                <Formatter number={filter.data.all?.count_clients_pro ?? 0} />
-                            </div>
-                        </div>
-                        <div className="column-row">
-                            <Formatter number={filter.data.all?.average_check ?? 0} finance={true} />
-                        </div>
-                    </div>
-                    {Object.keys(filter.data).length > 1 && filter.data.days.length > 0 &&
-                        filter.data.days.map((item, k) => (
-                            <div
-                                className={(item.date === "Недельный план") ? "column bold" : "column"}
-                                key={k}
-                            >
-                                <div className="column-row">{item.date}</div>
-                                <div className="column-row">
-                                    <Formatter number={item?.leads_count ?? 0} />
-                                </div>
-                                <div className="column-row has-subrows">
-                                    &nbsp;
-                                    <div className="sub-row">
-                                        <Formatter number={item?.sum_month ?? 0} finance={true} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.sum_package ?? 0} finance={true} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.sum_pro ?? 0} finance={true} />
-                                    </div>
-                                </div>
-                                <div className="column-row has-subrows">
-                                    {item?.count ?? 0}
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_month ?? 0} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_package ?? 0} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_pro ?? 0} />
-                                    </div>
-                                </div>
-                                <div className="column-row has-subrows">
-                                    &nbsp;
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_clients_month ?? 0} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_clients_package ?? 0} />
-                                    </div>
-                                    <div className="sub-row">
-                                        <Formatter number={item?.count_clients_pro ?? 0} />
-                                    </div>
-                                </div>
-                                <div className="column-row">
-                                    <Formatter number={item?.average_check ?? 0} finance={true} />
-                                </div>
-                            </div>
+                    <Column column={monthRows} />
+                    {daysRows.length > 0 &&
+                        daysRows.map((item, k) => (
+                            <Column column={item} key={k}/>
                         ))
                     }
                 </div>
