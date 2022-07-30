@@ -1,15 +1,25 @@
 import { observer } from "mobx-react-lite"
-import ReactDOM from "react-dom"
 import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
 import { Row, Col, Button, Select, Radio, Space } from "antd"
-import moment from "moment"
 const { Option } = Select
 
 export const Header = observer(() => {
     useEffect(() => {
 
     }, [])
+
+    const scrollTo = (direction) => {
+        const el = document.querySelector(".report")
+        const y = el.scrollLeft
+        let offset
+        if(direction === "left") offset = y - 200
+        else if(direction === "right") offset = y + 200
+        el.scrollTo({
+            behavior: "smooth",
+            left: offset
+        })
+    }
 
     return (
         <>
@@ -104,6 +114,24 @@ export const Header = observer(() => {
                                     Сохранить
                                 </Button>
                             }
+                        </Space>
+                    </Col>
+                    <Col xs={24} className="controls">
+                        <Space size="middle">
+                            <Button
+                                type="primary"
+                                disabled={filter.searchDisabled}
+                                onClick={e => scrollTo("left")}
+                            >
+                                Налево
+                            </Button>
+                            <Button
+                                type="primary"
+                                disabled={filter.searchDisabled}
+                                onClick={e => scrollTo("right")}
+                            >
+                                Направо
+                            </Button>
                         </Space>
                     </Col>
                 </Row>

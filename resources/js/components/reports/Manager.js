@@ -233,7 +233,7 @@ export const Manager = observer(() => {
     return (
         <>
             <div className="report">
-                <div className="report-columns">
+                <div className="report-columns max-content">
                     <div className="main-column column bold">
                         <div className="column-row"></div>
                         {mainRows.map((item, k) => (

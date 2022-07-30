@@ -1,10 +1,10 @@
 import {observer} from "mobx-react-lite"
-import filter from "../../../controllers/filter.controller"
 import React from "react"
 import Formatter from "../../helpers/formatter"
 
 export const Column = observer(({column}) => {
     let columnClass = "column " + column.additionalClass
+    if(column?.name === "Недельный план") columnClass += " bold"
 
     return (
         <>

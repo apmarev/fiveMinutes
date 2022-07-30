@@ -38298,10 +38298,15 @@ main {
 }
 
 .header {
+  margin: 0;
   padding: 20px 15px;
 }
 .header .ant-select {
   width: 100%;
+}
+.header .controls {
+  display: flex;
+  justify-content: center;
 }
 
 .report {
@@ -38310,8 +38315,16 @@ main {
   overflow-x: auto;
 }
 .report-columns {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   display: flex;
   flex-flow: row nowrap;
+}
+.report-columns.max-content {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .heading-columns {
@@ -38329,6 +38342,7 @@ main {
   border-left: 1px solid #000;
 }
 .plan-heading-column:last-child {
+  flex: 0 0 501px;
   border-right: 1px solid #000;
 }
 
