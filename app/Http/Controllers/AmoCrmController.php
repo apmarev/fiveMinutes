@@ -356,15 +356,15 @@ class AmoCrmController extends Controller {
 
     public function getWebInfoMain(Request $request) {
 
-        if(!$request->has('month') || !$request->has('pipeline') || !$request->has('year'))
+        if(!$request->has('month') || !$request->has('pipeline_id') || !$request->has('year'))
             return CustomApiException::error(400);
 
-        $data = ManagersInfo::where('pipeline_id', $request->input('pipeline'))
+        $data = ManagersInfo::where('pipeline_id', $request->input('pipeline_id'))
             ->where('month', $request->input('month'))
             ->where('year', $request->input('year'))
             ->get()->toArray();
 
-        return self::calculateManagers($data, $request->input('month'), $request->input('year'), $request->input('pipeline'));
+        return self::calculateManagers($data, $request->input('month'), $request->input('year'), $request->input('pipeline_id'));
     }
 
     public function getWebInfoManager(Request $request) {
