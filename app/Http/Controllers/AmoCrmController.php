@@ -199,6 +199,19 @@ class AmoCrmController extends Controller {
         return $plan - $facts;
     }
 
+    protected static function sum_calc($data, $key, array $keys_two, $data_to) {
+        $sum = 0;
+
+        foreach($keys_two as $key)
+            $sum = $sum + $data_to[$key];
+
+        if(isset($data[$key]))
+            return $data[$key] + $sum;
+        else
+            return $sum;
+
+    }
+
     protected static function calculateManagers($data, $month, $year, $pipeline = null) {
         $ret = [];
 
@@ -228,6 +241,11 @@ class AmoCrmController extends Controller {
                         $all[$k] = $v;
                 }
             }
+
+            $all['sum_sale_month_ege'] = self::sum_calc($all, 'sum_sale_month_ege', [ 'children_month_ege', 'parents_month_ege' ], $d);
+            $all['sum_sale_month_oge'] = self::sum_calc($all, 'sum_sale_month_oge', [ 'children_month_oge', 'parents_month_oge' ], $d);
+            $all['sum_sale_month_ten'] = self::sum_calc($all, 'sum_sale_month_ten', [ 'children_month_10', 'parents_month_10' ], $d);
+
         }
 
         $plans = self::getWeeksPlansByManagers(array_unique($managers_ids), $month, $year, $pipeline);
@@ -755,6 +773,20 @@ class AmoCrmController extends Controller {
 
     protected static function getTemplateInfo(): array {
         return [
+            'sum_sale' => 0, // Сумма продаж
+
+            'sum_sale_ege' => 0, // Сумма продаж ЕГЭ
+            'sum_sale_oge' => 0, // Сумма продаж ОГЭ
+            'sum_sale_ten' => 0, // Сумма продаж 10 класс
+
+            'sum_sale_month_ege' => 0, // Сумма продаж месяц ЕГЭ
+            'sum_sale_month_oge' => 0, // Сумма продаж месяц ОГЭ
+            'sum_sale_month_ten' => 0, // Сумма продаж месяц 10 класс
+
+            'sum_sale_package_ege' => 0, // Сумма продаж пакет ЕГЭ
+            'sum_sale_package_oge' => 0, // Сумма продаж пакет ОГЭ
+            'sum_sale_package_ten' => 0, // Сумма продаж пакет 10 класс
+
             'leads_count' => 0, // Новых сделок
 
             'sum_month' => 0, // Выбран пакет 1
