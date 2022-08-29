@@ -20,12 +20,18 @@ class userController {
         super: 0 // 0 - Права на чтение, 1 - Права на редактирование плана и пользователей
     }
 
+    modal = false
+
     constructor() {
         makeAutoObservable(this)
     }
 
     onChange(name, value) {
         this.data[name] = value
+    }
+
+    onChangeUser(name, value) {
+        this.element[name] = value
     }
 
     /**
@@ -52,18 +58,38 @@ class userController {
     }
 
     getList() {
-        request.get('/user').then(result => this.list = result.data)
+        request.get('/user').then(result => {
+            console.log(result.data)
+            this.list = result.data
+        })
     }
 
     selectUser(userID) {
         this.element = this.list.find(el => el.id === userID)
+        this.element.password = ''
+        this.modal = true
+    }
+
+    create() {
+        this.element = { id: 0, login: '', password: '', super: 0 }
+        this.modal = true
     }
 
     clearElement() {
         this.element = { id: 0, login: '', password: '', super: 0 }
+        this.modal = false
     }
 
     save() {
+
+        if(this.element.login === '' || this.element.super <0) {
+            message.error('Укажите Email и выберите права пользователя')
+        }
+
+        if(!this.element.id || this.element.id < 1 && this.element.password === '') {
+            message.error('Укажите пароль для пользователя')
+        }
+
         const data = new FormData()
         data.append('login', this.element.login)
         data.append('password', sha1(this.element.password))
@@ -81,6 +107,8 @@ class userController {
                     this.clearElement()
                     this.getList()
                 })
+
+        this.modal = false
     }
 
     delete(userID) {

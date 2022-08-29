@@ -27,6 +27,7 @@ export const Header = observer(() => {
                             <Radio.Button value="1">План</Radio.Button>
                             <Radio.Button value="2">Общий отчет</Radio.Button>
                             <Radio.Button value="3">Менеджер</Radio.Button>
+                            <Radio.Button value="4">Пользователи</Radio.Button>
                         </Radio.Group>
                     </Col>
                     {filter.filterType === "3" &&

@@ -21,6 +21,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Util\Exception;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class AmoCrmController extends Controller {
@@ -523,7 +524,7 @@ class AmoCrmController extends Controller {
     }
 
     public function generate() {
-        $timestamp = strtotime("-13 day");
+        $timestamp = strtotime("-14 day");
         $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
         $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
 
@@ -544,100 +545,104 @@ class AmoCrmController extends Controller {
 
         try {
             $this->getCountLeadsByManagers($date_from, $date_to);
-            $this->getLeadsSuccessByManagers($date_from, $date_to);
+             $this->getLeadsSuccessByManagers($date_from, $date_to);
 
-            $this->getManagersInfo($dateArray);
+             $this->getManagersInfo($dateArray);
 
             $this->clearManagersLeads();
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return CustomApiException::error(501, $e->getMessage());
         }
+
+        return "Ok";
 
     }
 
     public function getCountLeadsByManagers($from, $to) {
-        $array = [];
+        try {
+            $array = [];
+            $contacts = [];
 
-        $contacts = [];
+            foreach(self::$pipelines as $pipeline) {
+                $list = $this->getAllListByFilter('leads', "&filter[pipeline_id]={$pipeline}&filter[created_at][from]={$from}&filter[created_at][to]={$to}&with=contacts");
 
-        foreach(self::$pipelines as $pipeline) {
-            $list = $this->getAllListByFilter('leads', "&filter[pipeline_id]={$pipeline}&filter[created_at][from]={$from}&filter[created_at][to]={$to}&with=contacts");
+                foreach($list as $el) {
+                    $target = false;
+                    $package = 0;
+                    $course = null;
 
-            foreach($list as $el) {
-                $target = false;
-                $package = 0;
-                $course = null;
-
-                foreach($this->getIsSetListCustomFields($el) as $c) {
-                    if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
-                        $target = true;
-                    }
-                    if($c['field_id'] == 708651) {
-                        $package = floatval($c['values'][0]['value']);
-                    }
-                    if($c['field_id'] == 709405) {
-                        if($c['values'][0]['enum_id'] > 0) {
-                            $course = self::getTypeCourse($c['values'][0]['enum_id']);
+                    foreach($this->getIsSetListCustomFields($el) as $c) {
+                        if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
+                            $target = true;
+                        }
+                        if($c['field_id'] == 708651) {
+                            $package = floatval($c['values'][0]['value']);
+                        }
+                        if($c['field_id'] == 709405) {
+                            if($c['values'][0]['enum_id'] > 0) {
+                                $course = self::getTypeCourse($c['values'][0]['enum_id']);
+                            }
                         }
                     }
-                }
 
-                $contact = null;
+                    $contact = null;
 
-                if(isset($el['_embedded']) && isset($el['_embedded']['contacts']) && isset($el['_embedded']['contacts'][0])) {
-                    $contact = $el['_embedded']['contacts'][0]['id'];
-                    $contacts[] = $contact;
-                }
-
-                $array[] = [
-                    'manager' => $el['responsible_user_id'],
-                    'pipeline_id' => $el['pipeline_id'],
-                    'target' => $target,
-                    'contact' => $contact,
-                    'type' => null,
-                    'package' => $package,
-                    'course' => $course,
-                ];
-            }
-        }
-
-        $contacts = array_chunk($contacts, 100);
-
-        foreach($contacts as $elems) {
-            $filter = "";
-            $i=0;
-            foreach($elems as $e) {
-                $filter .= "&filter[id][{$i}]=$e";
-                $i++;
-            }
-            $list = $this->getAllListByFilter('contacts', $filter);
-            foreach($list as $l) {
-                $type = null;
-                foreach($this->getIsSetListCustomFields($l) as $c) {
-                    if($c['field_id'] == 707467) {
-                        $type = $c['values'][0]['value'];
-                    }
-                }
-
-                if($type != null) {
-                    $index = array_search($l['id'], array_column($array, 'contact'));
-
-                    if($index > -1) {
-                        $times = $array[$index];
-                        $times['type'] = $type;
-                        $array[$index] = $times;
+                    if(isset($el['_embedded']) && isset($el['_embedded']['contacts']) && isset($el['_embedded']['contacts'][0])) {
+                        $contact = $el['_embedded']['contacts'][0]['id'];
+                        $contacts[] = $contact;
                     }
 
+                    $array[] = [
+                        'manager' => $el['responsible_user_id'],
+                        'pipeline_id' => $el['pipeline_id'],
+                        'target' => $target,
+                        'contact' => $contact,
+                        'type' => null,
+                        'package' => $package,
+                        'course' => $course,
+                    ];
                 }
             }
+
+            $contacts = array_chunk($contacts, 100);
+
+            foreach($contacts as $elems) {
+                $filter = "";
+                $i=0;
+                foreach($elems as $e) {
+                    $filter .= "&filter[id][{$i}]=$e";
+                    $i++;
+                }
+                $list = $this->getAllListByFilter('contacts', $filter);
+                foreach($list as $l) {
+                    $type = null;
+                    foreach($this->getIsSetListCustomFields($l) as $c) {
+                        if($c['field_id'] == 707467) {
+                            $type = $c['values'][0]['value'];
+                        }
+                    }
+
+                    if($type != null) {
+                        $index = array_search($l['id'], array_column($array, 'contact'));
+
+                        if($index > -1) {
+                            $times = $array[$index];
+                            $times['type'] = $type;
+                            $array[$index] = $times;
+                        }
+
+                    }
+                }
+            }
+
+            $array = array_chunk($array, 50);
+
+            foreach($array as $a)
+                ManagersLeads::insert($a);
+        } catch (\Exception $e) {
+            throw new Exception($e);
         }
 
-        // return $array;
-
-        $array = array_chunk($array, 50);
-
-        foreach($array as $a)
-            ManagersLeads::insert($a);
     }
 
     protected function getContactsByIds(array $contacts) {
@@ -677,70 +682,74 @@ class AmoCrmController extends Controller {
     }
 
     public function getLeadsSuccessByManagers($from, $to) {
-        $array = [];
-        $customs = [];
-        $contacts = [];
+        try {
+            $array = [];
+            $customs = [];
+            $contacts = [];
 
-        foreach(self::$pipelines as $pipeline) {
-            $list = $this->getAllListByFilter('leads', "&filter[statuses][0][pipeline_id]={$pipeline}&filter[statuses][0][status_id]=142&filter[closed_at][from]={$from}&filter[closed_at][to]={$to}&with=contacts");
+            foreach(self::$pipelines as $pipeline) {
+                $list = $this->getAllListByFilter('leads', "&filter[statuses][0][pipeline_id]={$pipeline}&filter[statuses][0][status_id]=142&filter[closed_at][from]={$from}&filter[closed_at][to]={$to}&with=contacts");
 
-            foreach($list as $lead) {
+                foreach($list as $lead) {
 
-                $target = false;
+                    $target = false;
 
-                foreach($this->getIsSetListCustomFields($lead) as $c) {
-                    if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
-                        $target = true;
+                    foreach($this->getIsSetListCustomFields($lead) as $c) {
+                        if($c['field_id'] == 704241 && $c['values'][0]['value'] == true) {
+                            $target = true;
+                        }
                     }
-                }
 
-                if(isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]))
-                    $contacts[] = $lead['_embedded']['contacts'][0]['id'];
+                    if(isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]))
+                        $contacts[] = $lead['_embedded']['contacts'][0]['id'];
 
 
-                $array[] = [
-                    'lead_id' => $lead['id'],
-                    'price' => $lead['price'],
-                    'manager' => $lead['responsible_user_id'],
-                    'pipeline_id' => $lead['pipeline_id'],
-                    'status_id' => $lead['status_id'],
-                    'created' => $lead['created_at'],
-                    'contact' => isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]) ? $lead['_embedded']['contacts'][0]['id'] : null,
-                    'target' => $target,
-                    'type' => 'none'
-                ];
+                    $array[] = [
+                        'lead_id' => $lead['id'],
+                        'price' => $lead['price'],
+                        'manager' => $lead['responsible_user_id'],
+                        'pipeline_id' => $lead['pipeline_id'],
+                        'status_id' => $lead['status_id'],
+                        'created' => $lead['created_at'],
+                        'contact' => isset($lead['_embedded']) && isset($lead['_embedded']['contacts']) && isset($lead['_embedded']['contacts'][0]) ? $lead['_embedded']['contacts'][0]['id'] : null,
+                        'target' => $target,
+                        'type' => 'none'
+                    ];
 
-                foreach($this->getIsSetListCustomFields($lead) as $custom) {
-                    if(
-                        $custom['field_id'] == 709405 || // Продукт
-                        $custom['field_id'] == 708651 || // Пакет
-                        $custom['field_id'] == 702873 // Тариф
-                    ) {
-                        $customs[] = [
-                            'lead_id' => $lead['id'],
-                            'field_id' => $custom['field_id'],
-                            'value' => $custom['values'][0]['value'],
-                            'enum' => $custom['values'][0]['enum_id']
-                        ];
+                    foreach($this->getIsSetListCustomFields($lead) as $custom) {
+                        if(
+                            $custom['field_id'] == 709405 || // Продукт
+                            $custom['field_id'] == 708651 || // Пакет
+                            $custom['field_id'] == 702873 // Тариф
+                        ) {
+                            $customs[] = [
+                                'lead_id' => $lead['id'],
+                                'field_id' => $custom['field_id'],
+                                'value' => $custom['values'][0]['value'],
+                                'enum' => $custom['values'][0]['enum_id']
+                            ];
+                        }
                     }
                 }
             }
-        }
 
-        $types = $this->getContactsByIds($contacts);
+            $types = $this->getContactsByIds($contacts);
 
-        $i = 0;
-        foreach($array as $lead) {
-            $result = array_search($lead['contact'], array_column($types, 'id'));
-            if($result >= 0) {
-                $lead['type'] = $types[$result]['type'];
+            $i = 0;
+            foreach($array as $lead) {
+                $result = array_search($lead['contact'], array_column($types, 'id'));
+                if($result >= 0) {
+                    $lead['type'] = $types[$result]['type'];
+                }
+                $array[$i] = $lead;
+                $i++;
             }
-            $array[$i] = $lead;
-            $i++;
-        }
 
-        ManagersLeadsSuccess::insert($array);
-        ManagersLeadsSuccessCustom::insert($customs);
+            ManagersLeadsSuccess::insert($array);
+            ManagersLeadsSuccessCustom::insert($customs);
+        } catch (\Exception $e) {
+            throw new \Exception($e);
+        }
 
     }
 

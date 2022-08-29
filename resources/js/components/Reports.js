@@ -8,6 +8,7 @@ import Common from "./reports/Common"
 import Manager from "./reports/Manager"
 import { Auth } from './reports/Auth'
 import store from 'store'
+import {Users} from "./reports/Users";
 
 export const Reports = observer(() => {
 
@@ -23,6 +24,9 @@ export const Reports = observer(() => {
                 }
                 {filter.filterType === "3" &&
                     <Manager />
+                }
+                {filter.filterType === "4" &&
+                    <Users />
                 }
             </main>
             <footer></footer>
