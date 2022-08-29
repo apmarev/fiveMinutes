@@ -327,61 +327,470 @@ export const Common = observer(() => {
     const allRows = (source) => {
         return [
             {
-                "value": "&nbsp;",
-                "finance": true,
-                "subrows": [
+                value: "&nbsp;",
+                finance: true,
+                subrows: [
                     {
-                        "value": source?.leads_count,
-                        "finance": true,
-                        "subrows": []
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
                     },
                     {
-                        "value": source?.leads_count,
-                        "finance": true,
-                        "subrows": []
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
                     },
                     {
-                        "value": source?.leads_count,
-                        "finance": true,
-                        "subrows": []
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
                     },
                     {
-                        "value": source?.leads_count,
-                        "finance": true,
-                        "subrows": [
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.children_ege,
+                                finance: true
                             },
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.children_oge,
+                                finance: true
                             },
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.children_10,
+                                finance: true
                             },
                         ]
                     },
                     {
-                        "value": source?.leads_count,
-                        "finance": true,
-                        "subrows": [
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.parents_ege,
+                                finance: true
                             },
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.parents_oge,
+                                finance: true
                             },
                             {
-                                "value": source?.leads_count,
-                                "finance": true
+                                value: source?.parents_10,
+                                finance: true
                             },
                         ]
                     }
                 ]
+            },
+            {
+                value: "&nbsp;",
+                finance: true,
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.children_month_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.children_month_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.children_month_10,
+                                finance: true
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.parents_month_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.parents_month_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.parents_month_10,
+                                finance: true
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: "&nbsp;",
+                finance: true,
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.children_package_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.children_package_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.children_package_10,
+                                finance: true
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.parents_package_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.parents_package_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.parents_package_10,
+                                finance: true
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: "&nbsp;",
+                finance: true,
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: "&nbsp;",
+                                finance: true
+                            },
+                            {
+                                value: "&nbsp;",
+                                finance: true
+                            },
+                            {
+                                value: "&nbsp;",
+                                finance: true
+                            },
+                            {
+                                value: "&nbsp;",
+                                finance: true
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.count_children_none,
+                            },
+                            {
+                                value: source?.count_children_ege,
+                            },
+                            {
+                                value: source?.count_children_oge,
+                            },
+                            {
+                                value: source?.count_children_10,
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.count_parents_none,
+                            },
+                            {
+                                value: source?.count_parents_ege,
+                            },
+                            {
+                                value: source?.count_parents_oge,
+                            },
+                            {
+                                value: source?.count_parents_10,
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: "&nbsp;",
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: [
+                            {
+                                value: source?.count_sale_children_ege,
+                            },
+                            {
+                                value: source?.count_sale_children_oge,
+                            },
+                            {
+                                value: source?.count_sale_children_10,
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: [
+                            {
+                                value: source?.count_sale_parents_ege,
+                            },
+                            {
+                                value: source?.count_sale_parents_oge,
+                            },
+                            {
+                                value: source?.count_sale_parents_10,
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: "&nbsp;",
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: [
+                            {
+                                value: source?.unique_children_ege,
+                            },
+                            {
+                                value: source?.unique_children_oge,
+                            },
+                            {
+                                value: source?.unique_children_10,
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        subrows: [
+                            {
+                                value: source?.unique_parents_ege,
+                            },
+                            {
+                                value: source?.unique_parents_oge,
+                            },
+                            {
+                                value: source?.unique_parents_10,
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: source?.average_check,
+                finance: true,
+                subrows: [
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.average_check_children_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.average_check_children_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.average_check_children_10,
+                                finance: true
+                            },
+                        ]
+                    },
+                    {
+                        value: "&nbsp;",
+                        finance: true,
+                        subrows: [
+                            {
+                                value: source?.average_check_parents_ege,
+                                finance: true
+                            },
+                            {
+                                value: source?.average_check_parents_oge,
+                                finance: true
+                            },
+                            {
+                                value: source?.average_check_parents_10,
+                                finance: true
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                value: source?.substandard_leads,
+                subrows: [],
+            },
+            {
+                value: source?.plan?.month,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.month_percent,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.month_remainder,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.package,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.package_percent,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.package_remainder,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.pro,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.pro_percent,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.pro_remainder,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.count,
+                subrows: [],
+                additionalClass: "lightOrange",
+            },
+            {
+                value: source?.plan?.count_percent,
+                subrows: [],
+                additionalClass: "lightOrange",
+            },
+            {
+                value: source?.plan?.count_remainder,
+                subrows: [],
+                additionalClass: "lightOrange",
             }
         ]
     }
@@ -390,6 +799,20 @@ export const Common = observer(() => {
         "name": "Месяц",
         "additionalClass": "month-column bold",
         "rows": allRows(filter.data.all)
+    }
+
+    let daysRows = []
+
+    if(Object.keys(filter.data).length > 1 && filter.data.days.length > 0){
+        filter.data.days.map((item, k) => {
+            let rowClass = (item.date === "Недельный план") ?? "bold"
+            return daysRows.push({
+                "name": item.date,
+                "additionalClass": rowClass,
+                "rows": allRows(item)
+            })
+        })
+
     }
 
     return (
@@ -403,6 +826,11 @@ export const Common = observer(() => {
                         ))}
                     </div>
                     <Column column={monthRows} />
+                    {daysRows.length > 0 &&
+                        daysRows.map((item, k) => (
+                            <Column column={item} key={k}/>
+                        ))
+                    }
                 </div>
             </div>
         </>
