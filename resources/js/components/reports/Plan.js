@@ -3,6 +3,7 @@ import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
 import { Input } from "antd"
 import Formatter from "../helpers/formatter"
+import store from "store";
 
 export const Plan = observer(() => {
 
@@ -10,6 +11,9 @@ export const Plan = observer(() => {
         filter.setDefaultFilterData()
         filter.getFilterPlan()
     }, [])
+
+    let userCanEdit = store.get('super')
+    let readOnlyInputs = (userCanEdit === 0) ? true : filter.searchDisabled
 
     const fields = ["month_sum", "package_sum", "pro_count", "count"]
 
@@ -61,7 +65,7 @@ export const Plan = observer(() => {
                                                 {filter.data.map((item, k) => (
                                                     <div key={k} className="column-row with-input">
                                                         <Input
-                                                            disabled={filter.searchDisabled}
+                                                            disabled={readOnlyInputs}
                                                             value={item.weeks[col.id][field]}
                                                             onChange={e => {
                                                                 let oldValue = Number(item.weeks[col.id][field])

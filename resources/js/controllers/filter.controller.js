@@ -8,7 +8,7 @@ configure({
 })
 
 class filterController {
-    filterType = "1"
+    filterType = "2"
     filter = {}
     managers = []
     pipelines = []
@@ -88,7 +88,7 @@ class filterController {
         if(this.filterType === "1"){
             filter = "/plan/"
         } else if(this.filterType === "2") {
-
+            filter = "/main/"
         } else {
             filter = "/info/"
         }
@@ -207,6 +207,7 @@ class filterController {
     }
 
     toggleRow(index, e) {
+        if(this.searchDisabled === true) return
         if(!e.target.classList.contains("column-row")) return
         index = index + 2
         document.querySelectorAll(`.column > *:nth-child(${index})`).forEach(item => {
@@ -214,8 +215,17 @@ class filterController {
         })
     }
 
+    toggleSubRow(rowIndex, index, e) {
+        if(this.searchDisabled === true) return
+        if(!e.target.classList.contains("has-subrows")) return
+        index = index + 1
+        document.querySelectorAll(`.column > *:nth-child(${rowIndex + 2}) > *:nth-child(${index})`).forEach(item => {
+            item.classList.toggle("active")
+        })
+    }
+
     closeAllRows() {
-        document.querySelectorAll(".column > *").forEach(item => {
+        document.querySelectorAll(".column *").forEach(item => {
             item.classList.remove("active")
         })
     }
