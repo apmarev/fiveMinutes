@@ -14,6 +14,13 @@ export const Reports = observer(() => {
 
     return store.get('token') && store.get('token') !== '' ? (
         <>
+            {filter.searchDisabled === true &&
+                <div className="preloader">
+                    <div className="lds-spinner">
+                        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            }
             <Header />
             <main>
                 {filter.filterType === "1" &&
