@@ -568,7 +568,7 @@ class AmoCrmController extends Controller {
     }
 
     public function generate() {
-        $timestamp = strtotime("-1 day");
+        $timestamp = strtotime("-2 day");
         $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
         $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
 
@@ -846,7 +846,7 @@ class AmoCrmController extends Controller {
 
             'count_none_ege' => 0,
             'count_none_oge' => 0,
-            'count_none_ten' => 0,
+            'count_none_10' => 0,
             'count_none_none' => 0,
 
             'count_sale_children_ege' => 0, // Дети ЕГЭ (кол-во продаж)
@@ -910,6 +910,44 @@ class AmoCrmController extends Controller {
                     if($lead['manager'] == $manager['id']) {
                         $el['leads_count'] = $el['leads_count'] + 1;
 
+                        if($lead['type'] != null) {
+                            if($lead['type'] == 'Ученик')
+                                $lead['type'] = 'children';
+                            else if($lead['type'] == 'Родитель')
+                                $lead['type'] = 'parents';
+                        } else {
+                            $lead['type'] = 'none';
+                        }
+
+                        if($lead['course'] != null) {
+                            if($lead['course'] == 'ege') {
+                                $lead['course'] = 'ege';
+                            } else if($lead['course'] == 'oge') {
+                                $lead['course'] = 'oge';
+                            } else if($lead['course'] == 'ten') {
+                                $lead['course'] = '10';
+                            }
+                        } else {
+                            $lead['course'] = 'none';
+                        }
+
+
+                        if($lead['type'] != 'none' && $lead['course'] != 'none') {
+                            $el["count_{$lead['type']}_{$lead['course']}"] = $el["count_{$lead['type']}_{$lead['course']}"] + 1;
+
+                            $el["count_sale_{$lead['type']}_{$lead['course']}"] = $el["count_sale_{$lead['type']}_{$lead['course']}"] + 1;
+                        } else {
+                            if($lead['type'] != 'none' && $lead['course'] == 'none') {
+                                $el["count_{$lead['type']}_none"] = $el["count_{$lead['type']}_none"] + 1;
+                            }
+                            if($lead['course'] != 'none' && $lead['type'] == 'none') {
+                                $el["count_none_{$lead['course']}"] = $el["count_none_{$lead['course']}"] + 1;
+                            }
+                            if($lead['type'] == 'none' && $lead['course'] == 'none') {
+                                $el['count_none_none'] = $el['count_none_none'] + 1;
+                            }
+                        }
+
                         if($lead['target'] == 0)
                             $el['substandard_leads'] = $el['substandard_leads'] + 1;
                     }
@@ -959,22 +997,13 @@ class AmoCrmController extends Controller {
 
                             $el["{$product['type']}_{$product['package']}_{$product['course']}"] = $el["{$product['type']}_{$product['package']}_{$product['course']}"] + $complete['price'];
 
-                            $el["count_{$product['type']}_{$product['course']}"] = $el["count_{$product['type']}_{$product['course']}"] + 1;
-
-                            $el["count_sale_{$product['type']}_{$product['course']}"] = $el["count_sale_{$product['type']}_{$product['course']}"] + 1;
+//                            $el["count_{$product['type']}_{$product['course']}"] = $el["count_{$product['type']}_{$product['course']}"] + 1;
+//
+//                            $el["count_sale_{$product['type']}_{$product['course']}"] = $el["count_sale_{$product['type']}_{$product['course']}"] + 1;
 
                             $el["average_check_{$product['type']}_{$product['course']}"] = $el["average_check_{$product['type']}_{$product['course']}"] + $complete['price'];
 
                             $unique["{$product['type']}_{$product['course']}"][] = $complete["contact"];
-                        } else {
-                            if($product['type'] != 'none') {
-                                $el["count_{$product['type']}_none"] = $el["count_{$product['type']}_none"] + 1;
-                            } else if($product['course'] != 'none') {
-                                $el["count_none_{$product['course']}"] = $el["count_none_{$product['course']}"] + 1;
-                            }
-                            if($product['type'] == 'none' && $product['course'] == 'none') {
-                                $el['count_none_none'] = $el['count_none_none'] + 1;
-                            }
                         }
 
 
@@ -995,19 +1024,6 @@ class AmoCrmController extends Controller {
                             $el['count_pro'] = $el['count_pro'] + 1;
                             $el['sum_pro'] = $el['sum_pro'] + $complete['price'];
                             $contacts['pro'][] = $complete['contact'];
-                        }
-                    } else {
-                        $product = $this->getProductByType($complete['lead_id'], 0, $complete['type']);
-
-                        if($product['type'] == 'none' || $product['course'] == 'none') {
-                            if($product['type'] != 'none') {
-                                $el["count_{$product['type']}_none"] = $el["count_{$product['type']}_none"] + 1;
-                            } else if($product['course'] != 'none') {
-                                $el["count_none_{$product['course']}"] = $el["count_none_{$product['course']}"] + 1;
-                            }
-                            if($product['type'] == 'none' && $product['course'] == 'none') {
-                                $el['count_none_none'] = $el['count_none_none'] + 1;
-                            }
                         }
                     }
 

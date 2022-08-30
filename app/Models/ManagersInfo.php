@@ -80,7 +80,7 @@ class ManagersInfo extends Model {
 
     protected int $count_none_ege;
     protected int $count_none_oge;
-    protected int $count_none_ten;
+    protected int $count_none_10;
     protected int $count_none_none;
 
 }

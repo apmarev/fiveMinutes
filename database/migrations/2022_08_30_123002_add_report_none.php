@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('managers_info', function (Blueprint $table) {
             $table->integer('count_none_ege');
             $table->integer('count_none_oge');
-            $table->integer('count_none_ten');
+            $table->integer('count_none_10');
             $table->integer('count_none_none');
         });
     }
@@ -31,7 +31,7 @@ return new class extends Migration
         Schema::table('managers_info', function (Blueprint $table) {
             $table->dropColumn('count_none_ege');
             $table->dropColumn('count_none_oge');
-            $table->dropColumn('count_none_ten');
+            $table->dropColumn('count_none_10');
             $table->dropColumn('count_none_none');
         });
     }

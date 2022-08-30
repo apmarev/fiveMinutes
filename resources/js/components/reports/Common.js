@@ -384,21 +384,21 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: source?.sum_sale_month_ege + source?.sum_sale_month_oge + source?.sum_sale_month_ten,
+                value: (source?.children_month_ege + source?.children_month_oge + source?.children_month_10) + (source?.parents_month_ege + source?.parents_month_oge + source?.parents_month_10),
                 finance: true,
                 subrows: [
                     {
-                        value: source?.sum_sale_month_ege,
+                        value: source?.children_month_ege + source?.parents_month_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: source?.sum_sale_month_oge,
+                        value: source?.children_month_oge + source?.parents_month_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: source?.sum_sale_month_ten,
+                        value: source?.children_month_10 + source?.parents_month_10,
                         finance: true,
                         subrows: []
                     },
@@ -498,7 +498,7 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: (source?.count_none_ege + source?.count_children_ege + source?.count_parents_ege) + (source?.count_none_oge + source?.count_children_oge + source?.count_parents_oge) + (source?.count_none_ten + source?.count_children_10 + source?.count_parents_10) + (source?.count_none_none + source?.count_children_none + source?.count_parents_none),
+                value: (source?.count_none_ege + source?.count_children_ege + source?.count_parents_ege) + (source?.count_none_oge + source?.count_children_oge + source?.count_parents_oge) + (source?.count_none_10 + source?.count_children_10 + source?.count_parents_10) + (source?.count_none_none + source?.count_children_none + source?.count_parents_none),
                 finance: false,
                 subrows: [
                     {
@@ -510,7 +510,7 @@ export const Common = observer(() => {
                         subrows: []
                     },
                     {
-                        value: source?.count_none_ten + source?.count_children_10 + source?.count_parents_10,
+                        value: source?.count_none_10 + source?.count_children_10 + source?.count_parents_10,
                         subrows: []
                     },
                     {
@@ -519,7 +519,7 @@ export const Common = observer(() => {
                         subrows: []
                     },
                     {
-                        value: source?.count_none_none + source?.count_none_ege + source?.count_none_oge + source?.count_none_ten,
+                        value: source?.count_none_none + source?.count_none_ege + source?.count_none_oge + source?.count_none_10,
                         finance: false,
                         subrows: [
                             {
@@ -535,7 +535,7 @@ export const Common = observer(() => {
                                 finance: false
                             },
                             {
-                                value: source?.count_none_ten,
+                                value: source?.count_none_10,
                                 finance: false
                             },
                         ]
