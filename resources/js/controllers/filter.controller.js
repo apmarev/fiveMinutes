@@ -195,9 +195,9 @@ class filterController {
         })
         let fd = new FormData()
         data.map(item => fd.append("managers[]", JSON.stringify(item)))
-        fd.append("pipeline_id", 5322871)
-        fd.append("month", 6)
-        fd.append("year", 2022)
+        fd.append("pipeline_id", this.filter.pipeline)
+        fd.append("month", this.filter.month)
+        fd.append("year", this.filter.year)
         request.post("/plan", fd)
             .then(result => {
                 console.log(result)
