@@ -15,7 +15,7 @@ export const Column = observer(({column}) => {
                     if(row.subrows.length > 0) rowClass += " has-subrows"
                     return (
                         <div className={rowClass} key={k}>
-                            <Formatter number={row.value ?? 0} finance={row?.finance ?? false} />
+                            <Formatter number={row.value ?? 0} finance={row?.finance ?? false} percent={row?.percent ?? false} />
                             {row.subrows.length > 0 &&
                                 row.subrows.map((subrow, sk) => {
                                     let subrowClass = "sub-row " + row.additionalClass
@@ -25,7 +25,7 @@ export const Column = observer(({column}) => {
                                             <Formatter number={subrow.value ?? 0} finance={subrow?.finance ?? false} />
                                             {subrow.subrows.map((subsubrow, ssk) => (
                                                 <div className="sub-row" key={ssk}>
-                                                    <Formatter number={subsubrow.value ?? 0} finance={subsubrow?.finance ?? false} />
+                                                    <Formatter number={subsubrow.value ?? 0} finance={subsubrow?.finance ?? false} percent={subsubrow?.percent ?? false} />
                                                 </div>
                                             ))}
                                         </div>
