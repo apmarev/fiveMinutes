@@ -246,7 +246,17 @@ class AmoCrmController extends Controller {
             $all['sum_sale_month_oge'] = self::sum_calc($all, 'sum_sale_month_oge', [ 'children_month_oge', 'parents_month_oge' ], $d);
             $all['sum_sale_month_ten'] = self::sum_calc($all, 'sum_sale_month_ten', [ 'children_month_10', 'parents_month_10' ], $d);
 
+            $all['sum_sale_package_ege'] = self::sum_calc($all, 'sum_sale_package_ege', [ 'children_package_ege', 'parents_package_ege' ], $d);
+            $all['sum_sale_package_oge'] = self::sum_calc($all, 'sum_sale_package_oge', [ 'children_package_oge', 'parents_package_oge' ], $d);
+            $all['sum_sale_package_ten'] = self::sum_calc($all, 'sum_sale_package_ten', [ 'children_package_10', 'parents_package_10' ], $d);
+
         }
+
+        $all['sum_sale_ege'] = $all['children_ege'] + $all['parents_ege'];
+        $all['sum_sale_oge'] = $all['children_oge'] + $all['parents_oge'];
+        $all['sum_sale_ten'] = $all['children_10'] + $all['parents_10'];
+
+        $all['sum_sale'] = $all['sum_sale_ege'] + $all['sum_sale_oge'] + $all['sum_sale_ten'];
 
         $plans = self::getWeeksPlansByManagers(array_unique($managers_ids), $month, $year, $pipeline);
 
@@ -270,7 +280,23 @@ class AmoCrmController extends Controller {
                     $size[$k] = $size[$k] + $v;
                 else
                     $size[$k] = $v;
+
+                $ret['days'][$i]['sum_sale_month_ege'] = self::sum_calc($ret['days'][$i], 'sum_sale_month_ege', [ 'children_month_ege', 'parents_month_ege' ], $ret['days'][$i]);
+                $ret['days'][$i]['sum_sale_month_oge'] = self::sum_calc($ret['days'][$i], 'sum_sale_month_oge', [ 'children_month_oge', 'parents_month_oge' ], $ret['days'][$i]);
+                $ret['days'][$i]['sum_sale_month_ten'] = self::sum_calc($ret['days'][$i], 'sum_sale_month_ten', [ 'children_month_10', 'parents_month_10' ], $ret['days'][$i]);
+
+                $ret['days'][$i]['sum_sale_package_ege'] = self::sum_calc($ret['days'][$i], 'sum_sale_package_ege', [ 'children_package_ege', 'parents_package_ege' ], $ret['days'][$i]);
+                $ret['days'][$i]['sum_sale_package_oge'] = self::sum_calc($ret['days'][$i], 'sum_sale_package_oge', [ 'children_package_oge', 'parents_package_oge' ], $ret['days'][$i]);
+                $ret['days'][$i]['sum_sale_package_ten'] = self::sum_calc($ret['days'][$i], 'sum_sale_package_ten', [ 'children_package_10', 'parents_package_10' ], $ret['days'][$i]);
+
+                $ret['days'][$i]['sum_sale_ege'] = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['parents_ege'];
+                $ret['days'][$i]['sum_sale_oge'] = $ret['days'][$i]['children_oge'] + $ret['days'][$i]['parents_oge'];
+                $ret['days'][$i]['sum_sale_ten'] = $ret['days'][$i]['children_10'] + $ret['days'][$i]['parents_10'];
+
+                $ret['days'][$i]['sum_sale'] = $ret['days'][$i]['sum_sale_ege'] + $ret['days'][$i]['sum_sale_oge'] + $ret['days'][$i]['sum_sale_ten'];
             }
+
+
 
             if($i == 7) {
                 $size['plan'] = $plans['week1'];
@@ -542,7 +568,7 @@ class AmoCrmController extends Controller {
     }
 
     public function generate() {
-        $timestamp = strtotime("-14 day");
+        $timestamp = strtotime("-1 day");
         $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
         $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
 
@@ -773,20 +799,6 @@ class AmoCrmController extends Controller {
 
     protected static function getTemplateInfo(): array {
         return [
-            'sum_sale' => 0, // Сумма продаж
-
-            'sum_sale_ege' => 0, // Сумма продаж ЕГЭ
-            'sum_sale_oge' => 0, // Сумма продаж ОГЭ
-            'sum_sale_ten' => 0, // Сумма продаж 10 класс
-
-            'sum_sale_month_ege' => 0, // Сумма продаж месяц ЕГЭ
-            'sum_sale_month_oge' => 0, // Сумма продаж месяц ОГЭ
-            'sum_sale_month_ten' => 0, // Сумма продаж месяц 10 класс
-
-            'sum_sale_package_ege' => 0, // Сумма продаж пакет ЕГЭ
-            'sum_sale_package_oge' => 0, // Сумма продаж пакет ОГЭ
-            'sum_sale_package_ten' => 0, // Сумма продаж пакет 10 класс
-
             'leads_count' => 0, // Новых сделок
 
             'sum_month' => 0, // Выбран пакет 1
@@ -831,6 +843,11 @@ class AmoCrmController extends Controller {
             'count_parents_ege' => 0, // Родители ЕГЭ (кол-во лидов)
             'count_parents_oge' => 0, // Родители ОГЭ (кол-во лидов)
             'count_parents_10' => 0, // Родители 10 класс (кол-во лидов)
+
+            'count_none_ege' => 0,
+            'count_none_oge' => 0,
+            'count_none_ten' => 0,
+            'count_none_none' => 0,
 
             'count_sale_children_ege' => 0, // Дети ЕГЭ (кол-во продаж)
             'count_sale_children_oge' => 0, // Дети ОГЭ (кол-во продаж)
@@ -882,7 +899,8 @@ class AmoCrmController extends Controller {
         foreach(self::$pipelines as $pipeline) {
             $ret = [];
 
-            $leads = ManagersLeads::where('pipeline_id', $pipeline)->get();
+            $leads = ManagersLeads::where('pipeline_id', $pipeline)->get()->toArray();
+
             $leadsSuccess = ManagersLeadsSuccess::where('pipeline_id', $pipeline)->get();
 
             foreach($managers as $manager) {
@@ -948,6 +966,15 @@ class AmoCrmController extends Controller {
                             $el["average_check_{$product['type']}_{$product['course']}"] = $el["average_check_{$product['type']}_{$product['course']}"] + $complete['price'];
 
                             $unique["{$product['type']}_{$product['course']}"][] = $complete["contact"];
+                        } else {
+                            if($product['type'] != 'none') {
+                                $el["count_{$product['type']}_none"] = $el["count_{$product['type']}_none"] + 1;
+                            } else if($product['course'] != 'none') {
+                                $el["count_none_{$product['course']}"] = $el["count_none_{$product['course']}"] + 1;
+                            }
+                            if($product['type'] == 'none' && $product['course'] == 'none') {
+                                $el['count_none_none'] = $el['count_none_none'] + 1;
+                            }
                         }
 
 
@@ -968,6 +995,19 @@ class AmoCrmController extends Controller {
                             $el['count_pro'] = $el['count_pro'] + 1;
                             $el['sum_pro'] = $el['sum_pro'] + $complete['price'];
                             $contacts['pro'][] = $complete['contact'];
+                        }
+                    } else {
+                        $product = $this->getProductByType($complete['lead_id'], 0, $complete['type']);
+
+                        if($product['type'] == 'none' || $product['course'] == 'none') {
+                            if($product['type'] != 'none') {
+                                $el["count_{$product['type']}_none"] = $el["count_{$product['type']}_none"] + 1;
+                            } else if($product['course'] != 'none') {
+                                $el["count_none_{$product['course']}"] = $el["count_none_{$product['course']}"] + 1;
+                            }
+                            if($product['type'] == 'none' && $product['course'] == 'none') {
+                                $el['count_none_none'] = $el['count_none_none'] + 1;
+                            }
                         }
                     }
 

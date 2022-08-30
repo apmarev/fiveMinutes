@@ -327,26 +327,26 @@ export const Common = observer(() => {
     const allRows = (source) => {
         return [
             {
-                value: "&nbsp;",
+                value: source?.sum_sale,
                 finance: true,
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_ten,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.children_ege + source?.children_oge + source?.children_10,
                         finance: true,
                         subrows: [
                             {
@@ -364,7 +364,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.parents_ege + source?.parents_oge + source?.parents_10,
                         finance: true,
                         subrows: [
                             {
@@ -384,26 +384,26 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: "&nbsp;",
+                value: source?.sum_sale_month_ege + source?.sum_sale_month_oge + source?.sum_sale_month_ten,
                 finance: true,
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_month_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_month_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_month_ten,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.children_month_ege + source?.children_month_oge + source?.children_month_10,
                         finance: true,
                         subrows: [
                             {
@@ -421,7 +421,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.parents_month_ege + source?.parents_month_oge + source?.parents_month_10,
                         finance: true,
                         subrows: [
                             {
@@ -441,26 +441,26 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: "&nbsp;",
+                value: source?.sum_sale_package_ege + source?.sum_sale_package_oge + source?.sum_sale_package_ten,
                 finance: true,
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_package_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_package_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.sum_sale_package_ten,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.children_package_ege + source?.children_package_oge + source?.children_package_10,
                         finance: true,
                         subrows: [
                             {
@@ -478,7 +478,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.parents_package_ege + source?.parents_package_oge + source?.parents_package_10,
                         finance: true,
                         subrows: [
                             {
@@ -498,54 +498,51 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: "&nbsp;",
-                finance: true,
+                value: (source?.count_none_ege + source?.count_children_ege + source?.count_parents_ege) + (source?.count_none_oge + source?.count_children_oge + source?.count_parents_oge) + (source?.count_none_ten + source?.count_children_10 + source?.count_parents_10) + (source?.count_none_none + source?.count_children_none + source?.count_parents_none),
+                finance: false,
                 subrows: [
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_none_ege + source?.count_children_ege + source?.count_parents_ege,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_none_oge + source?.count_children_oge + source?.count_parents_oge,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_none_ten + source?.count_children_10 + source?.count_parents_10,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_none_none + source?.count_children_none + source?.count_parents_none,
+                        finance: false,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_none_none + source?.count_none_ege + source?.count_none_oge + source?.count_none_ten,
+                        finance: false,
                         subrows: [
                             {
-                                value: "&nbsp;",
-                                finance: true
+                                value: source?.count_none_none,
+                                finance: false
                             },
                             {
-                                value: "&nbsp;",
-                                finance: true
+                                value: source?.count_none_ege,
+                                finance: false
                             },
                             {
-                                value: "&nbsp;",
-                                finance: true
+                                value: source?.count_none_oge,
+                                finance: false
                             },
                             {
-                                value: "&nbsp;",
-                                finance: true
+                                value: source?.count_none_ten,
+                                finance: false
                             },
                         ]
                     },
                     {
-                        value: "&nbsp;",
-                        finance: true,
+                        value: source?.count_children_none + source?.count_children_ege + source?.count_children_oge + source?.count_children_10,
+                        finance: false,
                         subrows: [
                             {
                                 value: source?.count_children_none,
@@ -562,7 +559,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.count_parents_none + source?.count_parents_ege + source?.count_parents_oge + source?.count_parents_10,
                         finance: true,
                         subrows: [
                             {
@@ -582,22 +579,22 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: "&nbsp;",
+                value: (source?.count_sale_children_ege + source?.count_sale_children_oge + source?.count_sale_children_10) + (source?.count_sale_parents_ege + source?.count_sale_parents_oge + source?.count_sale_parents_10),
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.count_sale_children_ege + source?.count_sale_parents_ege,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.count_sale_children_oge + source?.count_sale_parents_oge,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.count_sale_children_10 + source?.count_sale_parents_10,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.count_sale_children_ege + source?.count_sale_children_oge + source?.count_sale_children_10,
                         subrows: [
                             {
                                 value: source?.count_sale_children_ege,
@@ -611,7 +608,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.count_sale_parents_ege + source?.count_sale_parents_oge + source?.count_sale_parents_10,
                         subrows: [
                             {
                                 value: source?.count_sale_parents_ege,
@@ -627,22 +624,22 @@ export const Common = observer(() => {
                 ]
             },
             {
-                value: "&nbsp;",
+                value: (source?.unique_children_ege + source?.unique_children_oge + source?.unique_children_10) + (source?.unique_parents_ege + source?.unique_parents_oge + source?.unique_parents_10),
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.unique_children_ege + source?.unique_parents_ege,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.unique_children_oge + source?.unique_parents_oge,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.unique_children_10 + source?.unique_parents_10,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.unique_children_ege + source?.unique_children_oge + source?.unique_children_10,
                         subrows: [
                             {
                                 value: source?.unique_children_ege,
@@ -656,7 +653,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.unique_parents_ege + source?.unique_parents_oge + source?.unique_parents_10,
                         subrows: [
                             {
                                 value: source?.unique_parents_ege,
@@ -676,22 +673,22 @@ export const Common = observer(() => {
                 finance: true,
                 subrows: [
                     {
-                        value: "&nbsp;",
+                        value: source?.average_check_children_ege + source?.average_check_parents_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.average_check_children_oge + source?.average_check_parents_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.average_check_children_10 + source?.average_check_parents_10,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.average_check_children_ege + source?.average_check_children_oge + source?.average_check_children_10,
                         finance: true,
                         subrows: [
                             {
@@ -709,7 +706,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: "&nbsp;",
+                        value: source?.average_check_parents_ege + source?.average_check_parents_oge + source?.average_check_parents_10,
                         finance: true,
                         subrows: [
                             {

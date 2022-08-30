@@ -78,4 +78,9 @@ class ManagersInfo extends Model {
     protected int $average_check_parents_10;
     protected int $substandard_leads;
 
+    protected int $count_none_ege;
+    protected int $count_none_oge;
+    protected int $count_none_ten;
+    protected int $count_none_none;
+
 }
