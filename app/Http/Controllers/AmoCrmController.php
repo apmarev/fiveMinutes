@@ -403,17 +403,31 @@ class AmoCrmController extends Controller {
         $week_plan_month = 0;
         $week_plan_package = 0;
         $week_plan_pro = 0;
+        $week_plan_count = 0;
 
         foreach($report as $k => $v) {
-            if(isset($v['data']) && $v['data'] == "Недельный план") {
+            if(isset($v['date']) && $v['date'] == "Недельный план") {
 
-//                $report[$k]['plan']['plan_month_percent'] = ($week_plan_month / $v['plan_month']) *  100;
-//                $report[$k]['plan']['plan_package_percent'] = ($week_plan_package / $v['plan_package']) *  100;
-//                $report[$k]['plan']['plan_pro_percent'] = ($week_plan_pro / $v['plan_pro']) *  100;
-//
-//                $week_plan_month = 0;
-//                $week_plan_package = 0;
-//                $week_plan_pro = 0;
+                $report[$k]['plan']['month'] = $v['plan']['plan_month'];
+                $report[$k]['plan']['month_percent'] = ($week_plan_month / $v['plan']['plan_month']) *  100;
+                $report[$k]['plan']['month_remainder'] = $v['plan']['plan_month'] - $week_plan_month;
+
+                $report[$k]['plan']['package'] = $v['plan']['plan_package'];
+                $report[$k]['plan']['package_percent'] = ($week_plan_package / $v['plan']['plan_package']) *  100;
+                $report[$k]['plan']['package_remainder'] = $v['plan']['plan_package'] - $week_plan_package;
+
+                $report[$k]['plan']['pro'] = $v['plan']['plan_pro'];
+                $report[$k]['plan']['pro_percent'] = ($week_plan_pro / $v['plan']['plan_pro']) *  100;
+                $report[$k]['plan']['pro_remainder'] = $v['plan']['plan_pro'] - $week_plan_pro;
+
+                $report[$k]['plan']['count'] = $v['plan']['plan_count'];
+                $report[$k]['plan']['count_percent'] = ($week_plan_count / $v['plan']['plan_count']) *  100;
+                $report[$k]['plan']['count_remainder'] = $v['plan']['plan_count'] - $week_plan_count;
+
+                $week_plan_month = 0;
+                $week_plan_package = 0;
+                $week_plan_pro = 0;
+                $week_plan_count = 0;
             } else {
                 if(isset($v['sum_month']) && $v['sum_month'] > 0) {
                     $report[$k]['plan']['month_percent'] = ($v['sum_month'] / $plan_month) * 100;
@@ -435,7 +449,8 @@ class AmoCrmController extends Controller {
 
                     $week_plan_month = $week_plan_month + $v['sum_month'];
                     $week_plan_package = $week_plan_package + $v['sum_package'];
-                    $week_plan_pro = $week_plan_pro + $v['sum_pro'];
+                    $week_plan_pro = $week_plan_pro + $v['count_pro'];
+                    $week_plan_count = $week_plan_count + $su;
 
                     //count_percent
                 }

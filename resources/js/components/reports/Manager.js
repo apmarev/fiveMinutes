@@ -211,31 +211,37 @@ export const Manager = observer(() => {
                 value: source?.plan?.month,
                 subrows: [],
                 additionalClass: "lightRed",
+                finance: true
             },
             {
                 value: source?.plan?.month_percent,
                 subrows: [],
                 additionalClass: "lightRed",
+                percent: true
             },
             {
                 value: source?.plan?.month_remainder,
                 subrows: [],
                 additionalClass: "lightRed",
+                finance: true
             },
             {
                 value: source?.plan?.package,
                 subrows: [],
                 additionalClass: "lightBlue",
+                finance: true
             },
             {
                 value: source?.plan?.package_percent,
                 subrows: [],
                 additionalClass: "lightBlue",
+                percent: true
             },
             {
                 value: source?.plan?.package_remainder,
                 subrows: [],
                 additionalClass: "lightBlue",
+                finance: true
             },
             {
                 value: source?.plan?.pro,
@@ -246,6 +252,7 @@ export const Manager = observer(() => {
                 value: source?.plan?.pro_percent,
                 subrows: [],
                 additionalClass: "purple",
+                percent: true
             },
             {
                 value: source?.plan?.pro_remainder,
@@ -261,6 +268,7 @@ export const Manager = observer(() => {
                 value: source?.plan?.count_percent,
                 subrows: [],
                 additionalClass: "lightOrange",
+                percent: true
             },
             {
                 value: source?.plan?.count_remainder,
