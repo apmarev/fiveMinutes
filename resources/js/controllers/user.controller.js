@@ -3,6 +3,7 @@ import { request } from './request'
 import store from 'store'
 import sha1 from 'sha1'
 import { message } from 'antd'
+import filter from "./filter.controller"
 
 class userController {
 
@@ -10,23 +11,20 @@ class userController {
         login: '',
         password: ''
     }
-
     list = []
-
     element = {
         id: 0,
         login: '', // Должен быть email
         password: '', // Передавать пароль в sha1
         super: 0 // 0 - Права на чтение, 1 - Права на редактирование плана и пользователей
     }
-
     modal = false
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    onChange(name, value) {
+    onChangeAuth(name, value) {
         this.data[name] = value
     }
 
@@ -34,11 +32,9 @@ class userController {
         this.element[name] = value
     }
 
-    /**
-     * Авторизация пользователя
-     */
-    login(e) {
+    logIn(e) {
         e.preventDefault()
+
         const data = new FormData()
         data.append('login', this.data.login)
         data.append('password', sha1(this.data.password))
@@ -57,11 +53,22 @@ class userController {
             })
     }
 
-    getList() {
+    logOut() {
+        store.clearAll()
+        window.location.reload()
+    }
+
+    getUsersList() {
+        filter.searchDisabled = true
         request.get('/user').then(result => {
-            console.log(result.data)
             this.list = result.data
+            filter.searchDisabled = false
         })
+    }
+
+    clearElement() {
+        this.element = { id: 0, login: '', password: '', super: 0 }
+        this.modal = false
     }
 
     selectUser(userID) {
@@ -70,24 +77,18 @@ class userController {
         this.modal = true
     }
 
-    create() {
+    createUser() {
         this.element = { id: 0, login: '', password: '', super: 0 }
         this.modal = true
     }
 
-    clearElement() {
-        this.element = { id: 0, login: '', password: '', super: 0 }
-        this.modal = false
-    }
-
-    save() {
-
+    saveUser() {
         if(this.element.login === '' || this.element.super <0) {
-            message.error('Укажите Email и выберите права пользователя')
+            return message.error('Укажите Email и выберите права пользователя')
         }
 
-        if(!this.element.id || this.element.id < 1 && this.element.password === '') {
-            message.error('Укажите пароль для пользователя')
+        if(this.element.password === '') {
+            return message.error('Укажите пароль для пользователя')
         }
 
         const data = new FormData()
@@ -99,13 +100,13 @@ class userController {
             request.put(`/user/${this.element.id}`, data)
                 .then(result => {
                     this.clearElement()
-                    this.getList()
+                    this.getUsersList()
                 })
         else
             request.post(`/user`, data)
                 .then(result => {
                     this.clearElement()
-                    this.getList()
+                    this.getUsersList()
                 })
 
         this.modal = false
@@ -114,7 +115,7 @@ class userController {
     delete(userID) {
         request.delete(`/user/${userID}`)
             .then(result => {
-                this.getList()
+                this.getUsersList()
             })
     }
 

@@ -1,6 +1,5 @@
 import { makeAutoObservable, configure } from "mobx"
 import { request } from './request'
-import moment from "moment"
 import {message} from "antd";
 
 configure({

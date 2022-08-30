@@ -1,14 +1,26 @@
 import { observer } from "mobx-react-lite"
 import React, { useEffect } from "react"
 import userController from "../../controllers/user.controller"
-import { Space, Table, Button, Modal, Row, Col, Input, Select } from 'antd'
+import { Space, Table, Button, Modal, Row, Col, Input, Select, Popconfirm, Typography } from "antd"
+const { Title } = Typography
 
 const columns = [
-    { title: 'Email', dataIndex: 'login', key: 'login' },
-    { title: 'Тип', dataIndex: 'super', key: 'super', render: (el) => el > 0 ? 'Редактор' : 'Читатель' },
     {
-        title: 'Действия',
-        key: 'actions',
+        title: "Email",
+        dataIndex: "login",
+        key: "login"
+    },
+    {
+        title: "Тип",
+        dataIndex: "super",
+        key: "super",
+        width: "220px",
+        render: (el) => el > 0 ? "Редактор" : "Читатель"
+    },
+    {
+        title: "Действия",
+        key: "actions",
+        width: "220px",
         render: (_, record) => (
             <Space>
                 <Button
@@ -17,13 +29,19 @@ const columns = [
                 >
                     Изменить
                 </Button>
-                <Button
-                    type="dashed"
-                    onClick={() => userController.delete(record.id)}
-                    danger
+                <Popconfirm
+                    title="Вы уверены?"
+                    onConfirm={_ => userController.delete(record.id)}
+                    okText="Да"
+                    cancelText="Нет"
                 >
-                    Удалить
-                </Button>
+                    <Button
+                        type="dashed"
+                        danger
+                    >
+                        Удалить
+                    </Button>
+                </Popconfirm>
             </Space>
         )
     },
@@ -37,7 +55,7 @@ const User = observer(() => {
                 <Input
                     placeholder="Укажите email"
                     value={userController.element.login}
-                    onChange={(e) => userController.onChangeUser('login', e.target.value)}
+                    onChange={(e) => userController.onChangeUser("login", e.target.value)}
                     required
                 />
             </Col>
@@ -45,7 +63,7 @@ const User = observer(() => {
                 <Input.Password
                     placeholder="Укажите пароль"
                     value={userController.element.password}
-                    onChange={(e) => userController.onChangeUser('password', e.target.value)}
+                    onChange={(e) => userController.onChangeUser("password", e.target.value)}
                     required={!userController.element.id || userController.element.id < 1}
                 />
             </Col>
@@ -53,7 +71,7 @@ const User = observer(() => {
                 <Select
                     defaultValue={0}
                     style={{ width: `100%` }}
-                    onChange={(e) => userController.onChangeUser('super', e)}
+                    onChange={(e) => userController.onChangeUser("super", e)}
                     value={userController.element.super}
                     required
                 >
@@ -68,26 +86,40 @@ const User = observer(() => {
 export const Users = observer(() => {
 
     useEffect(() => {
-        userController.getList()
+        userController.getUsersList()
     }, [])
 
     return (
         <>
-            {userController.list.length > 0 &&
-                <>
-                    <Table
-                        columns={columns}
-                        dataSource={userController.list}
-                        rowKey="id"
-                    />
-                </>
-            }
-
+            <Row justify="center" className="users">
+                <Col xs={24} lg={18} xl={12}>
+                    <Row gutter={[20, 20]}>
+                        <Col xs={24} className="users-actions">
+                            <Title level={3}>Список пользователей</Title>
+                            <Button
+                                type="dashed"
+                                onClick={_ => userController.createUser()}
+                            >
+                                Новый пользователь
+                            </Button>
+                        </Col>
+                        <Col xs={24}>
+                            <Table
+                                columns={columns}
+                                dataSource={userController.list}
+                                rowKey="id"
+                            />
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
             <Modal
                 title="Редактирование пользователя"
                 visible={userController.modal}
-                onOk={() => userController.save()}
+                onOk={() => userController.saveUser()}
                 onCancel={() => userController.clearElement()}
+                cancelText="Отменить"
+                okText="Сохранить"
             >
                 <User />
             </Modal>

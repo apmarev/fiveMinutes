@@ -1,14 +1,14 @@
 import { observer } from "mobx-react-lite"
 import ReactDOM from "react-dom"
-import React, {useEffect} from "react"
+import React from "react"
 import Header from "./layout/Header"
 import filter from "../controllers/filter.controller"
 import Plan from "./reports/Plan"
 import Common from "./reports/Common"
 import Manager from "./reports/Manager"
-import { Auth } from './reports/Auth'
+import { Auth } from './pages/Auth'
 import store from 'store'
-import {Users} from "./reports/Users";
+import { Users } from "./reports/Users";
 
 export const Reports = observer(() => {
 

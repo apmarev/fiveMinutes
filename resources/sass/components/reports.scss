@@ -197,3 +197,13 @@
 .lightOrange {
     background: $lightOrange!important;
 }
+
+.users {
+    margin-top: 20px;
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
