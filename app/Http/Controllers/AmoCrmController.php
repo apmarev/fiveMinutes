@@ -395,25 +395,44 @@ class AmoCrmController extends Controller {
         $all['plan']['count_percent'] = $all['plan']['count'] > 0 ? round($all['count'] / $all['plan']['count'] * 100, 1) : 0;
         $all['plan']['count_remainder'] = $all['plan']['count'] - $all['count'];
 
-        $plan_month = $all['plan']['month'];
-        $plan_package = $all['plan']['package'];
-        $plan_pro = $all['plan']['pro'];
-
-        foreach($report as $k => $v) {
-            if(isset($v['sum_month']) && $v['sum_month'] > 0) {
-                $report[$k]['plan']['month_percent'] = ($v['sum_month'] / $plan_month) * 100;
-                $plan_month = $plan_month - $v['sum_month'];
-                $report[$k]['plan']['month_remainder'] = $plan_month;
-
-                $report[$k]['plan']['package_percent'] = ($v['sum_package'] / $plan_package) * 100;
-                $plan_package = $plan_package - $v['sum_package'];
-                $report[$k]['plan']['package_remainder'] = $plan_package;
-
-                $report[$k]['plan']['pro_percent'] = ($v['sum_pro'] / $plan_pro) * 100;
-                $plan_pro = $plan_pro - $v['sum_pro'];
-                $report[$k]['plan']['pro_remainder'] = $plan_pro;
-            }
-        }
+//        $plan_month = $all['plan']['month'];
+//        $plan_package = $all['plan']['package'];
+//        $plan_pro = $all['plan']['pro'];
+//
+//        $week_plan_month = 0;
+//        $week_plan_package = 0;
+//        $week_plan_pro = 0;
+//
+//        foreach($report as $k => $v) {
+//            if(isset($v['data']) && $v['data'] == "Недельный план") {
+//
+//                $report[$k]['plan']['plan_month_percent'] = ($week_plan_month / $v['plan_month']) *  100;
+//                $report[$k]['plan']['plan_package_percent'] = ($week_plan_package / $v['plan_package']) *  100;
+//                $report[$k]['plan']['plan_pro_percent'] = ($week_plan_pro / $v['plan_pro']) *  100;
+//
+//                $week_plan_month = 0;
+//                $week_plan_package = 0;
+//                $week_plan_pro = 0;
+//            } else {
+//                if(isset($v['sum_month']) && $v['sum_month'] > 0) {
+//                    $report[$k]['plan']['month_percent'] = ($v['sum_month'] / $plan_month) * 100;
+//                    $plan_month = $plan_month - $v['sum_month'];
+//                    $report[$k]['plan']['month_remainder'] = $plan_month;
+//
+//                    $report[$k]['plan']['package_percent'] = ($v['sum_package'] / $plan_package) * 100;
+//                    $plan_package = $plan_package - $v['sum_package'];
+//                    $report[$k]['plan']['package_remainder'] = $plan_package;
+//
+//                    $report[$k]['plan']['pro_percent'] = ($v['sum_pro'] / $plan_pro) * 100;
+//                    $plan_pro = $plan_pro - $v['sum_pro'];
+//                    $report[$k]['plan']['pro_remainder'] = $plan_pro;
+//
+//                    $week_plan_month = $week_plan_month + $v['sum_month'];
+//                    $week_plan_package = $week_plan_package + $v['sum_package'];
+//                    $week_plan_pro = $week_plan_pro + $v['sum_pro'];
+//                }
+//            }
+//        }
 
         return ['all' => $all, 'days' => $report];
     }
@@ -588,35 +607,44 @@ class AmoCrmController extends Controller {
     }
 
     public function generate() {
-        $timestamp = strtotime("-2 day");
-        $date_from = strtotime(date('d.m.Y', $timestamp) . " 00:00:01");
-        $date_to = strtotime(date('d.m.Y', $timestamp) . " 23:59:59");
+        // $countDays = date('t', mktime(0, 0, 0, date('n'), 1, date('o')));
 
-        $this->managers();
+        $countDays = date('j');
 
-        $day = date('j', $timestamp);
-        $month = date('n', $timestamp);
-        $year = date('Y', $timestamp);
+        for($day=26;$day<=$countDays-1;$day++) {
+            $month = date('n');
+            $year = date('o');
+            $timestamp = strtotime("-2 day");
+            $date_from = strtotime("{$day}.{$month}.{$year} 00:00:01");
+            $date_to = strtotime("{$day}.{$month}.{$year} 23:59:59");
 
-        $monthName = self::getMonthNameByMonthNumber($month);
+            $this->managers();
 
-        $dateArray = [
-            'day' => $day,
-            'month' => $month,
-            'month_name' => $monthName,
-            'year' => $year,
-        ];
+//            $day = date('j', $timestamp);
+//            $month = date('n', $timestamp);
+//            $year = date('Y', $timestamp);
 
-        try {
-            $this->getCountLeadsByManagers($date_from, $date_to);
-             $this->getLeadsSuccessByManagers($date_from, $date_to);
+            $monthName = self::getMonthNameByMonthNumber($month);
 
-             $this->getManagersInfo($dateArray);
+            $dateArray = [
+                'day' => $day,
+                'month' => $month,
+                'month_name' => $monthName,
+                'year' => $year,
+            ];
 
-            $this->clearManagersLeads();
-        } catch (\Exception $e) {
-            return CustomApiException::error(501, $e->getMessage());
+            try {
+                $this->getCountLeadsByManagers($date_from, $date_to);
+                $this->getLeadsSuccessByManagers($date_from, $date_to);
+
+                $this->getManagersInfo($dateArray);
+
+                $this->clearManagersLeads();
+            } catch (\Exception $e) {
+                return CustomApiException::error(501, $e->getMessage());
+            }
         }
+
 
         return "Ok";
 
