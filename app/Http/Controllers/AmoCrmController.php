@@ -395,6 +395,26 @@ class AmoCrmController extends Controller {
         $all['plan']['count_percent'] = $all['plan']['count'] > 0 ? round($all['count'] / $all['plan']['count'] * 100, 1) : 0;
         $all['plan']['count_remainder'] = $all['plan']['count'] - $all['count'];
 
+        $plan_month = $all['plan']['month'];
+        $plan_package = $all['plan']['package'];
+        $plan_pro = $all['plan']['pro'];
+
+        foreach($report as $k => $v) {
+            if(isset($v['sum_month']) && $v['sum_month'] > 0) {
+                $report[$k]['plan']['month_percent'] = ($v['sum_month'] / $plan_month) * 100;
+                $plan_month = $plan_month - $v['sum_month'];
+                $report[$k]['plan']['month_remainder'] = $plan_month;
+
+                $report[$k]['plan']['package_percent'] = ($v['sum_package'] / $plan_package) * 100;
+                $plan_package = $plan_package - $v['sum_package'];
+                $report[$k]['plan']['package_remainder'] = $plan_package;
+
+                $report[$k]['plan']['pro_percent'] = ($v['sum_pro'] / $plan_pro) * 100;
+                $plan_pro = $plan_pro - $v['sum_pro'];
+                $report[$k]['plan']['pro_remainder'] = $plan_pro;
+            }
+        }
+
         return ['all' => $all, 'days' => $report];
     }
 
