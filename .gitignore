@@ -1,6 +1,10 @@
 /node_modules
 /public/hot
+/public/build
 /public/storage
+/public/css/
+/public/mix-manifest.json
+/public/js/
 /storage/*.key
 /vendor
 .env
@@ -14,3 +18,4 @@ yarn-error.log
 /.vscode
 /frontend/
 .DS_Store
+
