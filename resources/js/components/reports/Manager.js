@@ -140,75 +140,76 @@ export const Manager = observer(() => {
     const allRows = (source) => {
         return [
             {
-                "value": source?.leads_count,
-                "subrows": []
+                value: source?.leads_count,
+                subrows: []
             },
             {
-                "value": source?.sum_month + source?.sum_package + source?.sum_pro,
-                "finance": true,
-                "subrows": [
+                value: source?.sum_month + source?.sum_package + source?.sum_pro,
+                finance: true,
+                subrows: [
                     {
-                        "value": source?.sum_month,
-                        "finance": true,
-                        "subrows": []
+                        value: source?.sum_month,
+                        finance: true,
+                        subrows: []
                     },
                     {
-                        "value": source?.sum_package,
-                        "finance": true,
-                        "subrows": []
+                        value: source?.sum_package,
+                        finance: true,
+                        subrows: []
                     },
                     {
-                        "value": source?.sum_pro,
-                        "finance": true,
-                        "subrows": []
+                        value: source?.sum_pro,
+                        finance: true,
+                        subrows: []
                     },
                 ]
             },
             {
-                "value": source?.count,
-                "subrows": [
+                value: source?.count,
+                subrows: [
                     {
-                        "value": source?.count_month,
-                        "subrows": []
+                        value: source?.count_month,
+                        subrows: []
                     },
                     {
-                        "value": source?.count_package,
-                        "subrows": []
+                        value: source?.count_package,
+                        subrows: []
                     },
                     {
-                        "value": source?.count_pro,
-                        "subrows": []
-                    },
-                ]
-            },
-            {
-                "value": source?.count_clients_month + source?.count_clients_package + source?.count_clients_pro,
-                "finance": true,
-                "subrows": [
-                    {
-                        "value": source?.count_clients_month,
-                        "finance": true,
-                        "subrows": []
-                    },
-                    {
-                        "value": source?.count_clients_package,
-                        "finance": true,
-                        "subrows": []
-                    },
-                    {
-                        "value": source?.count_clients_pro,
-                        "finance": true,
-                        "subrows": []
+                        value: source?.count_pro,
+                        subrows: []
                     },
                 ]
             },
             {
-                "value": source?.average_check,
-                "finance": true,
-                "subrows": []
+                value: source?.count_clients_month + source?.count_clients_package + source?.count_clients_pro,
+                finance: true,
+                subrows: [
+                    {
+                        value: source?.count_clients_month,
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: source?.count_clients_package,
+                        finance: true,
+                        subrows: []
+                    },
+                    {
+                        value: source?.count_clients_pro,
+                        finance: true,
+                        subrows: []
+                    },
+                ]
+            },
+            {
+                value: source?.average_check,
+                finance: true,
+                subrows: []
             },
             {
                 value: source?.plan?.month,
+                finance: true,
                 subrows: [],
                 additionalClass: "lightRed",
             },
@@ -216,26 +217,31 @@ export const Manager = observer(() => {
                 value: source?.plan?.month_percent,
                 subrows: [],
                 additionalClass: "lightRed",
+                percent: true
             },
             {
                 value: source?.plan?.month_remainder,
                 subrows: [],
                 additionalClass: "lightRed",
+                finance: true
             },
             {
                 value: source?.plan?.package,
                 subrows: [],
                 additionalClass: "lightBlue",
+                finance: true
             },
             {
                 value: source?.plan?.package_percent,
                 subrows: [],
                 additionalClass: "lightBlue",
+                percent: true
             },
             {
                 value: source?.plan?.package_remainder,
                 subrows: [],
                 additionalClass: "lightBlue",
+                finance: true
             },
             {
                 value: source?.plan?.pro,
@@ -246,6 +252,7 @@ export const Manager = observer(() => {
                 value: source?.plan?.pro_percent,
                 subrows: [],
                 additionalClass: "purple",
+                percent: true
             },
             {
                 value: source?.plan?.pro_remainder,
@@ -261,6 +268,7 @@ export const Manager = observer(() => {
                 value: source?.plan?.count_percent,
                 subrows: [],
                 additionalClass: "lightOrange",
+                percent: true
             },
             {
                 value: source?.plan?.count_remainder,
