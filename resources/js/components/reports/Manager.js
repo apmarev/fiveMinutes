@@ -144,7 +144,7 @@ export const Manager = observer(() => {
                 "subrows": []
             },
             {
-                "value": "&nbsp;",
+                "value": source?.sum_month + source?.sum_package + source?.sum_pro,
                 "finance": true,
                 "subrows": [
                     {
@@ -182,7 +182,7 @@ export const Manager = observer(() => {
                 ]
             },
             {
-                "value": "&nbsp;",
+                "value": source?.count_clients_month + source?.count_clients_package + source?.count_clients_pro,
                 "finance": true,
                 "subrows": [
                     {
@@ -203,9 +203,69 @@ export const Manager = observer(() => {
                 ]
             },
             {
-                "value": filter.data.all?.average_check,
+                "value": source?.average_check,
                 "finance": true,
                 "subrows": []
+            },
+            {
+                value: source?.plan?.month,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.month_percent,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.month_remainder,
+                subrows: [],
+                additionalClass: "lightRed",
+            },
+            {
+                value: source?.plan?.package,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.package_percent,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.package_remainder,
+                subrows: [],
+                additionalClass: "lightBlue",
+            },
+            {
+                value: source?.plan?.pro,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.pro_percent,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.pro_remainder,
+                subrows: [],
+                additionalClass: "purple",
+            },
+            {
+                value: source?.plan?.count,
+                subrows: [],
+                additionalClass: "lightOrange",
+            },
+            {
+                value: source?.plan?.count_percent,
+                subrows: [],
+                additionalClass: "lightOrange",
+            },
+            {
+                value: source?.plan?.count_remainder,
+                subrows: [],
+                additionalClass: "lightOrange",
             }
         ]
     }
