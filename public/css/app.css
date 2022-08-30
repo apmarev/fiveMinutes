@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap);
 /*!
  * 
  * antd v4.21.7
@@ -38283,7 +38283,7 @@ textarea.form-control-lg {
   }
 }
 * {
-  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
