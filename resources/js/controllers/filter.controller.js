@@ -16,6 +16,7 @@ class filterController {
     months = []
 
     data = {}
+    originalData = {}
     plan = []
 
     searchDisabled = false
@@ -166,9 +167,11 @@ class filterController {
                         })
                     })
                     console.log(planFormatted)
+                    this.originalData = planFormatted
                     this.data = planFormatted
                 } else {
                     console.log(result.data)
+                    this.originalData = result.data
                     this.data = result.data
                 }
                 this.searchDisabled = false
@@ -176,21 +179,27 @@ class filterController {
             .catch(error => console.log(error))
     }
 
+    arrayDifference(a, b){
+        return JSON.stringify(a) === JSON.stringify(b)
+    }
+
     savePlan(e) {
         e.preventDefault()
         this.searchDisabled = true
         let data = []
-        this.data.map(item => {
+        this.data.map((item, z) => {
             item.weeks.map((week, k) => {
                 if(k === 0) return
-                data.push({
-                    "id": item.id,
-                    "week": k,
-                    "month_sum": week.month_sum,
-                    "package_sum": week.package_sum,
-                    "pro_count": week.pro_count,
-                    "count": week.count
-                })
+                if(this.arrayDifference(week, this.originalData[z].weeks[k]) === false){
+                    data.push({
+                        "id": item.id,
+                        "week": k,
+                        "month_sum": week.month_sum,
+                        "package_sum": week.package_sum,
+                        "pro_count": week.pro_count,
+                        "count": week.count
+                    })
+                }
             })
         })
         let fd = new FormData()
@@ -200,7 +209,6 @@ class filterController {
         fd.append("year", this.filter.year)
         request.post("/plan", fd)
             .then(result => {
-                console.log(result)
                 this.searchDisabled = false
             })
             .catch(error => console.log(error))
