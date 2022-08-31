@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite"
 import React, {useEffect} from "react"
 import filter from "../../controllers/filter.controller"
-import Formatter from "../helpers/formatter"
 import MainColumn from "./components/MainColumn"
 import Column from "./components/Column"
 

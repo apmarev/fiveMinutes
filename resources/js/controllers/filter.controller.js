@@ -47,6 +47,12 @@ class filterController {
                 this.pipelines = result.data.pipelines
                 this.years = result.data.years
                 this.months = result.data.month
+                this.filter = {
+                    pipeline: this.pipelines[1].id,
+                    year: new Date().getFullYear(),
+                    month: new Date().getMonth() + 1
+                }
+                this.getData(false)
             })
             .catch(error => console.log(error))
     }
@@ -54,7 +60,7 @@ class filterController {
     getYears() {
         request.get("/years")
             .then(result => {
-                this.filter.year = result.data[0].year
+                this.filter.year = result.data[result.data.length - 1].year
                 this.years = result.data
                 this.getMonthsByYear(this.filter.year)
             })
@@ -64,7 +70,8 @@ class filterController {
     getMonthsByYear(year) {
         request.get(`/month/${year}`)
             .then(result => {
-                this.filter.month = result.data[0].month
+                console.log(result.data)
+                this.filter.month = result.data[result.data.length - 1].month
                 this.months = result.data
                 if(this.reportOpened === true) this.getData(false)
             })
