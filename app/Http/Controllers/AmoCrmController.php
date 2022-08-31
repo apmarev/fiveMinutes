@@ -705,7 +705,14 @@ class AmoCrmController extends Controller {
         $now_month = date('n', $yesterday);
         $now_day = date('j', $yesterday);
 
+        ManagersLeads::truncate();
+        ManagersLeadsSuccess::truncate();
+        ManagersLeadsSuccessCustom::truncate();
+
+        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
+
         if($now_month - 1 < 1) {
+            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
             $array = [
                 [
                     'month' => 12,
@@ -719,6 +726,7 @@ class AmoCrmController extends Controller {
                 ],
             ];
         } else {
+            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
             $array = [
                 [
                     'month' => $now_month - 1,
