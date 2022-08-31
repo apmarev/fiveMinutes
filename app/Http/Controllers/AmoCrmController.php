@@ -709,10 +709,10 @@ class AmoCrmController extends Controller {
         ManagersLeadsSuccess::truncate();
         ManagersLeadsSuccessCustom::truncate();
 
-        // ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
+        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
 
         if($now_month - 1 < 1) {
-            // ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
+            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
             $array = [
                 [
                     'month' => 12,
@@ -726,7 +726,7 @@ class AmoCrmController extends Controller {
                 ],
             ];
         } else {
-            // ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
+            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
             $array = [
                 [
                     'month' => $now_month - 1,
@@ -741,19 +741,22 @@ class AmoCrmController extends Controller {
             ];
         }
 
-//        foreach($array as $a) {
-//            $this->generate($a['days'], $a['month'], $a['year']);
-//        }
+        foreach($array as $a) {
+            return $this->generate($a['days'], $a['month'], $a['year']);
+        }
 
-        $this->generate(30, 7, 2022);
+        // $this->generate(30, 7, 2022);
 
     }
 
     public function generate($days, $month, $year) {
 
-        for($day=1;$day<=15;$day++) {
-            $date_from = strtotime("{$day}.{$month}.{$year} 00:00:01");
-            $date_to = strtotime("{$day}.{$month}.{$year} 23:59:59");
+        $month = substr("0{$month}", -2);
+
+        for($day=1;$day<=$days;$day++) {
+            $day_now = substr("0{$day}", -2);
+            $date_from = strtotime("{$day_now}.{$month}.{$year} 00:00:01");
+            $date_to = strtotime("{$day_now}.{$month}.{$year} 23:59:59");
 
             $this->managers();
             $monthName = self::getMonthNameByMonthNumber($month);
