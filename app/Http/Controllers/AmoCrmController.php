@@ -697,24 +697,55 @@ class AmoCrmController extends Controller {
         return $monthName;
     }
 
-    public function generate() {
-        // $countDays = date('t', mktime(0, 0, 0, date('n'), 1, date('o')));
+    public function generate_data() {
 
-        $countDays = date('j');
+        $yesterday = strtotime("-1 day");
 
-        for($day=26;$day<=$countDays-1;$day++) {
-            $month = date('n');
-            $year = date('o');
-            $timestamp = strtotime("-2 day");
+        $now_year = date('o', $yesterday);
+        $now_month = date('n', $yesterday);
+        $now_day = date('j', $yesterday);
+
+        if($now_month - 1 < 1) {
+            $array = [
+                [
+                    'month' => 12,
+                    'year' => $now_year - 1,
+                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        } else {
+            $array = [
+                [
+                    'month' => $now_month - 1,
+                    'year' => $now_year,
+                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        }
+
+        foreach($array as $a) {
+            $this->generate($a['days'], $a['month'], $a['year']);
+        }
+
+    }
+
+    public function generate($days, $month, $year) {
+
+        for($day=26;$day<=$days;$day++) {
             $date_from = strtotime("{$day}.{$month}.{$year} 00:00:01");
             $date_to = strtotime("{$day}.{$month}.{$year} 23:59:59");
 
             $this->managers();
-
-//            $day = date('j', $timestamp);
-//            $month = date('n', $timestamp);
-//            $year = date('Y', $timestamp);
-
             $monthName = self::getMonthNameByMonthNumber($month);
 
             $dateArray = [
@@ -736,9 +767,7 @@ class AmoCrmController extends Controller {
             }
         }
 
-
         return "Ok";
-
     }
 
     public function getCountLeadsByManagers($from, $to) {
