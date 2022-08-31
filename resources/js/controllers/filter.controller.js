@@ -52,7 +52,7 @@ class filterController {
                     year: new Date().getFullYear(),
                     month: new Date().getMonth() + 1
                 }
-                if(this.filterType === "1") this.getData(false)
+                this.getData(false)
             })
             .catch(error => console.log(error))
     }
