@@ -10,6 +10,10 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
+    protected $commands = [
+        Commands\DataReport::class
+    ];
     /**
      * Define the application's command schedule.
      *
