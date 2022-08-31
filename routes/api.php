@@ -8,6 +8,8 @@ Route::post('/v1/report/user/login', [ReportUsersController::class, 'login']);
 
 Route::prefix('v1')->group(function() {
     Route::prefix('report')->group(function() {
+        Route::post('/generate', [AmoCrmController::class, 'generate_data']);
+
         Route::get('/info', [AmoCrmController::class, 'getWebInfoManager']);
         Route::get('/main', [AmoCrmController::class, 'getWebInfoMain']);
         Route::get('/managers', [AmoCrmController::class, 'getWebManagers']);
@@ -28,8 +30,6 @@ Route::prefix('v1')->group(function() {
 });
 
 Route::post('/access/amo/new', [AmoCrmController::class, 'amoNewAccess']);
-
-Route::post('/generate', [AmoCrmController::class, 'generate']);
 
 Route::post('/hooks/amo/dialog/incoming', [AmoCrmController::class, 'incoming']);
 Route::post('/hooks/amo/dialog/update', [AmoCrmController::class, 'updateChat']);
