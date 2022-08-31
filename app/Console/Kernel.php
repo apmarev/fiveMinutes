@@ -18,23 +18,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function() {
-            $amo = new UnisenderController();
-            $amo->getSheet();
-        })
-            ->dailyAt('23:00');
+//        $schedule->call(function() {
+//            $amo = new UnisenderController();
+//            $amo->getSheet();
+//        })
+//            ->dailyAt('23:00');
 
         $schedule->call(function() {
             $amo = new AmoCrmController(new AccessController());
-            $amo->start();
+            $amo->generate_data();
         })
             ->dailyAt('03:00');
 
-        $schedule->call(function() {
-            $amo = new AmoCrmController(new AccessController());
-            $amo->getSenlerQueues();
-        })
-            ->everyFourHours();
+//        $schedule->call(function() {
+//            $amo = new AmoCrmController(new AccessController());
+//            $amo->getSenlerQueues();
+//        })
+//            ->everyFourHours();
     }
 
     /**
