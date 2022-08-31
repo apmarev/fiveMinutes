@@ -749,7 +749,7 @@ class AmoCrmController extends Controller {
 
     public function generate($days, $month, $year) {
 
-        for($day=26;$day<=$days;$day++) {
+        for($day=1;$day<=$days;$day++) {
             $date_from = strtotime("{$day}.{$month}.{$year} 00:00:01");
             $date_to = strtotime("{$day}.{$month}.{$year} 23:59:59");
 
