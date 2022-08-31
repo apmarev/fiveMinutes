@@ -294,6 +294,36 @@ class AmoCrmController extends Controller {
                 $ret['days'][$i]['sum_sale_ten'] = $ret['days'][$i]['children_10'] + $ret['days'][$i]['parents_10'];
 
                 $ret['days'][$i]['sum_sale'] = $ret['days'][$i]['sum_sale_ege'] + $ret['days'][$i]['sum_sale_oge'] + $ret['days'][$i]['sum_sale_ten'];
+
+                $ret['days'][$i]['average_check'] = $ret['days'][$i]['count'] > 0 ? ($ret['days'][$i]['sum_month'] + $ret['days'][$i]['sum_package'] + $ret['days'][$i]['sum_pro']) / $ret['days'][$i]['count'] : 0;
+
+                $ret['days'][$i]['average_check_children_ege'] = $ret['days'][$i]['count_children_ege'] > 0 ? $ret['days'][$i]['children_ege'] / $ret['days'][$i]['count_children_ege'] : 0;
+                $ret['days'][$i]['average_check_children_oge'] = $ret['days'][$i]['count_children_oge'] > 0 ? $ret['days'][$i]['children_oge'] / $ret['days'][$i]['count_children_oge'] : 0;
+                $ret['days'][$i]['average_check_children_10'] = $ret['days'][$i]['count_children_10'] > 0 ? $ret['days'][$i]['children_10'] / $ret['days'][$i]['count_children_10'] : 0;
+                $ret['days'][$i]['average_check_parents_ege'] = $ret['days'][$i]['count_parents_ege'] > 0 ? $ret['days'][$i]['parents_ege'] / $ret['days'][$i]['count_parents_ege'] : 0;
+                $ret['days'][$i]['average_check_parents_oge'] = $ret['days'][$i]['count_parents_oge'] > 0 ? $ret['days'][$i]['parents_oge'] / $ret['days'][$i]['count_parents_oge'] : 0;
+                $ret['days'][$i]['average_check_parents_10'] = $ret['days'][$i]['count_parents_10'] > 0 ? $ret['days'][$i]['parents_10'] / $ret['days'][$i]['count_parents_10'] : 0;
+
+                $children_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
+                $children_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
+
+                $parents_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
+                $parents_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
+
+                $ret['days'][$i]['average_check_children'] = $children_count > 0 ? $children_sum / $children_count : 0;
+                $ret['days'][$i]['average_check_parents'] = $parents_count > 0 ? $parents_sum / $parents_count : 0;
+
+                $ege_sum = $ret['days'][$i]['children_month_ege'] + $ret['days'][$i]['parents_month_ege'] + $ret['days'][$i]['children_package_ege'] + $ret['days'][$i]['parents_package_ege'];
+                $oge_sum = $ret['days'][$i]['children_month_oge'] + $ret['days'][$i]['parents_month_oge'] + $ret['days'][$i]['children_package_oge'] + $ret['days'][$i]['parents_package_oge'];
+                $ten_sum = $ret['days'][$i]['children_month_10'] + $ret['days'][$i]['parents_month_10'] + $ret['days'][$i]['children_package_10'] + $ret['days'][$i]['parents_package_10'];
+
+                $ege_count = $ret['days'][$i]['count_sale_children_ege'] + $ret['days'][$i]['count_sale_parents_ege'];
+                $oge_count = $ret['days'][$i]['count_sale_children_oge'] + $ret['days'][$i]['count_sale_parents_oge'];
+                $ten_count = $ret['days'][$i]['count_sale_children_10'] + $ret['days'][$i]['count_sale_parents_10'];
+
+                $ret['days'][$i]['average_check_ege'] = $ege_count > 0 ? $ege_sum / $ege_count : 0;
+                $ret['days'][$i]['average_check_oge'] = $oge_count > 0 ? $oge_sum / $oge_count : 0;
+                $ret['days'][$i]['average_check_10'] = $ten_count > 0 ? $ten_sum / $ten_count : 0;
             }
 
 
@@ -339,6 +369,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
+                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+
                 if(!$pipeline)
                     $report[] = $weeks;
             } else if($i == 14) {
@@ -350,6 +382,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
+                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+
                 if(!$pipeline)
                     $report[] = $weeks;
             } else if($i == 21) {
@@ -360,6 +394,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
+                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -373,6 +409,8 @@ class AmoCrmController extends Controller {
                 $monthPlan['package'] = $monthPlan['package'] + $weeks['plan']['plan_package'];
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
+
+                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -409,19 +447,19 @@ class AmoCrmController extends Controller {
             if(isset($v['date']) && $v['date'] == "Недельный план") {
 
                 $report[$k]['plan']['month'] = $v['plan']['plan_month'];
-                $report[$k]['plan']['month_percent'] = ($week_plan_month / $v['plan']['plan_month']) *  100;
+                $report[$k]['plan']['month_percent'] = $v['plan']['plan_month'] > 0 ? ($week_plan_month / $v['plan']['plan_month']) *  100 : 0;
                 $report[$k]['plan']['month_remainder'] = $v['plan']['plan_month'] - $week_plan_month;
 
                 $report[$k]['plan']['package'] = $v['plan']['plan_package'];
-                $report[$k]['plan']['package_percent'] = ($week_plan_package / $v['plan']['plan_package']) *  100;
+                $report[$k]['plan']['package_percent'] = $v['plan']['plan_package'] > 0 ? ($week_plan_package / $v['plan']['plan_package']) *  100 : 0;
                 $report[$k]['plan']['package_remainder'] = $v['plan']['plan_package'] - $week_plan_package;
 
                 $report[$k]['plan']['pro'] = $v['plan']['plan_pro'];
-                $report[$k]['plan']['pro_percent'] = ($week_plan_pro / $v['plan']['plan_pro']) *  100;
+                $report[$k]['plan']['pro_percent'] = $v['plan']['plan_pro'] > 0 ? ($week_plan_pro / $v['plan']['plan_pro']) *  100 : 0;
                 $report[$k]['plan']['pro_remainder'] = $v['plan']['plan_pro'] - $week_plan_pro;
 
                 $report[$k]['plan']['count'] = $v['plan']['plan_count'];
-                $report[$k]['plan']['count_percent'] = ($week_plan_count / $v['plan']['plan_count']) *  100;
+                $report[$k]['plan']['count_percent'] = $v['plan']['plan_count'] > 0 ? ($week_plan_count / $v['plan']['plan_count']) *  100 : 0;
                 $report[$k]['plan']['count_remainder'] = $v['plan']['plan_count'] - $week_plan_count;
 
                 $week_plan_month = 0;
@@ -430,20 +468,20 @@ class AmoCrmController extends Controller {
                 $week_plan_count = 0;
             } else {
                 if(isset($v['sum_month']) && $v['sum_month'] > 0) {
-                    $report[$k]['plan']['month_percent'] = ($v['sum_month'] / $plan_month) * 100;
+                    $report[$k]['plan']['month_percent'] = $plan_month > 0 ? ($v['sum_month'] / $plan_month) * 100 : 0;
                     $plan_month = $plan_month - $v['sum_month'];
                     $report[$k]['plan']['month_remainder'] = $plan_month;
 
-                    $report[$k]['plan']['package_percent'] = ($v['sum_package'] / $plan_package) * 100;
+                    $report[$k]['plan']['package_percent'] = $plan_package > 0 ? ($v['sum_package'] / $plan_package) * 100 : 0;
                     $plan_package = $plan_package - $v['sum_package'];
                     $report[$k]['plan']['package_remainder'] = $plan_package;
 
-                    $report[$k]['plan']['pro_percent'] = ($v['count_pro'] / $plan_pro) * 100;
+                    $report[$k]['plan']['pro_percent'] = $plan_pro > 0 ? ($v['count_pro'] / $plan_pro) * 100 : 0;
                     $plan_pro = $plan_pro - $v['count_pro'];
                     $report[$k]['plan']['pro_remainder'] = $plan_pro;
 
                     $su = $v['count_sale_children_ege'] + $v['count_sale_children_oge'] + $v['count_sale_children_10'] + $v['count_sale_parents_ege'] + $v['count_sale_parents_oge'] + $v['count_sale_parents_10'];
-                    $report[$k]['plan']['count_percent'] = ($su / $plan_count) * 100;
+                    $report[$k]['plan']['count_percent'] = $plan_count > 0 ? ($su / $plan_count) * 100 : 0;
                     $plan_count = $plan_count - $su;
                     $report[$k]['plan']['count_remainder'] = $plan_count;
 
@@ -456,6 +494,36 @@ class AmoCrmController extends Controller {
                 }
             }
         }
+
+        $all['average_check'] = $all['count'] > 0 ? ($all['sum_month'] + $all['sum_package'] + $all['sum_pro']) / $all['count'] : 0;
+
+        $all['average_check_children_ege'] = $all['count_children_ege'] > 0 ? $all['children_ege'] / $all['count_children_ege'] : 0;
+        $all['average_check_children_oge'] = $all['count_children_oge'] > 0 ? $all['children_oge'] / $all['count_children_oge'] : 0;
+        $all['average_check_children_10'] = $all['count_children_10'] > 0 ? $all['children_10'] / $all['count_children_10'] : 0;
+        $all['average_check_parents_ege'] = $all['count_parents_ege'] > 0 ? $all['parents_ege'] / $all['count_parents_ege'] : 0;
+        $all['average_check_parents_oge'] = $all['count_parents_oge'] > 0 ? $all['parents_oge'] / $all['count_parents_oge'] : 0;
+        $all['average_check_parents_10'] = $all['count_parents_10'] > 0 ? $all['parents_10'] / $all['count_parents_10'] : 0;
+
+        $children_sum = $all['children_ege'] + $all['children_oge'] + $all['children_10'];
+        $children_count = $all['count_children_ege'] + $all['count_children_oge'] + $all['count_children_10'];
+
+        $parents_sum = $all['children_ege'] + $all['children_oge'] + $all['children_10'];
+        $parents_count = $all['count_children_ege'] + $all['count_children_oge'] + $all['count_children_10'];
+
+        $all['average_check_children'] = $children_count > 0 ? $children_sum / $children_count : 0;
+        $all['average_check_parents'] = $parents_count > 0 ? $parents_sum / $parents_count : 0;
+
+        $ege_sum = $all['children_month_ege'] + $all['parents_month_ege'] + $all['children_package_ege'] + $all['parents_package_ege'];
+        $oge_sum = $all['children_month_oge'] + $all['parents_month_oge'] + $all['children_package_oge'] + $all['parents_package_oge'];
+        $ten_sum = $all['children_month_10'] + $all['parents_month_10'] + $all['children_package_10'] + $all['parents_package_10'];
+
+        $ege_count = $all['count_sale_children_ege'] + $all['count_sale_parents_ege'];
+        $oge_count = $all['count_sale_children_oge'] + $all['count_sale_parents_oge'];
+        $ten_count = $all['count_sale_children_10'] + $all['count_sale_parents_10'];
+
+        $all['average_check_ege'] = $ege_count > 0 ? $ege_sum / $ege_count : 0;
+        $all['average_check_oge'] = $oge_count > 0 ? $oge_sum / $oge_count : 0;
+        $all['average_check_10'] = $ten_count > 0 ? $ten_sum / $ten_count : 0;
 
         return ['all' => $all, 'days' => $report];
     }
@@ -1168,31 +1236,13 @@ class AmoCrmController extends Controller {
                     if($el['type'] == 'Родитель' && $el['course'] == 'none') return $el['id']; else return false;
                 }));
 
-                // -----
-
-                //$count_children_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ege')->count();
                 $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
-
-                //$count_children_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'oge')->count();
                 $el['count_children_oge'] = $el['count_children_oge'] + $count_children_oge;
-
-                //$count_children_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'ten')->count();
                 $el['count_children_10'] = $el['count_children_10'] + $count_children_10;
-
-                //$count_children_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Ученик')->where('course', 'none')->count();
                 $el['count_children_none'] = $el['count_children_none'] + $count_children_none;
-
-
-                //$count_parents_ege = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ege')->count();
                 $el['count_parents_ege'] = $el['count_parents_ege'] + $count_parents_ege;
-
-                //$count_parents_oge = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'oge')->count();
                 $el['count_parents_oge'] = $el['count_parents_oge'] + $count_parents_oge;
-
-                //$count_parents_10 = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'ten')->count();
                 $el['count_parents_10'] = $el['count_parents_10'] + $count_parents_10;
-
-                //$count_parents_none = ManagersLeads::where('manager', $manager['id'])->where('type', 'Родитель')->where('course', 'none')->count();
                 $el['count_parents_none'] = $el['count_parents_none'] + $count_parents_none;
 
 

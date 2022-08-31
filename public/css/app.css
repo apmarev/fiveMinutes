@@ -38298,6 +38298,12 @@ main {
   overflow: hidden;
 }
 
+.ant-modal-close-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .preloader {
   position: fixed;
   top: 0;
@@ -38420,6 +38426,10 @@ main {
 .header .controls {
   display: flex;
   justify-content: center;
+}
+.header .user-actions {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .report {
@@ -38603,6 +38613,23 @@ main {
   background: #fce5cd !important;
 }
 
+.users {
+  margin-top: 20px;
+}
+.users-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .auth {
   height: 100vh;
+}
+.auth-form {
+  width: 100%;
+}
+.auth-form > * {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

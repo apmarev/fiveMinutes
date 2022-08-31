@@ -673,22 +673,22 @@ export const Common = observer(() => {
                 finance: true,
                 subrows: [
                     {
-                        value: source?.average_check_children_ege + source?.average_check_parents_ege,
+                        value: source?.average_check_ege,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: source?.average_check_children_oge + source?.average_check_parents_oge,
+                        value: source?.average_check_oge,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: source?.average_check_children_10 + source?.average_check_parents_10,
+                        value: source?.average_check_10,
                         finance: true,
                         subrows: []
                     },
                     {
-                        value: source?.average_check_children_ege + source?.average_check_children_oge + source?.average_check_children_10,
+                        value: source?.average_check_children,
                         finance: true,
                         subrows: [
                             {
@@ -706,7 +706,7 @@ export const Common = observer(() => {
                         ]
                     },
                     {
-                        value: source?.average_check_parents_ege + source?.average_check_parents_oge + source?.average_check_parents_10,
+                        value: source?.average_check_parents,
                         finance: true,
                         subrows: [
                             {

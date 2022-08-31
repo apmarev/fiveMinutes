@@ -121,7 +121,7 @@ export const Manager = observer(() => {
             additionalClass: "purple"
         },
         {
-            name: "План Месяц количество",
+            name: "План количество продаж",
             subrows: [],
             additionalClass: "lightOrange"
         },
@@ -183,21 +183,17 @@ export const Manager = observer(() => {
             },
             {
                 value: source?.count_clients_month + source?.count_clients_package + source?.count_clients_pro,
-                finance: true,
                 subrows: [
                     {
                         value: source?.count_clients_month,
-                        finance: true,
                         subrows: []
                     },
                     {
                         value: source?.count_clients_package,
-                        finance: true,
                         subrows: []
                     },
                     {
                         value: source?.count_clients_pro,
-                        finance: true,
                         subrows: []
                     },
                 ]
@@ -212,7 +208,6 @@ export const Manager = observer(() => {
                 finance: true,
                 subrows: [],
                 additionalClass: "lightRed",
-                finance: true
             },
             {
                 value: source?.plan?.month_percent,
