@@ -9,6 +9,7 @@ export const Common = observer(() => {
     useEffect(() => {
         filter.setDefaultFilterData()
         filter.getFilterPlan()
+        filter.getYears()
     }, [])
 
     const mainRows = [
