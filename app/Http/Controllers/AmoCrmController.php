@@ -1267,29 +1267,29 @@ class AmoCrmController extends Controller {
                 $managers_leads = ManagersLeads::where('manager', $manager['id'])->get()->toArray();
 
                 $count_children_ege = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'ege') return $el['id']; else return false;
+                    if($el['type'] == 'Ученик' && $el['course'] == 'ege') return true; else return false;
                 }));
                 $count_children_oge = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'oge') return $el['id']; else return false;
+                    if($el['type'] == 'Ученик' && $el['course'] == 'oge') return true; else return false;
                 }));
                 $count_children_10 = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'ten') return $el['id']; else return false;
+                    if($el['type'] == 'Ученик' && $el['course'] == 'ten') return true; else return false;
                 }));
                 $count_children_none = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'none') return $el['id']; else return false;
+                    if($el['type'] == 'Ученик' && $el['course'] == 'none') return true; else return false;
                 }));
 
                 $count_parents_ege = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'ege') return $el['id']; else return false;
+                    if($el['type'] == 'Родитель' && $el['course'] == 'ege') return true; else return false;
                 }));
                 $count_parents_oge = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'oge') return $el['id']; else return false;
+                    if($el['type'] == 'Родитель' && $el['course'] == 'oge') return true; else return false;
                 }));
                 $count_parents_10 = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'ten') return $el['id']; else return false;
+                    if($el['type'] == 'Родитель' && $el['course'] == 'ten') return true; else return false;
                 }));
                 $count_parents_none = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'none') return $el['id']; else return false;
+                    if($el['type'] == 'Родитель' && $el['course'] == 'none') return true; else return false;
                 }));
 
                 $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
