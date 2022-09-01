@@ -28,7 +28,7 @@ export const Header = observer(() => {
         <>
             <form onSubmit={e => filter.getData(e)} className="header">
                 <Row gutter={[10,10]} justify="space-between">
-                    <Col xs={24} lg={5}>
+                    <Col xs={24} lg={4}>
                         <Radio.Group
                             disabled={filter.searchDisabled}
                             onChange={e => {
@@ -65,22 +65,20 @@ export const Header = observer(() => {
                                     </Select>
                                 </Col>
                             }
-                            {filter.filterType !== "3" &&
-                                <Col xs={24} lg={2}>
-                                    <Select
-                                        disabled={filter.searchDisabled}
-                                        allowClear
-                                        placeholder="Воронка"
-                                        value={filter.filter.pipeline}
-                                        onChange={e => filter.filter.pipeline = e}
-                                        size="small"
-                                    >
-                                        {filter.pipelines.map((item, k) => (
-                                            <Option key={k} value={item.id}>{item.name}</Option>
-                                        ))}
-                                    </Select>
-                                </Col>
-                            }
+                            <Col xs={24} lg={2}>
+                                <Select
+                                    disabled={filter.searchDisabled}
+                                    allowClear
+                                    placeholder="Воронка"
+                                    value={filter.filter.pipeline}
+                                    onChange={e => filter.filter.pipeline = e}
+                                    size="small"
+                                >
+                                    {filter.pipelines.map((item, k) => (
+                                        <Option key={k} value={item.id}>{item.name}</Option>
+                                    ))}
+                                </Select>
+                            </Col>
                             <Col xs={24} lg={2}>
                                 <Select
                                     disabled={filter.searchDisabled}

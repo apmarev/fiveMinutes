@@ -11,6 +11,7 @@ export const Manager = observer(() => {
         filter.setDefaultFilterData()
         filter.getYears()
         filter.getManagers()
+        filter.getFilterManager()
         filter.reportOpened = true
     }, [])
 

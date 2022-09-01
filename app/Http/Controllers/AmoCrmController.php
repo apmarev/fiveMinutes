@@ -546,13 +546,13 @@ class AmoCrmController extends Controller {
 
     public function getWebInfoManager(Request $request) {
 
-        if(!$request->has('month') || !$request->has('managers') || !$request->has('year'))
+        if(!$request->has('month') || !$request->has('managers') || !$request->has('year') || !$request->has('pipeline_id'))
             return CustomApiException::error(400);
 
         $ret = [];
 
         foreach($request->input('managers') as $manager) {
-            $item = ManagersInfo::where('month', $request->input('month'))->where('year', $request->input('year'))->where('manager_id', $manager)->get()->toArray();
+            $item = ManagersInfo::where('pipeline_id', $request->input('pipeline_id'))->where('month', $request->input('month'))->where('year', $request->input('year'))->where('manager_id', $manager)->get()->toArray();
             $ret = array_merge($ret, $item);
         }
 

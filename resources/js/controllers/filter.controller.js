@@ -40,6 +40,15 @@ class filterController {
         }
     }
 
+    getFilterManager() {
+        request.get("/filter_plan")
+            .then(result => {
+                this.pipelines = result.data.pipelines
+                this.filter.pipeline = this.pipelines[1].id
+            })
+            .catch(error => console.log(error))
+    }
+
     getFilterPlan() {
         this.setDefaultFilterData()
         request.get("/filter_plan")
@@ -104,12 +113,12 @@ class filterController {
         else
             return message.error("Выберите год")
 
-        if(this.filterType !== "3"){
-            if(this.filter.pipeline > 0)
-                filter += `&pipeline_id=${this.filter.pipeline}`
-            else
-                return message.error("Выберите воронку")
-        }
+
+        if(this.filter.pipeline > 0)
+            filter += `&pipeline_id=${this.filter.pipeline}`
+        else
+            return message.error("Выберите воронку")
+
 
         if(this.filter.month > 0)
             filter += `&month=${this.filter.month}`
