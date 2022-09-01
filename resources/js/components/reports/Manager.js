@@ -144,7 +144,7 @@ export const Manager = observer(() => {
                 subrows: []
             },
             {
-                value: source?.sum_month + source?.sum_package + source?.sum_pro,
+                value: source?.sum_month + source?.sum_package,
                 finance: true,
                 subrows: [
                     {
@@ -165,7 +165,7 @@ export const Manager = observer(() => {
                 ]
             },
             {
-                value: source?.count,
+                value: source?.count_month + source?.count_package,
                 subrows: [
                     {
                         value: source?.count_month,
@@ -182,7 +182,7 @@ export const Manager = observer(() => {
                 ]
             },
             {
-                value: source?.count_clients_month + source?.count_clients_package + source?.count_clients_pro,
+                value: source?.count_clients_month + source?.count_clients_package,
                 subrows: [
                     {
                         value: source?.count_clients_month,

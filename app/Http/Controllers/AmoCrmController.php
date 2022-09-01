@@ -295,14 +295,14 @@ class AmoCrmController extends Controller {
 
                 $ret['days'][$i]['sum_sale'] = $ret['days'][$i]['sum_sale_ege'] + $ret['days'][$i]['sum_sale_oge'] + $ret['days'][$i]['sum_sale_ten'];
 
-                $ret['days'][$i]['average_check'] = $ret['days'][$i]['count'] > 0 ? ($ret['days'][$i]['sum_month'] + $ret['days'][$i]['sum_package'] + $ret['days'][$i]['sum_pro']) / $ret['days'][$i]['count'] : 0;
+                $ret['days'][$i]['average_check'] = self::averagingRounding([$ret['days'][$i]['sum_month'] + $ret['days'][$i]['sum_package'] + $ret['days'][$i]['sum_pro']], [$ret['days'][$i]['count']]);
 
-                $ret['days'][$i]['average_check_children_ege'] = $ret['days'][$i]['count_children_ege'] > 0 ? $ret['days'][$i]['children_ege'] / $ret['days'][$i]['count_children_ege'] : 0;
-                $ret['days'][$i]['average_check_children_oge'] = $ret['days'][$i]['count_children_oge'] > 0 ? $ret['days'][$i]['children_oge'] / $ret['days'][$i]['count_children_oge'] : 0;
-                $ret['days'][$i]['average_check_children_10'] = $ret['days'][$i]['count_children_10'] > 0 ? $ret['days'][$i]['children_10'] / $ret['days'][$i]['count_children_10'] : 0;
-                $ret['days'][$i]['average_check_parents_ege'] = $ret['days'][$i]['count_parents_ege'] > 0 ? $ret['days'][$i]['parents_ege'] / $ret['days'][$i]['count_parents_ege'] : 0;
-                $ret['days'][$i]['average_check_parents_oge'] = $ret['days'][$i]['count_parents_oge'] > 0 ? $ret['days'][$i]['parents_oge'] / $ret['days'][$i]['count_parents_oge'] : 0;
-                $ret['days'][$i]['average_check_parents_10'] = $ret['days'][$i]['count_parents_10'] > 0 ? $ret['days'][$i]['parents_10'] / $ret['days'][$i]['count_parents_10'] : 0;
+                $ret['days'][$i]['average_check_children_ege'] = self::averagingRounding([$ret['days'][$i]['children_ege']], [$ret['days'][$i]['count_children_ege']]);
+                $ret['days'][$i]['average_check_children_oge'] = self::averagingRounding([$ret['days'][$i]['children_oge']], [$ret['days'][$i]['count_children_oge']]);
+                $ret['days'][$i]['average_check_children_10'] = self::averagingRounding([$ret['days'][$i]['children_10']], [$ret['days'][$i]['count_children_10']]);
+                $ret['days'][$i]['average_check_parents_ege'] = self::averagingRounding([$ret['days'][$i]['parents_ege']], [$ret['days'][$i]['count_parents_ege']]);
+                $ret['days'][$i]['average_check_parents_oge'] = self::averagingRounding([$ret['days'][$i]['parents_oge']], [$ret['days'][$i]['count_parents_oge']]);
+                $ret['days'][$i]['average_check_parents_10'] = self::averagingRounding([$ret['days'][$i]['parents_10']], [$ret['days'][$i]['count_parents_10']]);
 
                 $children_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
                 $children_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
@@ -310,8 +310,8 @@ class AmoCrmController extends Controller {
                 $parents_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
                 $parents_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
 
-                $ret['days'][$i]['average_check_children'] = $children_count > 0 ? $children_sum / $children_count : 0;
-                $ret['days'][$i]['average_check_parents'] = $parents_count > 0 ? $parents_sum / $parents_count : 0;
+                $ret['days'][$i]['average_check_children'] = self::averagingRounding([$children_sum], [$children_count]);
+                $ret['days'][$i]['average_check_parents'] = self::averagingRounding([$parents_sum], [$parents_count]);
 
                 $ege_sum = $ret['days'][$i]['children_month_ege'] + $ret['days'][$i]['parents_month_ege'] + $ret['days'][$i]['children_package_ege'] + $ret['days'][$i]['parents_package_ege'];
                 $oge_sum = $ret['days'][$i]['children_month_oge'] + $ret['days'][$i]['parents_month_oge'] + $ret['days'][$i]['children_package_oge'] + $ret['days'][$i]['parents_package_oge'];
@@ -321,9 +321,9 @@ class AmoCrmController extends Controller {
                 $oge_count = $ret['days'][$i]['count_sale_children_oge'] + $ret['days'][$i]['count_sale_parents_oge'];
                 $ten_count = $ret['days'][$i]['count_sale_children_10'] + $ret['days'][$i]['count_sale_parents_10'];
 
-                $ret['days'][$i]['average_check_ege'] = $ege_count > 0 ? $ege_sum / $ege_count : 0;
-                $ret['days'][$i]['average_check_oge'] = $oge_count > 0 ? $oge_sum / $oge_count : 0;
-                $ret['days'][$i]['average_check_10'] = $ten_count > 0 ? $ten_sum / $ten_count : 0;
+                $ret['days'][$i]['average_check_ege'] = self::averagingRounding([$ege_sum], [$ege_count]);
+                $ret['days'][$i]['average_check_oge'] = self::averagingRounding([$oge_sum], [$oge_count]);
+                $ret['days'][$i]['average_check_10'] = self::averagingRounding([$ten_sum], [$ten_count]);
             }
 
 
@@ -369,7 +369,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -382,7 +382,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -395,7 +395,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -410,7 +410,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -450,19 +450,19 @@ class AmoCrmController extends Controller {
             if(isset($v['date']) && $v['date'] == "Недельный план") {
 
                 $report[$k]['plan']['month'] = $v['plan']['plan_month'];
-                $report[$k]['plan']['month_percent'] = $v['plan']['plan_month'] > 0 ? ($week_plan_month / $v['plan']['plan_month']) *  100 : 0;
+                $report[$k]['plan']['month_percent'] = $v['plan']['plan_month'] > 0 ? round(($week_plan_month / $v['plan']['plan_month']) *  100, 2) : 0;
                 $report[$k]['plan']['month_remainder'] = $v['plan']['plan_month'] - $week_plan_month;
 
                 $report[$k]['plan']['package'] = $v['plan']['plan_package'];
-                $report[$k]['plan']['package_percent'] = $v['plan']['plan_package'] > 0 ? ($week_plan_package / $v['plan']['plan_package']) *  100 : 0;
+                $report[$k]['plan']['package_percent'] = $v['plan']['plan_package'] > 0 ? round(($week_plan_package / $v['plan']['plan_package']) *  100, 2) : 0;
                 $report[$k]['plan']['package_remainder'] = $v['plan']['plan_package'] - $week_plan_package;
 
                 $report[$k]['plan']['pro'] = $v['plan']['plan_pro'];
-                $report[$k]['plan']['pro_percent'] = $v['plan']['plan_pro'] > 0 ? ($week_plan_pro / $v['plan']['plan_pro']) *  100 : 0;
+                $report[$k]['plan']['pro_percent'] = $v['plan']['plan_pro'] > 0 ? round(($week_plan_pro / $v['plan']['plan_pro']) *  100, 2) : 0;
                 $report[$k]['plan']['pro_remainder'] = $v['plan']['plan_pro'] - $week_plan_pro;
 
                 $report[$k]['plan']['count'] = $v['plan']['plan_count'];
-                $report[$k]['plan']['count_percent'] = $v['plan']['plan_count'] > 0 ? ($week_plan_count / $v['plan']['plan_count']) *  100 : 0;
+                $report[$k]['plan']['count_percent'] = $v['plan']['plan_count'] > 0 ? round(($week_plan_count / $v['plan']['plan_count']) *  100, 2) : 0;
                 $report[$k]['plan']['count_remainder'] = $v['plan']['plan_count'] - $week_plan_count;
 
                 $week_plan_month = 0;
@@ -471,20 +471,20 @@ class AmoCrmController extends Controller {
                 $week_plan_count = 0;
             } else {
                 if(isset($v['sum_month']) && $v['sum_month'] > 0) {
-                    $report[$k]['plan']['month_percent'] = $plan_month > 0 ? ($v['sum_month'] / $plan_month) * 100 : 0;
+                    $report[$k]['plan']['month_percent'] = $plan_month > 0 ? round(($v['sum_month'] / $plan_month) * 100, 2) : 0;
                     $plan_month = $plan_month - $v['sum_month'];
                     $report[$k]['plan']['month_remainder'] = $plan_month;
 
-                    $report[$k]['plan']['package_percent'] = $plan_package > 0 ? ($v['sum_package'] / $plan_package) * 100 : 0;
+                    $report[$k]['plan']['package_percent'] = $plan_package > 0 ? round(($v['sum_package'] / $plan_package) * 100, 2) : 0;
                     $plan_package = $plan_package - $v['sum_package'];
                     $report[$k]['plan']['package_remainder'] = $plan_package;
 
-                    $report[$k]['plan']['pro_percent'] = $plan_pro > 0 ? ($v['count_pro'] / $plan_pro) * 100 : 0;
+                    $report[$k]['plan']['pro_percent'] = $plan_pro > 0 ? round(($v['count_pro'] / $plan_pro) * 100, 2) : 0;
                     $plan_pro = $plan_pro - $v['count_pro'];
                     $report[$k]['plan']['pro_remainder'] = $plan_pro;
 
                     $su = $v['count_sale_children_ege'] + $v['count_sale_children_oge'] + $v['count_sale_children_10'] + $v['count_sale_parents_ege'] + $v['count_sale_parents_oge'] + $v['count_sale_parents_10'];
-                    $report[$k]['plan']['count_percent'] = $plan_count > 0 ? ($su / $plan_count) * 100 : 0;
+                    $report[$k]['plan']['count_percent'] = $plan_count > 0 ? round(($su / $plan_count) * 100, 2) : 0;
                     $plan_count = $plan_count - $su;
                     $report[$k]['plan']['count_remainder'] = $plan_count;
 
@@ -3029,5 +3029,20 @@ class AmoCrmController extends Controller {
 
 
         return "Ok";
+    }
+
+    protected static function averagingRounding(array $array_one, array $array_two, string $type = 'finance') {
+        $from = 0; foreach($array_one as $one) $from = $from + $one;
+        $to = 0; foreach($array_two as $two) $to = $to + $two;
+
+        $result = $to > 0 ? $from / $to : 0;
+
+        if($type == 'finance') {
+            $result = round($result);
+        } else {
+            $result = round($result, 2);
+        }
+
+        return $result;
     }
 }
