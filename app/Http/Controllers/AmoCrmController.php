@@ -382,7 +382,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -395,7 +395,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -410,7 +410,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
+                $weeks['average_check'] = isset($weeks['count']) && $weeks['count'] > 0 ?($weeks['sum_month'] + $weeks['sum_package'] + $weeks['sum_pro']) / $weeks['count'] : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -748,7 +748,7 @@ class AmoCrmController extends Controller {
             $this->generate($a['days'], $a['month'], $a['year']);
         }
 
-        // $this->generate(1, 8, 2022);
+        $this->generate(1, 8, 2022);
 
         return "Ok";
 
@@ -834,7 +834,7 @@ class AmoCrmController extends Controller {
                 }
             }
 
-            $contacts = array_chunk($contacts, 60);
+            $contacts = array_chunk($contacts, 30);
 
             foreach($contacts as $elems) {
                 $filter = "";
@@ -1125,7 +1125,6 @@ class AmoCrmController extends Controller {
                             $lead['course'] = 'none';
                         }
 
-
                         if($lead['type'] != 'none' && $lead['course'] != 'none') {
                             $el["count_{$lead['type']}_{$lead['course']}"] = $el["count_{$lead['type']}_{$lead['course']}"] + 1;
 
@@ -1208,7 +1207,7 @@ class AmoCrmController extends Controller {
                             $el['sum_month'] = $el['sum_month'] + $complete['price'];
 
                             $contacts['month'][] = $complete['contact'];
-                        } else if($package >= 2) {
+                        } else if($package > 1) {
                             // Пакет
                             $el['count_package'] = $el['count_package'] + 1;
                             $el['sum_package'] = $el['sum_package'] + $complete['price'];
@@ -1266,41 +1265,50 @@ class AmoCrmController extends Controller {
                 // -----
                 $managers_leads = ManagersLeads::where('manager', $manager['id'])->get()->toArray();
 
-                $count_children_ege = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'ege') return true; else return false;
-                }));
-                $count_children_oge = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'oge') return true; else return false;
-                }));
-                $count_children_10 = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'ten') return true; else return false;
-                }));
-                $count_children_none = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Ученик' && $el['course'] == 'none') return true; else return false;
-                }));
+                $count_children_ege = self::getSizeArrayByType($managers_leads, 'Ученик', 'ege');
+                $count_children_oge = self::getSizeArrayByType($managers_leads, 'Ученик', 'oge');
+                $count_children_10 = self::getSizeArrayByType($managers_leads, 'Ученик', 'ten');
+                $count_children_none = self::getSizeArrayByType($managers_leads, 'Ученик', 'none');
 
-                $count_parents_ege = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'ege') return true; else return false;
-                }));
-                $count_parents_oge = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'oge') return true; else return false;
-                }));
-                $count_parents_10 = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'ten') return true; else return false;
-                }));
-                $count_parents_none = sizeof(array_filter($managers_leads, function($el) {
-                    if($el['type'] == 'Родитель' && $el['course'] == 'none') return true; else return false;
-                }));
+                $count_parents_ege = self::getSizeArrayByType($managers_leads, 'Родитель', 'ege');
+                $count_parents_oge = self::getSizeArrayByType($managers_leads, 'Родитель', 'oge');
+                $count_parents_10 = self::getSizeArrayByType($managers_leads, 'Родитель', 'ten');
+                $count_parents_none = self::getSizeArrayByType($managers_leads, 'Родитель', 'none');
 
-                $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
-                $el['count_children_oge'] = $el['count_children_oge'] + $count_children_oge;
-                $el['count_children_10'] = $el['count_children_10'] + $count_children_10;
-                $el['count_children_none'] = $el['count_children_none'] + $count_children_none;
-                $el['count_parents_ege'] = $el['count_parents_ege'] + $count_parents_ege;
-                $el['count_parents_oge'] = $el['count_parents_oge'] + $count_parents_oge;
-                $el['count_parents_10'] = $el['count_parents_10'] + $count_parents_10;
-                $el['count_parents_none'] = $el['count_parents_none'] + $count_parents_none;
+//                $count_children_ege = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Ученик' && $el['course'] == 'ege') return true; else return false;
+//                }));
+//                $count_children_oge = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Ученик' && $el['course'] == 'oge') return true; else return false;
+//                }));
+//                $count_children_10 = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Ученик' && $el['course'] == 'ten') return true; else return false;
+//                }));
+//                $count_children_none = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Ученик' && $el['course'] == 'none') return true; else return false;
+//                }));
 
+//                $count_parents_ege = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Родитель' && $el['course'] == 'ege') return true; else return false;
+//                }));
+//                $count_parents_oge = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Родитель' && $el['course'] == 'oge') return true; else return false;
+//                }));
+//                $count_parents_10 = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Родитель' && $el['course'] == 'ten') return true; else return false;
+//                }));
+//                $count_parents_none = sizeof(array_filter($managers_leads, function($el) {
+//                    if($el['type'] == 'Родитель' && $el['course'] == 'none') return true; else return false;
+//                }));
+
+//                $el['count_children_ege'] = $el['count_children_ege'] + $count_children_ege;
+//                $el['count_children_oge'] = $el['count_children_oge'] + $count_children_oge;
+//                $el['count_children_10'] = $el['count_children_10'] + $count_children_10;
+//                $el['count_children_none'] = $el['count_children_none'] + $count_children_none;
+//                $el['count_parents_ege'] = $el['count_parents_ege'] + $count_parents_ege;
+//                $el['count_parents_oge'] = $el['count_parents_oge'] + $count_parents_oge;
+//                $el['count_parents_10'] = $el['count_parents_10'] + $count_parents_10;
+//                $el['count_parents_none'] = $el['count_parents_none'] + $count_parents_none;
 
                 if($el['count'] > 0)
                     $el['average_check'] = $el['average_check'] / $el['count'];
@@ -1319,6 +1327,12 @@ class AmoCrmController extends Controller {
 
             ManagersInfo::insert($ret);
         }
+    }
+
+    protected static function getSizeArrayByType($data, $one, $two): int {
+        $i = 0;
+        foreach($data as $d) if($d['type'] == $one && $d['course'] == $two) $i++;
+        return $i;
     }
 
     public function managers() {
