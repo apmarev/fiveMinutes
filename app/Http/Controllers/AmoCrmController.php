@@ -425,8 +425,9 @@ class AmoCrmController extends Controller {
         $all['plan']['month_percent'] = $all['plan']['month'] > 0 ? round($all_month_sum / $all['plan']['month'] * 100, 1) : 0;
         $all['plan']['month_remainder'] = $all['plan']['month'] - $all_month_sum;
 
-        $all['plan']['package_percent'] = $all['plan']['package'] > 0 ? round($all['sum_package'] / $all['plan']['package'] * 100, 1) : 0;
-        $all['plan']['package_remainder'] = $all['plan']['package'] - $all['sum_package'];
+        $all_package_sum = $all['children_package_ege'] + $all['children_package_oge'] +$all['children_package_10'] +$all['parents_package_ege'] +$all['parents_package_oge'] +$all['parents_package_10'];
+        $all['plan']['package_percent'] = $all['plan']['package'] > 0 ? round($all_package_sum / $all['plan']['package'] * 100, 1) : 0;
+        $all['plan']['package_remainder'] = $all['plan']['package'] - $all_package_sum;
 
         $all['plan']['pro_percent'] = $all['plan']['pro'] > 0 ? round($all['count_pro'] / $all['plan']['pro'] * 100, 1) : 0;
         $all['plan']['pro_remainder'] = $all['plan']['pro'] - $all['count_pro'];
@@ -701,53 +702,53 @@ class AmoCrmController extends Controller {
 
     public function generate_data() {
 
-//        $yesterday = strtotime("-1 day");
-//
-//        $now_year = date('o', $yesterday);
-//        $now_month = date('n', $yesterday);
-//        $now_day = date('j', $yesterday);
-//
-//        ManagersLeads::truncate();
-//        ManagersLeadsSuccess::truncate();
-//        ManagersLeadsSuccessCustom::truncate();
-//
-//        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
-//
-//        if($now_month - 1 < 1) {
-//            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
-//            $array = [
-//                [
-//                    'month' => 12,
-//                    'year' => $now_year - 1,
-//                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
-//                ],
-//                [
-//                    'month' => $now_month,
-//                    'year' => $now_year,
-//                    'days' => $now_day,
-//                ],
-//            ];
-//        } else {
-//            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
-//            $array = [
-//                [
-//                    'month' => $now_month - 1,
-//                    'year' => $now_year,
-//                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
-//                ],
-//                [
-//                    'month' => $now_month,
-//                    'year' => $now_year,
-//                    'days' => $now_day,
-//                ],
-//            ];
-//        }
-//
-//        foreach($array as $a) {
-//            return $this->generate($a['days'], $a['month'], $a['year']);
-//        }
+        $yesterday = strtotime("-1 day");
 
-        $this->generate(1, 8, 2022);
+        $now_year = date('o', $yesterday);
+        $now_month = date('n', $yesterday);
+        $now_day = date('j', $yesterday);
+
+        ManagersLeads::truncate();
+        ManagersLeadsSuccess::truncate();
+        ManagersLeadsSuccessCustom::truncate();
+
+        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
+
+        if($now_month - 1 < 1) {
+            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
+            $array = [
+                [
+                    'month' => 12,
+                    'year' => $now_year - 1,
+                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        } else {
+            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
+            $array = [
+                [
+                    'month' => $now_month - 1,
+                    'year' => $now_year,
+                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        }
+
+        foreach($array as $a) {
+            $this->generate($a['days'], $a['month'], $a['year']);
+        }
+
+        // $this->generate(1, 8, 2022);
 
         return "Ok";
 
@@ -757,7 +758,7 @@ class AmoCrmController extends Controller {
 
         $month = substr("0{$month}", -2);
 
-        for($day=31;$day<=31;$day++) {
+        for($day=1;$day<=$days;$day++) {
             $day_now = substr("0{$day}", -2);
             $date_from = strtotime("{$day_now}.{$month}.{$year} 00:00:01");
             $date_to = strtotime("{$day_now}.{$month}.{$year} 23:59:59");
@@ -1179,7 +1180,8 @@ class AmoCrmController extends Controller {
 
                     $el['average_check'] = $el['average_check'] + $complete['price'];
 
-                    if($package = self::getPackage($complete['lead_id']) > 0) {
+                    $package = self::getPackage($complete['lead_id']);
+                    if($package && $package > 0) {
 
                         $search_pro = array_search($complete['lead_id'], array_column($pro, 'lead_id'));
 
