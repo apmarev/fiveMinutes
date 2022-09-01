@@ -731,11 +731,11 @@ class AmoCrmController extends Controller {
         } else {
             ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
             $array = [
-                [
-                    'month' => $now_month - 1,
-                    'year' => $now_year,
-                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
-                ],
+//                [
+//                    'month' => $now_month - 1,
+//                    'year' => $now_year,
+//                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+//                ],
                 [
                     'month' => $now_month,
                     'year' => $now_year,
