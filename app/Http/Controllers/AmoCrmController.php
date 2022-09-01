@@ -745,6 +745,8 @@ class AmoCrmController extends Controller {
 //            return $this->generate($a['days'], $a['month'], $a['year']);
 //        }
 
+        $this->generate(1, 8, 2022);
+
         return "Ok";
 
     }
@@ -753,7 +755,7 @@ class AmoCrmController extends Controller {
 
         $month = substr("0{$month}", -2);
 
-        for($day=1;$day<=$days;$day++) {
+        for($day=31;$day<=31;$day++) {
             $day_now = substr("0{$day}", -2);
             $date_from = strtotime("{$day_now}.{$month}.{$year} 00:00:01");
             $date_to = strtotime("{$day_now}.{$month}.{$year} 23:59:59");
@@ -1426,8 +1428,10 @@ class AmoCrmController extends Controller {
     }
 
     public static function getIsSetList($data, string $type): array {
-        if(isset($data['_embedded']) && isset($data['_embedded'][$type]) && is_array($data['_embedded'][$type]) && sizeof($data['_embedded'][$type]) > 0) {
-            return $data['_embedded'][$type];
+        if(gettype($data) == 'array') {
+            if(isset($data['_embedded']) && isset($data['_embedded'][$type]) && is_array($data['_embedded'][$type]) && sizeof($data['_embedded'][$type]) > 0) {
+                return $data['_embedded'][$type];
+            }
         }
         return [];
     }
