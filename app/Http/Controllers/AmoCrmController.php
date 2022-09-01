@@ -421,8 +421,9 @@ class AmoCrmController extends Controller {
 
         $all['plan'] = $monthPlan;
 
-        $all['plan']['month_percent'] = $all['plan']['month'] > 0 ? round($all['sum_month'] / $all['plan']['month'] * 100, 1) : 0;
-        $all['plan']['month_remainder'] = $all['plan']['month'] - $all['sum_month'];
+        $all_month_sum = $all['children_month_ege'] + $all['children_month_oge'] +$all['children_month_10'] +$all['parents_month_ege'] +$all['parents_month_oge'] +$all['parents_month_10'];
+        $all['plan']['month_percent'] = $all['plan']['month'] > 0 ? round($all_month_sum / $all['plan']['month'] * 100, 1) : 0;
+        $all['plan']['month_remainder'] = $all['plan']['month'] - $all_month_sum;
 
         $all['plan']['package_percent'] = $all['plan']['package'] > 0 ? round($all['sum_package'] / $all['plan']['package'] * 100, 1) : 0;
         $all['plan']['package_remainder'] = $all['plan']['package'] - $all['sum_package'];
@@ -430,8 +431,9 @@ class AmoCrmController extends Controller {
         $all['plan']['pro_percent'] = $all['plan']['pro'] > 0 ? round($all['count_pro'] / $all['plan']['pro'] * 100, 1) : 0;
         $all['plan']['pro_remainder'] = $all['plan']['pro'] - $all['count_pro'];
 
-        $all['plan']['count_percent'] = $all['plan']['count'] > 0 ? round($all['count'] / $all['plan']['count'] * 100, 1) : 0;
-        $all['plan']['count_remainder'] = $all['plan']['count'] - $all['count'];
+        $all_count_sale = $all['count_sale_children_ege'] + $all['count_sale_children_oge'] +$all['count_sale_children_10'] +$all['count_sale_parents_ege'] +$all['count_sale_parents_oge'] +$all['count_sale_parents_10'];
+        $all['plan']['count_percent'] = $all['plan']['count'] > 0 ? round($all_count_sale / $all['plan']['count'] * 100, 1) : 0;
+        $all['plan']['count_remainder'] = $all['plan']['count'] - $all_count_sale;
 
         $plan_month = $all['plan']['month'];
         $plan_package = $all['plan']['package'];
@@ -831,7 +833,7 @@ class AmoCrmController extends Controller {
                 }
             }
 
-            $contacts = array_chunk($contacts, 100);
+            $contacts = array_chunk($contacts, 60);
 
             foreach($contacts as $elems) {
                 $filter = "";
@@ -873,19 +875,27 @@ class AmoCrmController extends Controller {
     }
 
     protected function getContactsByIds(array $contacts) {
-        $filter = "";
 
-        $i = 0;
-        foreach($contacts as $contact) {
-            $filter .= "&filter[id][{$i}]={$contact}";
-            $i++;
+
+        $chunk = array_chunk($contacts, 30);
+
+        $result = [];
+
+        foreach($chunk as $c) {
+            $filter = "";
+            $i = 0;
+            foreach($c as $contact) {
+                $filter .= "&filter[id][{$i}]={$contact}";
+                $i++;
+            }
+
+            $list = $this->getAllListByFilter('contacts', $filter);
+            $result = array_merge($result, $list);
         }
-
-        $list = $this->getAllListByFilter('contacts', $filter);
 
         $ret = [];
 
-        foreach($list as $c) {
+        foreach($result as $c) {
             $type = 'none';
             foreach($this->getIsSetListCustomFields($c) as $custom) {
                 if($custom['field_id'] == 707467) {
@@ -1428,11 +1438,11 @@ class AmoCrmController extends Controller {
     }
 
     public static function getIsSetList($data, string $type): array {
-        if(gettype($data) == 'array') {
-            if(isset($data['_embedded']) && isset($data['_embedded'][$type]) && is_array($data['_embedded'][$type]) && sizeof($data['_embedded'][$type]) > 0) {
-                return $data['_embedded'][$type];
-            }
+
+        if(isset($data['_embedded']) && isset($data['_embedded'][$type]) && is_array($data['_embedded'][$type]) && sizeof($data['_embedded'][$type]) > 0) {
+            return $data['_embedded'][$type];
         }
+
         return [];
     }
 
