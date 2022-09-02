@@ -369,7 +369,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
+                $weeks['average_check'] = isset($weeks['sum_month']) ? self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]) : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -382,7 +382,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
+                $weeks['average_check'] = isset($weeks['sum_month']) ? self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]) : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -395,7 +395,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
+                $weeks['average_check'] = isset($weeks['sum_month']) ? self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]) : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -410,7 +410,7 @@ class AmoCrmController extends Controller {
                 $monthPlan['pro'] = $monthPlan['pro'] + $weeks['plan']['plan_pro'];
                 $monthPlan['count'] = $monthPlan['count'] + $weeks['plan']['plan_count'];
 
-                $weeks['average_check'] = self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]);
+                $weeks['average_check'] = isset($weeks['sum_month']) ? self::averagingRounding([$weeks['sum_month'], $weeks['sum_package'], $weeks['sum_pro']], [$weeks['count']]) : 0;
 
                 if(!$pipeline)
                     $report[] = $weeks;
@@ -711,44 +711,44 @@ class AmoCrmController extends Controller {
         ManagersLeads::truncate();
         ManagersLeadsSuccess::truncate();
         ManagersLeadsSuccessCustom::truncate();
-
-        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
-
-        if($now_month - 1 < 1) {
-            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
-            $array = [
-                [
-                    'month' => 12,
-                    'year' => $now_year - 1,
-                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
-                ],
-                [
-                    'month' => $now_month,
-                    'year' => $now_year,
-                    'days' => $now_day,
-                ],
-            ];
-        } else {
-            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
-            $array = [
+//
+//        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
+//
+//        if($now_month - 1 < 1) {
+//            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
+//            $array = [
 //                [
-//                    'month' => $now_month - 1,
-//                    'year' => $now_year,
-//                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+//                    'month' => 12,
+//                    'year' => $now_year - 1,
+//                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
 //                ],
-                [
-                    'month' => $now_month,
-                    'year' => $now_year,
-                    'days' => $now_day,
-                ],
-            ];
-        }
+//                [
+//                    'month' => $now_month,
+//                    'year' => $now_year,
+//                    'days' => $now_day,
+//                ],
+//            ];
+//        } else {
+//            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
+//            $array = [
+////                [
+////                    'month' => $now_month - 1,
+////                    'year' => $now_year,
+////                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+////                ],
+//                [
+//                    'month' => $now_month,
+//                    'year' => $now_year,
+//                    'days' => $now_day,
+//                ],
+//            ];
+//        }
+//
+//        foreach($array as $a) {
+//            $this->generate($a['days'], $a['month'], $a['year']);
+//        }
 
-        foreach($array as $a) {
-            $this->generate($a['days'], $a['month'], $a['year']);
-        }
-
-        $this->generate(1, 8, 2022);
+        $this->generate(1, 9, 2022);
 
         return "Ok";
 
