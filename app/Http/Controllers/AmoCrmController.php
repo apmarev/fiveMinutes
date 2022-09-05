@@ -711,44 +711,44 @@ class AmoCrmController extends Controller {
         ManagersLeads::truncate();
         ManagersLeadsSuccess::truncate();
         ManagersLeadsSuccessCustom::truncate();
-//
-//        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
-//
-//        if($now_month - 1 < 1) {
-//            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
-//            $array = [
-//                [
-//                    'month' => 12,
-//                    'year' => $now_year - 1,
-//                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
-//                ],
-//                [
-//                    'month' => $now_month,
-//                    'year' => $now_year,
-//                    'days' => $now_day,
-//                ],
-//            ];
-//        } else {
-//            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
-//            $array = [
-////                [
-////                    'month' => $now_month - 1,
-////                    'year' => $now_year,
-////                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
-////                ],
-//                [
-//                    'month' => $now_month,
-//                    'year' => $now_year,
-//                    'days' => $now_day,
-//                ],
-//            ];
-//        }
-//
-//        foreach($array as $a) {
-//            $this->generate($a['days'], $a['month'], $a['year']);
-//        }
 
-        $this->generate(1, 9, 2022);
+        ManagersInfo::where('year', $now_year)->where('month', $now_month)->delete();
+
+        if($now_month - 1 < 1) {
+            ManagersInfo::where('year', $now_year - 1)->where('month', 12)->delete();
+            $array = [
+                [
+                    'month' => 12,
+                    'year' => $now_year - 1,
+                    'days' => date('t', mktime(0, 0, 0, 12, 1, $now_year - 1)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        } else {
+            ManagersInfo::where('year', $now_year)->where('month', $now_month - 1)->delete();
+            $array = [
+                [
+                    'month' => $now_month - 1,
+                    'year' => $now_year,
+                    'days' => date('t', mktime(0, 0, 0, $now_month - 1, 1, $now_year)),
+                ],
+                [
+                    'month' => $now_month,
+                    'year' => $now_year,
+                    'days' => $now_day,
+                ],
+            ];
+        }
+
+        foreach($array as $a) {
+            $this->generate($a['days'], $a['month'], $a['year']);
+        }
+
+        // $this->generate(1, 9, 2022);
 
         return "Ok";
 
