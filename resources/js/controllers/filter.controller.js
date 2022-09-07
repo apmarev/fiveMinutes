@@ -53,6 +53,7 @@ class filterController {
         this.setDefaultFilterData()
         request.get("/filter_plan")
             .then(result => {
+                this.searchDisabled = true
                 this.pipelines = result.data.pipelines
                 this.years = result.data.years
                 this.months = result.data.month
@@ -62,6 +63,18 @@ class filterController {
                     month: new Date().getMonth()
                 }
                 this.getData(false)
+            })
+            .catch(error => console.log(error))
+    }
+
+    getCommonFilter() {
+        this.setDefaultFilterData()
+        request.get("/filter_plan")
+            .then(result => {
+                this.searchDisabled = true
+                this.pipelines = result.data.pipelines
+                this.filter.pipeline = this.pipelines[1].id
+                this.getYears()
             })
             .catch(error => console.log(error))
     }

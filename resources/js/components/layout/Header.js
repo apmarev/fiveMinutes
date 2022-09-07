@@ -65,27 +65,32 @@ export const Header = observer(() => {
                                     </Select>
                                 </Col>
                             }
-                            <Col xs={24} lg={2}>
-                                <Select
-                                    disabled={filter.searchDisabled}
-                                    allowClear
-                                    placeholder="Воронка"
-                                    value={filter.filter.pipeline}
-                                    onChange={e => filter.filter.pipeline = e}
-                                    size="small"
-                                >
-                                    {filter.pipelines.map((item, k) => (
-                                        <Option key={k} value={item.id}>{item.name}</Option>
-                                    ))}
-                                </Select>
-                            </Col>
+                            {filter.filterType !== "3" &&
+                                <Col xs={24} lg={2}>
+                                    <Select
+                                        disabled={filter.searchDisabled}
+                                        allowClear
+                                        placeholder="Воронка"
+                                        value={filter.filter.pipeline}
+                                        onChange={e => filter.filter.pipeline = e}
+                                        size="small"
+                                    >
+                                        {filter.pipelines.map((item, k) => (
+                                            <Option key={k} value={item.id}>{item.name}</Option>
+                                        ))}
+                                    </Select>
+                                </Col>
+                            }
                             <Col xs={24} lg={2}>
                                 <Select
                                     disabled={filter.searchDisabled}
                                     allowClear
                                     placeholder="Год"
                                     value={filter.filter.year}
-                                    onChange={e => filter.filter.year = e}
+                                    onChange={e => {
+                                        filter.filter.year = e
+                                        filter.getMonthsByYear(e)
+                                    }}
                                     size="small"
                                 >
                                     {filter.years.map((item, k) => (

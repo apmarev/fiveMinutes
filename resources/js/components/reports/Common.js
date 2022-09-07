@@ -8,7 +8,7 @@ export const Common = observer(() => {
 
     useEffect(() => {
         filter.setDefaultFilterData()
-        filter.getFilterPlan()
+        filter.getCommonFilter()
     }, [])
 
     const mainRows = [
