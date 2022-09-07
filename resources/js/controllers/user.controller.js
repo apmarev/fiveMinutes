@@ -91,20 +91,26 @@ class userController {
             return message.error('Укажите пароль для пользователя')
         }
 
-        const data = new FormData()
-        data.append('login', this.element.login)
-        data.append('password', sha1(this.element.password))
-        data.append('super', `${this.element.super}`)
+        const post_data = new FormData()
+        post_data.append('login', this.element.login)
+        post_data.append('password', sha1(this.element.password))
+        post_data.append('super', `${this.element.super}`)
+
+        const put_data = {
+            login: this.element.login,
+            password: sha1(this.element.password),
+            super: `${this.element.super}`
+        }
 
         if(this.element.id && this.element.id > 0)
-            request.put(`/user/${this.element.id}`, data)
-                .then(result => {
+            request.put(`/user/${this.element.id}`, put_data)
+                .then(() => {
                     this.clearElement()
                     this.getUsersList()
                 })
         else
-            request.post(`/user`, data)
-                .then(result => {
+            request.post(`/user`, post_data)
+                .then(() => {
                     this.clearElement()
                     this.getUsersList()
                 })
@@ -114,7 +120,7 @@ class userController {
 
     delete(userID) {
         request.delete(`/user/${userID}`)
-            .then(result => {
+            .then(() => {
                 this.getUsersList()
             })
     }
