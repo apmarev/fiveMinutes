@@ -307,8 +307,8 @@ class AmoCrmController extends Controller {
                 $children_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
                 $children_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
 
-                $parents_sum = $ret['days'][$i]['children_ege'] + $ret['days'][$i]['children_oge'] + $ret['days'][$i]['children_10'];
-                $parents_count = $ret['days'][$i]['count_children_ege'] + $ret['days'][$i]['count_children_oge'] + $ret['days'][$i]['count_children_10'];
+                $parents_sum = $ret['days'][$i]['parents_ege'] + $ret['days'][$i]['parents_oge'] + $ret['days'][$i]['parents_10'];
+                $parents_count = $ret['days'][$i]['count_parents_ege'] + $ret['days'][$i]['count_parents_oge'] + $ret['days'][$i]['count_parents_10'];
 
                 $ret['days'][$i]['average_check_children'] = self::averagingRounding([$children_sum], [$children_count]);
                 $ret['days'][$i]['average_check_parents'] = self::averagingRounding([$parents_sum], [$parents_count]);
@@ -498,23 +498,23 @@ class AmoCrmController extends Controller {
             }
         }
 
-        $all['average_check'] = $all['count'] > 0 ? ($all['sum_month'] + $all['sum_package'] + $all['sum_pro']) / $all['count'] : 0;
+        $all['average_check'] = $all['count'] > 0 ? round(($all['sum_month'] + $all['sum_package'] + $all['sum_pro']) / $all['count']) : 0;
 
-        $all['average_check_children_ege'] = $all['count_children_ege'] > 0 ? $all['children_ege'] / $all['count_children_ege'] : 0;
-        $all['average_check_children_oge'] = $all['count_children_oge'] > 0 ? $all['children_oge'] / $all['count_children_oge'] : 0;
-        $all['average_check_children_10'] = $all['count_children_10'] > 0 ? $all['children_10'] / $all['count_children_10'] : 0;
-        $all['average_check_parents_ege'] = $all['count_parents_ege'] > 0 ? $all['parents_ege'] / $all['count_parents_ege'] : 0;
-        $all['average_check_parents_oge'] = $all['count_parents_oge'] > 0 ? $all['parents_oge'] / $all['count_parents_oge'] : 0;
-        $all['average_check_parents_10'] = $all['count_parents_10'] > 0 ? $all['parents_10'] / $all['count_parents_10'] : 0;
+        $all['average_check_children_ege'] = $all['count_children_ege'] > 0 ? round($all['children_ege'] / $all['count_children_ege']) : 0;
+        $all['average_check_children_oge'] = $all['count_children_oge'] > 0 ? round($all['children_oge'] / $all['count_children_oge']) : 0;
+        $all['average_check_children_10'] = $all['count_children_10'] > 0 ? round($all['children_10'] / $all['count_children_10']) : 0;
+        $all['average_check_parents_ege'] = $all['count_parents_ege'] > 0 ? round($all['parents_ege'] / $all['count_parents_ege']) : 0;
+        $all['average_check_parents_oge'] = $all['count_parents_oge'] > 0 ? round($all['parents_oge'] / $all['count_parents_oge']) : 0;
+        $all['average_check_parents_10'] = $all['count_parents_10'] > 0 ? round($all['parents_10'] / $all['count_parents_10']) : 0;
 
         $children_sum = $all['children_ege'] + $all['children_oge'] + $all['children_10'];
         $children_count = $all['count_children_ege'] + $all['count_children_oge'] + $all['count_children_10'];
 
-        $parents_sum = $all['children_ege'] + $all['children_oge'] + $all['children_10'];
-        $parents_count = $all['count_children_ege'] + $all['count_children_oge'] + $all['count_children_10'];
+        $parents_sum = $all['parents_ege'] + $all['parents_oge'] + $all['parents_10'];
+        $parents_count = $all['count_parents_ege'] + $all['count_parents_oge'] + $all['count_parents_10'];
 
-        $all['average_check_children'] = $children_count > 0 ? $children_sum / $children_count : 0;
-        $all['average_check_parents'] = $parents_count > 0 ? $parents_sum / $parents_count : 0;
+        $all['average_check_children'] = $children_count > 0 ? round($children_sum / $children_count) : 0;
+        $all['average_check_parents'] = $parents_count > 0 ? round($parents_sum / $parents_count) : 0;
 
         $ege_sum = $all['children_month_ege'] + $all['parents_month_ege'] + $all['children_package_ege'] + $all['parents_package_ege'];
         $oge_sum = $all['children_month_oge'] + $all['parents_month_oge'] + $all['children_package_oge'] + $all['parents_package_oge'];
@@ -524,9 +524,9 @@ class AmoCrmController extends Controller {
         $oge_count = $all['count_sale_children_oge'] + $all['count_sale_parents_oge'];
         $ten_count = $all['count_sale_children_10'] + $all['count_sale_parents_10'];
 
-        $all['average_check_ege'] = $ege_count > 0 ? $ege_sum / $ege_count : 0;
-        $all['average_check_oge'] = $oge_count > 0 ? $oge_sum / $oge_count : 0;
-        $all['average_check_10'] = $ten_count > 0 ? $ten_sum / $ten_count : 0;
+        $all['average_check_ege'] = $ege_count > 0 ? round($ege_sum / $ege_count) : 0;
+        $all['average_check_oge'] = $oge_count > 0 ? round($oge_sum / $oge_count) : 0;
+        $all['average_check_10'] = $ten_count > 0 ? round($ten_sum / $ten_count) : 0;
 
         return ['all' => $all, 'days' => $report];
     }
@@ -1223,12 +1223,12 @@ class AmoCrmController extends Controller {
 
                 }
 
-                $el['average_check_children_ege'] = $el['count_sale_children_ege'] > 0 ? $el['average_check_children_ege'] / $el['count_sale_children_ege'] : 0;
-                $el['average_check_children_oge'] = $el['count_sale_children_oge'] > 0 ? $el['average_check_children_oge'] / $el['count_sale_children_oge'] : 0;
-                $el['average_check_children_10'] = $el['count_sale_children_10'] > 0 ? $el['average_check_children_10'] / $el['count_sale_children_10'] : 0;
-                $el['average_check_parents_ege'] = $el['count_sale_parents_ege'] > 0 ? $el['average_check_parents_ege'] / $el['count_sale_parents_ege'] : 0;
-                $el['average_check_parents_oge'] = $el['count_sale_parents_oge'] > 0 ? $el['average_check_parents_oge'] / $el['count_sale_parents_oge'] : 0;
-                $el['average_check_parents_10'] = $el['count_sale_parents_10'] > 0 ? $el['average_check_parents_10'] / $el['count_sale_parents_10'] : 0;
+                $el['average_check_children_ege'] = $el['count_sale_children_ege'] > 0 ? round($el['average_check_children_ege'] / $el['count_sale_children_ege']) : 0;
+                $el['average_check_children_oge'] = $el['count_sale_children_oge'] > 0 ? round($el['average_check_children_oge'] / $el['count_sale_children_oge']) : 0;
+                $el['average_check_children_10'] = $el['count_sale_children_10'] > 0 ? round($el['average_check_children_10'] / $el['count_sale_children_10']) : 0;
+                $el['average_check_parents_ege'] = $el['count_sale_parents_ege'] > 0 ? round($el['average_check_parents_ege'] / $el['count_sale_parents_ege']) : 0;
+                $el['average_check_parents_oge'] = $el['count_sale_parents_oge'] > 0 ? round($el['average_check_parents_oge'] / $el['count_sale_parents_oge']) : 0;
+                $el['average_check_parents_10'] = $el['count_sale_parents_10'] > 0 ? round($el['average_check_parents_10'] / $el['count_sale_parents_10']) : 0;
 
                 $unique = [
                     'children_ege' => array_unique($unique['children_ege']),
