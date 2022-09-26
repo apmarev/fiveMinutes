@@ -560,7 +560,7 @@ export const Common = observer(() => {
                     },
                     {
                         value: source?.count_parents_none + source?.count_parents_ege + source?.count_parents_oge + source?.count_parents_10,
-                        finance: true,
+                        finance: false,
                         subrows: [
                             {
                                 value: source?.count_parents_none,
